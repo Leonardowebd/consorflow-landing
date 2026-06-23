@@ -961,6 +961,28 @@
     .footer-brand{grid-column:1 / -1}
     .footer-bottom{justify-content:flex-start}
   }
+
+  /* ===== LARGE SCREEN ≥1441px SUPPORT ===== */
+  @media(min-width:1441px){
+    .page{width:100%;max-width:none}
+    .hero{width:100%}
+    .degrade{width:100%}
+    .funil{width:100%}
+    .nav{width:100%;left:0;transform:none}
+    .navpill{max-width:1200px;width:calc(100% - 32px)}
+    .dash-frame{left:50%;margin-left:-453px}
+    .dash-card{left:50%;margin-left:-435px}
+    .wing-r{left:calc(50% + 175px)}
+    .wing-l{left:calc(50% - 1022px)}
+    .features-bg{background:#edf3ff}
+    .features{margin:0 auto;border-radius:0}
+    .proc-bg{background:#00295d}
+    .proc{margin:0 auto}
+    .ligacoes{padding:30px 24px}
+    .lig-wrap{max-width:1200px;margin:0 auto}
+    .cta{padding:64px 24px}
+    .cta-box{max-width:1200px;margin:0 auto}
+  }
 </style>
 </head>
 <body>
@@ -1020,7 +1042,7 @@
       <div class="degrade"></div>
     </section>
 
-    <section class="features">
+    <div class="features-bg"><section class="features">
       <div class="feat-head">
         <h2>A operação comercial inteira dentro do Consorflow</h2>
         <p>Do primeiro contato ao pós-venda, organize cada etapa do atendimento em um único lugar.</p>
@@ -1046,7 +1068,7 @@
         <div class="fdesc" style="top:988px">Conecte WhatsApp, Facebook Ads, Google Ads, API e Webhooks para unir aquisição, atendimento e gestão em uma operação só.</div>
         <iframe class="fill" style="top:848px;width:576px;height:416px" src="ill_i.html" frameborder="0" scrolling="no"></iframe>
       </div>
-    </section>
+    </section></div>
 
     <!-- SOLUÇÕES — bento grid -->
     <section class="sol" id="solucoes">
@@ -1184,7 +1206,7 @@
           <div class="funil-media" data-media="2"><img src="asset_funil_kanban.webp" alt="Avance no funil" loading="lazy" decoding="async"></div>
         </div>
       </div>
-    </section>
+    </section></div>
     <section class="ligacoes">
       <div class="lig-wrap">
         <p class="lig-eyebrow">Atendimento humanizado</p>
@@ -1326,7 +1348,7 @@
         </div>
       </div>
     </section>
-    <section class="proc" id="processo">
+    <div class="proc-bg"><section class="proc" id="processo">
       <div class="phead">
         <h2>Seu processo comercial em um só lugar</h2>
         <p>Da primeira mensagem ao pós-venda, cada etapa do consórcio fica organizada para o time vender mais sem depender de planilhas.</p>
