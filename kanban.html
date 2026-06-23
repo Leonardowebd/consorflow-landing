@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Consorflow — Kanban</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@500;600;700&family=Geist:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Geist',sans-serif;background:#FFFFFF;color:#00295D;-webkit-font-smoothing:antialiased}
+  .section{max-width:1080px;margin:0 auto;padding:64px 48px;display:grid;grid-template-columns:1fr 1.1fr;gap:40px;align-items:center;min-height:520px}
+  .eyebrow{font-size:13px;font-weight:500;letter-spacing:.11em;text-transform:uppercase;color:#2E8FB0;margin-bottom:14px}
+  h2{font-family:'Funnel Display',sans-serif;font-size:42px;font-weight:700;letter-spacing:-.02em;line-height:1.06;color:#00295D;margin-bottom:18px}
+  .lead{font-size:17px;line-height:1.6;color:#34404F;max-width:430px;margin-bottom:26px}
+  .chips-row{display:flex;gap:10px;flex-wrap:wrap}
+  .tag{font-size:13px;color:#0E4C7A;background:#EAF4FB;border:1px solid #D4E7F5;padding:7px 13px;border-radius:9px}
+
+  .scene{position:relative;width:480px;height:380px;margin:0 auto;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 50% 40%,#F4F9FF 0%,#E7F1FC 44%,#D7E5F6 100%)}
+  .grid{position:absolute;inset:0;z-index:0;background-image:linear-gradient(#C2D8F0 1px,transparent 1px),linear-gradient(90deg,#C2D8F0 1px,transparent 1px);background-size:30px 30px;opacity:.28;-webkit-mask-image:radial-gradient(circle at 50% 45%,#000 40%,transparent 88%);mask-image:radial-gradient(circle at 50% 45%,#000 40%,transparent 88%)}
+  .noise{position:absolute;inset:0;z-index:1;pointer-events:none;mix-blend-mode:soft-light;opacity:.5}
+  .vig{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(circle at 50% 45%,transparent 60%,rgba(0,40,93,.1) 100%)}
+
+  .ai{position:absolute;left:20px;top:18px;z-index:6;display:flex;align-items:center;gap:8px}
+  .aibadge{position:relative;width:40px;height:40px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 24px rgba(0,40,93,.2),inset 0 0 0 1px rgba(255,255,255,.9)}
+  .aibadge::before{content:"";position:absolute;width:64px;height:64px;border-radius:50%;background:radial-gradient(circle,rgba(115,199,225,.7),rgba(115,199,225,0) 66%);filter:blur(4px);z-index:-1;animation:breathe 4s ease-in-out infinite}
+  .aibadge img{width:24px;height:auto}
+  .ai b{font-size:11px;color:#00295D;font-weight:500}
+  .ai small{display:block;font-size:9px;color:#8A94A6}
+
+  .board{position:absolute;left:18px;right:18px;top:78px;bottom:22px;z-index:3;display:flex;gap:8px}
+  .col{flex:1;display:flex;flex-direction:column;min-width:0}
+  .colh{font-size:9px;color:#5B6675;display:flex;align-items:center;justify-content:center;gap:5px;margin-bottom:8px;white-space:nowrap}
+  .cnt{font-size:8.5px;padding:0 5px;border-radius:4px;background:#E2EAF3;color:#5F6B7A}
+  .cnt.s{background:#DDF0F7;color:#1A6E8A}.cnt.g{background:#E4F7EF;color:#137A57}
+  .colbody{flex:1;background:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.7);border-radius:11px;padding:7px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);box-shadow:inset 0 1px 0 rgba(255,255,255,.5)}
+  .mini{background:#fff;border-radius:8px;padding:6px 7px;margin-bottom:6px;box-shadow:0 5px 12px rgba(0,40,93,.09)}
+  .mini .nm{font-size:9px;color:#00295D;font-weight:500}
+  .mini .vl{font-size:8px;color:#8A94A6;margin-top:2px}
+
+  .hero{position:absolute;top:104px;width:21.5%;z-index:5;animation:kan 6.5s ease-in-out infinite}
+  .hcard{background:#fff;border:1px solid #73C7E1;border-radius:9px;padding:7px 8px;box-shadow:0 16px 30px rgba(46,143,176,.3),0 0 0 4px rgba(115,199,225,.2)}
+  .hcard .hh{display:flex;align-items:center;gap:5px}
+  .hcard .hi{width:15px;height:15px;border-radius:50%;background:#00295D;color:#fff;font-size:8px;display:flex;align-items:center;justify-content:center}
+  .hcard .nm{font-size:9px;color:#00295D;font-weight:500}
+  .hcard .vl{font-size:8px;color:#8A94A6;margin-top:4px}
+  .htag{font-size:8px;color:#2E8FB0;text-align:center;margin-top:5px;animation:blink 6.5s ease-in-out infinite}
+
+  @keyframes kan{0%,8%{left:2.5%}25%,33%{left:27%}50%,58%{left:51.5%}76%,100%{left:76%}}
+  @keyframes blink{0%,12%{opacity:0}22%,46%{opacity:1}58%,72%{opacity:1}84%,100%{opacity:.2}}
+  @keyframes breathe{0%,100%{opacity:.5;transform:scale(.92)}50%{opacity:.85;transform:scale(1.06)}}
+</style>
+</head>
+<body>
+  <section class="section">
+    <div class="copy">
+      <p class="eyebrow">IA · Kanban automático</p>
+      <h2>O card anda sozinho no funil.</h2>
+      <p class="lead">Conforme o lead avança na conversa, a IA move o card de etapa sozinha. Você acompanha o funil sempre atualizado — sem arrastar nada.</p>
+      <div class="chips-row">
+        <span class="tag">Funil em tempo real</span>
+        <span class="tag">Zero arrasto manual</span>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="grid"></div>
+      <svg class="noise"><filter id="nz"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#nz)"/></svg>
+      <div class="vig"></div>
+
+      <div class="ai">
+        <span class="aibadge"><img src="logo_official.png" alt="Consorflow"></span>
+        <div><b>IA do funil</b><small>movendo leads</small></div>
+      </div>
+
+      <div class="board">
+        <div class="col"><div class="colh">Novo <span class="cnt">8</span></div><div class="colbody"><div class="mini"><p class="nm">Ana R.</p><p class="vl">Auto · R$80k</p></div><div class="mini"><p class="nm">Rui P.</p><p class="vl">Auto · R$60k</p></div></div></div>
+        <div class="col"><div class="colh">Qualificado <span class="cnt s">5</span></div><div class="colbody"><div class="mini"><p class="nm">Caio S.</p><p class="vl">Imóvel · R$190k</p></div></div></div>
+        <div class="col"><div class="colh">Proposta <span class="cnt s">3</span></div><div class="colbody"><div class="mini"><p class="nm">Lia M.</p><p class="vl">Imóvel · R$320k</p></div></div></div>
+        <div class="col"><div class="colh">Fechado <span class="cnt g">2</span></div><div class="colbody"><div class="mini"><p class="nm">Bia T.</p><p class="vl">Imóvel · R$240k</p></div></div></div>
+      </div>
+
+      <div class="hero">
+        <div class="hcard"><div class="hh"><span class="hi">J</span><span class="nm">João Martins</span></div><p class="vl">Imóvel · R$250k</p></div>
+        <p class="htag">IA moveu →</p>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

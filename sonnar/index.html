@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SONNAR · Centro de Medicina Especializada — Vitória da Conquista</title>
+<meta name="description" content="Sonnar Centro de Medicina Especializada: exames de imagem e diagnóstico com tecnologia de ponta, equipe médica experiente e atendimento humano em Vitória da Conquista." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0a1b3d;
+    --navy-2:#0e2350;
+    --ink:#0f1b2d;
+    --blue:#1f50c8;
+    --blue-2:#2358d8;
+    --teal:#1a5b78;
+    --cyan:#1fa8c9;
+    --coral:#ee5a2e;
+    --green:#1f9d72;
+    --bg:#f3f7fb;
+    --bg-2:#ffffff;
+    --line:#e3eaf2;
+    --muted:#5c6b7e;
+    --muted-2:#8493a4;
+    --serif:"Spectral", Georgia, serif;
+    --sans:"Inter", system-ui, -apple-system, sans-serif;
+    --maxw:1180px;
+    --r:18px;
+    --shadow:0 24px 60px -28px rgba(10,27,61,.35);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--sans);
+    color:var(--ink);
+    background:var(--bg);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  .topbar{height:5px;background:linear-gradient(90deg,var(--cyan),var(--blue) 55%,var(--coral))}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  h1,h2,h3{font-family:var(--serif);font-weight:500;line-height:1.12;letter-spacing:-.01em;color:var(--ink)}
+  .accent{color:var(--coral);font-style:italic}
+  .eyebrow{font-family:var(--sans);font-weight:600;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--blue)}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+
+  /* ---------- Logo ---------- */
+  .logo{display:flex;align-items:center;gap:11px}
+  .logo svg{display:block}
+  .logo .mark{flex:none}
+  .logo .word{display:flex;flex-direction:column;line-height:1}
+  .logo .word b{font-family:var(--sans);font-weight:700;font-size:1.32rem;letter-spacing:.02em;color:var(--teal)}
+  .logo .word span{font-family:var(--sans);font-weight:600;font-size:.5rem;letter-spacing:.22em;color:var(--coral);text-transform:uppercase;margin-top:3px}
+  .logo.on-dark .word b{color:#fff}
+  .logo.on-dark .word span{color:#ffb59d}
+
+  /* ---------- Header ---------- */
+  header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.82);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);transition:box-shadow .3s}
+  header.scrolled{box-shadow:0 10px 30px -18px rgba(10,27,61,.35)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:74px}
+  .nav-links{display:flex;align-items:center;gap:30px}
+  .nav-links a{font-size:.92rem;font-weight:500;color:var(--ink);position:relative;padding:6px 0}
+  .nav-links a::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--coral);transition:width .25s}
+  .nav-links a:hover::after{width:100%}
+  .nav-cta{display:flex;align-items:center;gap:14px}
+  .btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);font-weight:600;font-size:.92rem;padding:12px 22px;border-radius:999px;border:1px solid transparent;cursor:pointer;transition:transform .2s,box-shadow .2s,background .2s}
+  .btn-primary{background:var(--coral);color:#fff;box-shadow:0 12px 24px -12px rgba(238,90,46,.7)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 18px 30px -12px rgba(238,90,46,.75)}
+  .btn-ghost{background:transparent;border-color:var(--line);color:var(--ink)}
+  .btn-ghost:hover{border-color:var(--blue);color:var(--blue)}
+  .btn-light{background:#fff;color:var(--navy)}
+  .btn-light:hover{transform:translateY(-2px)}
+  .burger{display:none;flex-direction:column;gap:5px;background:none;border:0;cursor:pointer;padding:8px}
+  .burger span{width:24px;height:2px;background:var(--ink);transition:.3s}
+
+  /* ---------- Hero ---------- */
+  .hero{position:relative;background:radial-gradient(1200px 700px at 78% 20%,#173066 0%,var(--navy) 55%);color:#fff;overflow:hidden}
+  .hero .glow{position:absolute;right:-8%;top:-10%;width:680px;height:680px;border-radius:50%;
+    background:conic-gradient(from 200deg,rgba(31,168,201,.0),rgba(238,90,46,.28),rgba(31,80,200,.32),rgba(31,168,201,.18),rgba(238,90,46,.0));
+    filter:blur(10px);opacity:.85;animation:spin 28s linear infinite}
+  .hero .rings{position:absolute;right:6%;top:50%;transform:translateY(-50%);opacity:.5}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .hero-inner{position:relative;z-index:2;display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center;padding-top:96px;padding-bottom:104px}
+  .hero h1{color:#fff;font-size:clamp(2.5rem,5.2vw,4.1rem);max-width:13ch}
+  .hero .lead{margin-top:24px;font-size:1.18rem;color:#c7d3e6;max-width:46ch}
+  .hero .actions{margin-top:38px;display:flex;gap:14px;flex-wrap:wrap}
+  .hero-stats{margin-top:54px;display:flex;gap:38px;flex-wrap:wrap}
+  .hero-stats .st b{font-family:var(--serif);font-size:2rem;color:#fff;display:block;line-height:1}
+  .hero-stats .st span{font-size:.82rem;color:#9fb0cb;letter-spacing:.02em}
+  .hero-card{position:relative;z-index:2;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:22px;padding:30px;backdrop-filter:blur(6px)}
+  .hero-card h4{font-family:var(--sans);font-weight:600;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--cyan);margin-bottom:18px}
+  .hero-card .row{display:flex;align-items:flex-start;gap:14px;padding:14px 0;border-top:1px solid rgba(255,255,255,.08)}
+  .hero-card .row:first-of-type{border-top:0}
+  .hero-card .num{flex:none;width:30px;height:30px;border-radius:8px;display:grid;place-items:center;font-size:.78rem;font-weight:700;background:rgba(31,80,200,.35);color:#cfe0ff}
+  .hero-card .row p{font-size:.95rem;color:#dde6f4}
+  .hero-card .row p b{color:#fff;font-weight:600;display:block}
+
+  /* ---------- Sections ---------- */
+  section{padding:96px 0}
+  .sec-head{max-width:720px;margin-bottom:54px}
+  .sec-head h2{font-size:clamp(1.9rem,3.6vw,2.9rem);margin-top:14px}
+  .sec-head p{margin-top:18px;font-size:1.08rem;color:var(--muted)}
+  .center{margin-left:auto;margin-right:auto;text-align:center}
+
+  /* trust / journey */
+  .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .pillar{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:30px;transition:transform .25s,box-shadow .25s}
+  .pillar:hover{transform:translateY(-5px);box-shadow:var(--shadow)}
+  .pillar .ic{width:52px;height:52px;border-radius:13px;display:grid;place-items:center;background:#eef3ff;color:var(--blue);margin-bottom:18px}
+  .pillar h3{font-size:1.28rem;margin-bottom:8px}
+  .pillar p{color:var(--muted);font-size:.97rem}
+
+  /* exams */
+  #exames{background:var(--bg-2)}
+  .exam-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .exam{position:relative;border:1px solid var(--line);border-radius:var(--r);padding:28px;overflow:hidden;transition:.25s;background:#fff}
+  .exam::before{content:"";position:absolute;left:0;top:0;height:100%;width:4px;background:var(--cyan);transform:scaleY(0);transform-origin:top;transition:transform .25s}
+  .exam:hover{border-color:transparent;box-shadow:var(--shadow);transform:translateY(-4px)}
+  .exam:hover::before{transform:scaleY(1)}
+  .exam .ic{width:48px;height:48px;border-radius:12px;display:grid;place-items:center;background:#eafaff;color:var(--teal);margin-bottom:16px}
+  .exam h3{font-size:1.18rem;margin-bottom:6px}
+  .exam p{color:var(--muted);font-size:.93rem}
+  .exam .more{margin-top:14px;font-weight:600;font-size:.85rem;color:var(--coral);display:inline-flex;gap:6px;align-items:center}
+
+  /* about split */
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+  .about-visual{position:relative;border-radius:22px;overflow:hidden;min-height:420px;background:linear-gradient(135deg,var(--navy),#16386f);box-shadow:var(--shadow)}
+  .about-visual .badge{position:absolute;left:24px;bottom:24px;right:24px;background:rgba(255,255,255,.94);border-radius:14px;padding:18px 20px;display:flex;gap:18px;backdrop-filter:blur(4px)}
+  .about-visual .badge .b{flex:1}
+  .about-visual .badge .b b{font-family:var(--serif);font-size:1.7rem;color:var(--navy);display:block;line-height:1}
+  .about-visual .badge .b span{font-size:.78rem;color:var(--muted)}
+  .about-visual .deco{position:absolute;inset:0;opacity:.55}
+  .about-list{margin-top:26px;display:grid;gap:16px}
+  .about-list li{list-style:none;display:flex;gap:14px;align-items:flex-start}
+  .about-list .tick{flex:none;width:26px;height:26px;border-radius:50%;background:#e9f7f0;color:var(--green);display:grid;place-items:center;margin-top:2px}
+  .about-list b{display:block;font-size:1.02rem}
+  .about-list p{color:var(--muted);font-size:.94rem}
+
+  /* team */
+  #equipe{background:var(--bg-2)}
+  .team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+  .doc{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;transition:.25s}
+  .doc:hover{transform:translateY(-5px);box-shadow:var(--shadow)}
+  .doc .ph{height:200px;background:linear-gradient(160deg,#dbe6f5,#eef3fb);position:relative;display:grid;place-items:center}
+  .doc .ph svg{opacity:.5}
+  .doc .info{padding:20px}
+  .doc .info b{font-family:var(--serif);font-size:1.18rem;font-weight:500;display:block}
+  .doc .info .crm{font-size:.78rem;color:var(--muted-2);letter-spacing:.04em}
+  .doc .info .spec{margin-top:10px;font-size:.86rem;color:var(--blue);font-weight:600}
+
+  /* journey numbered */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+  .step{position:relative;padding:0 22px}
+  .step:not(:last-child)::after{content:"";position:absolute;top:21px;left:60%;right:-40%;height:2px;background:var(--line)}
+  .step .dot{width:44px;height:44px;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center;font-weight:700;position:relative;z-index:2;margin-bottom:20px}
+  .step:last-child .dot{background:var(--coral)}
+  .step h3{font-size:1.12rem;margin-bottom:6px}
+  .step p{color:var(--muted);font-size:.93rem}
+
+  /* convenios */
+  .conv-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+  .conv{height:96px;background:#fff;border:1px solid var(--line);border-radius:14px;display:grid;place-items:center;font-family:var(--serif);font-size:1.18rem;color:var(--teal);transition:.25s;text-align:center;padding:10px}
+  .conv:hover{border-color:var(--cyan);box-shadow:var(--shadow);color:var(--navy)}
+
+  /* news */
+  #noticias{background:var(--bg-2)}
+  .news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .post{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;transition:.25s;cursor:pointer}
+  .post:hover{transform:translateY(-5px);box-shadow:var(--shadow)}
+  .post .cover{height:180px;position:relative}
+  .post .cover .tag{position:absolute;left:16px;top:16px;background:rgba(255,255,255,.92);color:var(--navy);font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:6px 12px;border-radius:999px}
+  .post .body{padding:24px}
+  .post .body .date{font-size:.8rem;color:var(--muted-2)}
+  .post .body h3{font-size:1.22rem;margin:8px 0 10px}
+  .post .body p{color:var(--muted);font-size:.94rem}
+  .post .body .more{margin-top:14px;font-weight:600;font-size:.85rem;color:var(--coral)}
+
+  /* contact / units */
+  .contact{background:var(--navy);color:#fff;border-radius:26px;padding:0;overflow:hidden;box-shadow:var(--shadow)}
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr}
+  .contact-info{padding:54px}
+  .contact-info h2{color:#fff;font-size:clamp(1.8rem,3vw,2.5rem)}
+  .contact-info .lead{color:#c1cee2;margin-top:14px}
+  .units{margin-top:34px;display:grid;gap:22px}
+  .unit{display:flex;gap:16px;align-items:flex-start}
+  .unit .ic{flex:none;width:42px;height:42px;border-radius:11px;background:rgba(31,168,201,.18);color:var(--cyan);display:grid;place-items:center}
+  .unit b{display:block}
+  .unit p,.unit a{color:#b9c6dc;font-size:.95rem}
+  .unit a:hover{color:#fff}
+  .form{background:#fff;padding:54px}
+  .form h3{font-size:1.5rem;margin-bottom:6px}
+  .form p.sub{color:var(--muted);margin-bottom:24px;font-size:.95rem}
+  .field{margin-bottom:16px}
+  .field label{display:block;font-size:.82rem;font-weight:600;color:var(--ink);margin-bottom:6px}
+  .field input,.field select,.field textarea{width:100%;padding:13px 15px;border:1px solid var(--line);border-radius:11px;font-family:var(--sans);font-size:.95rem;background:#fbfcfe;transition:.2s}
+  .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(31,80,200,.12)}
+  .form .row2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .form .btn-primary{width:100%;justify-content:center;margin-top:8px}
+  .form .ok{display:none;background:#e9f7f0;color:#0d6b4c;border-radius:11px;padding:14px;font-size:.92rem;font-weight:500;margin-top:14px}
+
+  /* footer */
+  footer{background:#06122a;color:#9fb0cb;padding:64px 0 30px;margin-top:96px}
+  .foot-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:36px}
+  footer h5{font-family:var(--sans);color:#fff;font-size:.85rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:18px}
+  footer ul{list-style:none}
+  footer li{margin-bottom:10px}
+  footer a{font-size:.93rem}
+  footer a:hover{color:#fff}
+  footer .desc{font-size:.93rem;margin-top:18px;max-width:34ch}
+  .foot-bottom{margin-top:48px;padding-top:24px;border-top:1px solid rgba(255,255,255,.09);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:.84rem;color:#6f819c}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ---------- responsive ---------- */
+  @media(max-width:980px){
+    .hero-inner{grid-template-columns:1fr;gap:36px;padding-top:64px;padding-bottom:72px}
+    .split{grid-template-columns:1fr;gap:34px}
+    .team-grid{grid-template-columns:repeat(2,1fr)}
+    .exam-grid,.pillars,.news-grid{grid-template-columns:repeat(2,1fr)}
+    .conv-grid{grid-template-columns:repeat(3,1fr)}
+    .steps{grid-template-columns:repeat(2,1fr);gap:32px 0}
+    .step::after{display:none}
+    .contact-grid{grid-template-columns:1fr}
+  }
+  @media(max-width:680px){
+    .nav-links{position:fixed;inset:74px 0 auto 0;background:#fff;flex-direction:column;align-items:flex-start;gap:0;padding:8px 24px 24px;border-bottom:1px solid var(--line);transform:translateY(-130%);transition:transform .3s;box-shadow:0 20px 40px -20px rgba(0,0,0,.3)}
+    .nav-links.open{transform:none}
+    .nav-links a{width:100%;padding:14px 0;border-bottom:1px solid var(--line)}
+    .nav .nav-cta .btn-ghost{display:none}
+    .burger{display:flex}
+    section{padding:64px 0}
+    .exam-grid,.pillars,.news-grid,.team-grid,.conv-grid,.steps{grid-template-columns:1fr}
+    .form .row2{grid-template-columns:1fr}
+    .contact-info,.form{padding:34px}
+    .hero-stats{gap:24px}
+  }
+</style>
+</head>
+<body>
+<div class="topbar"></div>
+
+<!-- HEADER -->
+<header id="top">
+  <div class="wrap nav">
+    <a href="#top" class="logo" aria-label="Sonnar — Centro de Medicina Especializada">
+      <span class="mark">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M28 6 A16 16 0 1 0 28 34" stroke="#ee5a2e" stroke-width="4.4" stroke-linecap="round"/>
+          <path d="M27 12.5 A10 10 0 1 0 27 27.5" stroke="#ee5a2e" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="20" cy="20" r="3.4" fill="#ee5a2e"/>
+        </svg>
+      </span>
+      <span class="word"><b>SONNAR</b><span>Centro de Medicina Especializada</span></span>
+    </a>
+    <nav class="nav-links" id="menu">
+      <a href="#clinica">A Clínica</a>
+      <a href="#exames">Exames</a>
+      <a href="#equipe">Equipe Médica</a>
+      <a href="#convenios">Convênios</a>
+      <a href="#noticias">Notícias</a>
+      <a href="#contato">Contato</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="tel:+557733000000" class="btn btn-ghost">(77) 3300‑0000</a>
+      <a href="#contato" class="btn btn-primary">Agendar exame</a>
+      <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" style="padding:0">
+  <div class="glow"></div>
+  <svg class="rings" width="520" height="520" viewBox="0 0 520 520" fill="none">
+    <g stroke="#2f5dab" stroke-width="1" opacity=".4">
+      <circle cx="260" cy="260" r="80"/><circle cx="260" cy="260" r="140"/>
+      <circle cx="260" cy="260" r="200"/><circle cx="260" cy="260" r="255"/>
+    </g>
+    <circle cx="260" cy="260" r="6" fill="#ee5a2e"/>
+    <circle cx="340" cy="200" r="4" fill="#1fa8c9"/>
+    <circle cx="180" cy="330" r="3.5" fill="#1fa8c9"/>
+  </svg>
+  <div class="wrap hero-inner">
+    <div>
+      <span class="eyebrow" style="color:var(--cyan)">Medicina diagnóstica · Vitória da Conquista</span>
+      <h1 style="margin-top:18px">Diagnóstico de confiança começa por <span class="accent">clareza.</span></h1>
+      <p class="lead">Exames de imagem com tecnologia de ponta, laudos precisos e um atendimento que acolhe cada paciente — antes, durante e depois do exame.</p>
+      <div class="actions">
+        <a href="#contato" class="btn btn-primary">Agendar meu exame
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a href="#exames" class="btn btn-light">Ver exames</a>
+      </div>
+      <div class="hero-stats">
+        <div class="st"><b>+20</b><span>anos de experiência</span></div>
+        <div class="st"><b>+40</b><span>tipos de exames</span></div>
+        <div class="st"><b>3</b><span>unidades na cidade</span></div>
+      </div>
+    </div>
+    <div class="hero-card">
+      <h4>Antes de ligar, o paciente já precisa confiar</h4>
+      <div class="row"><div class="num">01</div><p><b>Encontra</b>A Sonnar aparece quando existe uma necessidade.</p></div>
+      <div class="row"><div class="num">02</div><p><b>Entende</b>Exames, equipe e convênios ficam claros.</p></div>
+      <div class="row"><div class="num">03</div><p><b>Decide</b>O contato acontece com mais segurança.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PILLARS / TRUST -->
+<section id="clinica">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">A Clínica</span>
+      <h2>O paciente não avalia apenas um exame. Ele avalia se pode <span class="accent">confiar na clínica.</span></h2>
+      <p>Há mais de duas décadas, a Sonnar reúne tecnologia, precisão e cuidado humano para transformar informação médica em segurança para cada paciente da região.</p>
+    </div>
+    <div class="pillars">
+      <div class="pillar reveal">
+        <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg></div>
+        <h3>Confiança imediata</h3>
+        <p>Uma presença compatível com a qualidade percebida na clínica — equipe, estrutura e cobertura sempre claras.</p>
+      </div>
+      <div class="pillar reveal">
+        <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></div>
+        <h3>Mais clareza</h3>
+        <p>Informações objetivas que reduzem dúvidas e perguntas repetitivas, tornando a decisão mais simples.</p>
+      </div>
+      <div class="pillar reveal">
+        <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l19-9-9 19-2-8-8-2Z"/></svg></div>
+        <h3>Cuidado humano</h3>
+        <p>Atendimento que acolhe: do agendamento ao laudo, cada etapa pensada para deixar o paciente seguro.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT SPLIT -->
+<section style="padding-top:0">
+  <div class="wrap split">
+    <div class="about-visual reveal">
+      <svg class="deco" viewBox="0 0 520 520" fill="none" preserveAspectRatio="xMidYMid slice">
+        <g stroke="#2f5dab" stroke-width="1" opacity=".5">
+          <circle cx="360" cy="160" r="70"/><circle cx="360" cy="160" r="130"/><circle cx="360" cy="160" r="190"/>
+        </g>
+        <g fill="#1fa8c9"><circle cx="120" cy="380" r="4"/><circle cx="200" cy="300" r="3"/><circle cx="300" cy="420" r="3"/></g>
+        <circle cx="360" cy="160" r="6" fill="#ee5a2e"/>
+      </svg>
+      <div class="badge">
+        <div class="b"><b>ISO</b><span>Qualidade e biossegurança certificadas</span></div>
+        <div class="b"><b>24h</b><span>Laudos de urgência disponíveis</span></div>
+      </div>
+    </div>
+    <div>
+      <span class="eyebrow reveal">Quem somos</span>
+      <h2 class="reveal" style="font-size:clamp(1.8rem,3.4vw,2.7rem);margin-top:14px">Um centro de medicina especializada, construído sobre <span class="accent">precisão e cuidado.</span></h2>
+      <p class="reveal" style="margin-top:18px;color:var(--muted);font-size:1.06rem">A Sonnar nasceu para ser referência em diagnóstico por imagem em Vitória da Conquista. Investimos continuamente em equipamentos, em uma equipe médica experiente e em processos que garantem resultados confiáveis no tempo certo.</p>
+      <ul class="about-list">
+        <li class="reveal"><span class="tick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 13 4 4L19 7"/></svg></span><div><b>Tecnologia de última geração</b><p>Equipamentos modernos para imagens com alta definição e menor tempo de exame.</p></div></li>
+        <li class="reveal"><span class="tick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 13 4 4L19 7"/></svg></span><div><b>Equipe médica especializada</b><p>Radiologistas e especialistas dedicados a laudos precisos e bem fundamentados.</p></div></li>
+        <li class="reveal"><span class="tick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 13 4 4L19 7"/></svg></span><div><b>Resultados acessíveis</b><p>Laudos e imagens disponíveis em portal online, com segurança e agilidade.</p></div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- EXAMES -->
+<section id="exames">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Exames & Especialidades</span>
+      <h2>Cada exame em um endereço claro, com <span class="accent">a resposta que o paciente procura.</span></h2>
+      <p>Uma linha completa de exames de imagem e diagnóstico, com preparo, agendamento e cobertura de convênios explicados de forma simples.</p>
+    </div>
+    <div class="exam-grid">
+      <article class="exam reveal">
+        <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg></div>
+        <h3>Tomografia Computadorizada</h3>
+        <p>Imagens detalhadas em cortes para diagnósticos rápidos e seguros, com baixa dose de radiação.</p>
+        <span class="more">Ver preparo →</span>
+      </article>
+      <article class="exam reveal">
+        <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M8 12h8M12 8v8"/></svg></div>
+        <h3>Ressonância Magnética</h3>
+        <p>Alta resolução para tecidos moles, articulações e sistema nervoso, sem radiação ionizante.</p>
+        <span class="more">Ver preparo →</span>
+      </article>
+      <article class="exam reveal">
+        <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 14a8 8 0 0 1 16 0"/><path d="M4 14v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/><path d="M9 19v2M15 19v2"/></svg></div>
+        <h3>Ultrassonografia</h3>
+        <p>Exames de imagem em tempo real, indolores e sem contraindicações, para diversas regiões.</p>
+        <span class="more">Ver preparo →</span>
+      </article>
+      <article class="exam reveal">
+        <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 3h14v18H5z"/><path d="M9 7h6M9 11h6M9 15h3"/></svg></div>
+        <h3>Raio‑X Digital</h3>
+        <p>Radiografias digitais com imagem imediata, maior nitidez e menor exposição à radiação.</p>
+        <span class="more">Ver preparo →</span>
+      </article>
+      <article class="exam reveal">
+        <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 21s-7-4.3-7-10a7 7 0 0 1 14 0c0 5.7-7 10-7 10Z"/><circle cx="12" cy="11" r="2.4"/></svg></div>
+        <h3>Mamografia</h3>
+        <p>Rastreamento e diagnóstico mamário com tecnologia digital e equipe dedicada à saúde da mulher.</p>
+        <span class="more">Ver preparo →</span>
+      </article>
+      <article class="exam reveal">
+        <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 12h4l2 6 4-12 2 6h6"/></svg></div>
+        <h3>Cardiologia & Doppler</h3>
+        <p>Ecocardiograma, eletrocardiograma e Doppler vascular para avaliação do coração e da circulação.</p>
+        <span class="more">Ver preparo →</span>
+      </article>
+    </div>
+    <p class="reveal" style="text-align:center;margin-top:36px;color:var(--muted)">E ainda densitometria óssea, mapeamento de pele, exames laboratoriais e mais.
+      <a href="#contato" style="color:var(--blue);font-weight:600">Fale com a recepção →</a></p>
+  </div>
+</section>
+
+<!-- JOURNEY -->
+<section>
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="eyebrow">Como funciona</span>
+      <h2>Da necessidade ao laudo, com <span class="accent">menos atrito.</span></h2>
+    </div>
+    <div class="steps">
+      <div class="step reveal"><div class="dot">01</div><h3>Agende</h3><p>Online, por telefone ou WhatsApp, escolhendo unidade e horário.</p></div>
+      <div class="step reveal"><div class="dot">02</div><h3>Prepare‑se</h3><p>Orientações de preparo claras, enviadas antes do seu exame.</p></div>
+      <div class="step reveal"><div class="dot">03</div><h3>Realize</h3><p>Atendimento pontual e acolhedor, com equipamentos modernos.</p></div>
+      <div class="step reveal"><div class="dot">04</div><h3>Receba</h3><p>Laudo e imagens no portal online, com segurança e agilidade.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- EQUIPE -->
+<section id="equipe">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Equipe Médica</span>
+      <h2>Especialistas que assinam cada <span class="accent">laudo com responsabilidade.</span></h2>
+      <p>Profissionais experientes e dedicados, com formação em centros de referência, garantem diagnósticos precisos e bem fundamentados.</p>
+    </div>
+    <div class="team-grid">
+      <div class="doc reveal">
+        <div class="ph"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#94a8c4" stroke-width="1.4"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></div>
+        <div class="info"><b>Dra. Helena Martins</b><span class="crm">CRM‑BA 12.345 · RQE 8.901</span><div class="spec">Radiologia & Diagnóstico por Imagem</div></div>
+      </div>
+      <div class="doc reveal">
+        <div class="ph"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#94a8c4" stroke-width="1.4"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></div>
+        <div class="info"><b>Dr. Rafael Andrade</b><span class="crm">CRM‑BA 13.220 · RQE 9.114</span><div class="spec">Cardiologia & Ecocardiografia</div></div>
+      </div>
+      <div class="doc reveal">
+        <div class="ph"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#94a8c4" stroke-width="1.4"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></div>
+        <div class="info"><b>Dra. Beatriz Lopes</b><span class="crm">CRM‑BA 14.077 · RQE 9.530</span><div class="spec">Ultrassonografia & Mastologia</div></div>
+      </div>
+      <div class="doc reveal">
+        <div class="ph"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#94a8c4" stroke-width="1.4"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></div>
+        <div class="info"><b>Dr. Tiago Ferreira</b><span class="crm">CRM‑BA 12.988 · RQE 8.742</span><div class="spec">Neurorradiologia & Tomografia</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONVENIOS -->
+<section id="convenios">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Convênios</span>
+      <h2>Atendemos os principais convênios <span class="accent">da região.</span></h2>
+      <p>Verifique a cobertura do seu plano para cada exame. Em caso de dúvida, nossa recepção orienta você antes do agendamento.</p>
+    </div>
+    <div class="conv-grid">
+      <div class="conv reveal">Unimed</div>
+      <div class="conv reveal">Bradesco Saúde</div>
+      <div class="conv reveal">SulAmérica</div>
+      <div class="conv reveal">Amil</div>
+      <div class="conv reveal">Hapvida</div>
+      <div class="conv reveal">IPASGO</div>
+      <div class="conv reveal">Cassi</div>
+      <div class="conv reveal">Geap</div>
+      <div class="conv reveal">Saúde Caixa</div>
+      <div class="conv reveal">Particular</div>
+    </div>
+  </div>
+</section>
+
+<!-- NOTICIAS -->
+<section id="noticias">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Notícias & Blog</span>
+      <h2>Conteúdo que continua trabalhando <span class="accent">muito depois do post.</span></h2>
+      <p>Informação confiável, revisada por nossos médicos, para ajudar você a cuidar melhor da sua saúde.</p>
+    </div>
+    <div class="news-grid">
+      <article class="post reveal">
+        <div class="cover" style="background:linear-gradient(135deg,#16386f,#0a1b3d)"><span class="tag">Prevenção</span></div>
+        <div class="body">
+          <span class="date">12 jun 2026 · 4 min de leitura</span>
+          <h3>Quando fazer o primeiro check‑up de imagem?</h3>
+          <p>Idade, histórico familiar e sintomas: entenda os sinais que indicam o momento certo para exames preventivos.</p>
+          <div class="more">Ler artigo →</div>
+        </div>
+      </article>
+      <article class="post reveal">
+        <div class="cover" style="background:linear-gradient(135deg,#1a5b78,#0e2350)"><span class="tag">Exames</span></div>
+        <div class="body">
+          <span class="date">28 mai 2026 · 5 min de leitura</span>
+          <h3>Ressonância x Tomografia: qual a diferença?</h3>
+          <p>Cada exame tem sua indicação. Saiba como os dois funcionam e em que situações o médico costuma pedir cada um.</p>
+          <div class="more">Ler artigo →</div>
+        </div>
+      </article>
+      <article class="post reveal">
+        <div class="cover" style="background:linear-gradient(135deg,#b5431f,#ee5a2e)"><span class="tag">Saúde da mulher</span></div>
+        <div class="body">
+          <span class="date">15 mai 2026 · 3 min de leitura</span>
+          <h3>Mamografia: como se preparar e o que esperar</h3>
+          <p>Um guia simples para tirar o medo do exame que salva vidas — do agendamento ao resultado.</p>
+          <div class="more">Ler artigo →</div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- CONTATO / UNIDADES -->
+<section id="contato">
+  <div class="wrap">
+    <div class="contact reveal">
+      <div class="contact-grid">
+        <div class="contact-info">
+          <span class="eyebrow" style="color:var(--cyan)">Contato & Unidades</span>
+          <h2 style="margin-top:14px">Agende seu exame com quem cuida de você.</h2>
+          <p class="lead">Estamos prontos para atender você em três unidades em Vitória da Conquista, com agendamento simples e atendimento humano.</p>
+          <div class="units">
+            <div class="unit"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-4.3-7-10a7 7 0 0 1 14 0c0 5.7-7 10-7 10Z"/><circle cx="12" cy="11" r="2.4"/></svg></span>
+              <div><b>Unidade Centro</b><p>Av. Olívia Flores, 1200 — Candeias, Vitória da Conquista — BA</p></div></div>
+            <div class="unit"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg></span>
+              <div><b>Telefone & WhatsApp</b><p><a href="tel:+557733000000">(77) 3300‑0000</a> · <a href="https://wa.me/5577999990000">(77) 99999‑0000</a></p></div></div>
+            <div class="unit"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+              <div><b>Horário de atendimento</b><p>Seg a Sex, 6h às 19h · Sáb, 7h às 12h</p></div></div>
+          </div>
+        </div>
+        <div class="form">
+          <h3>Solicitar agendamento</h3>
+          <p class="sub">Preencha e a nossa equipe entra em contato para confirmar.</p>
+          <form id="agendaForm" novalidate>
+            <div class="row2">
+              <div class="field"><label for="nome">Nome</label><input id="nome" required placeholder="Seu nome completo"></div>
+              <div class="field"><label for="tel">Telefone</label><input id="tel" required placeholder="(77) 90000‑0000"></div>
+            </div>
+            <div class="field"><label for="exame">Exame desejado</label>
+              <select id="exame">
+                <option>Tomografia Computadorizada</option>
+                <option>Ressonância Magnética</option>
+                <option>Ultrassonografia</option>
+                <option>Raio‑X Digital</option>
+                <option>Mamografia</option>
+                <option>Cardiologia & Doppler</option>
+                <option>Outro / não sei</option>
+              </select>
+            </div>
+            <div class="field"><label for="conv">Convênio</label><input id="conv" placeholder="Ex.: Unimed, particular…"></div>
+            <div class="field"><label for="msg">Observações</label><textarea id="msg" rows="3" placeholder="Conte-nos como podemos ajudar"></textarea></div>
+            <button type="submit" class="btn btn-primary">Enviar solicitação</button>
+            <div class="ok" id="formOk">✓ Recebemos sua solicitação! Em breve entraremos em contato.</div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="logo on-dark">
+          <span class="mark">
+            <svg width="38" height="38" viewBox="0 0 40 40" fill="none"><path d="M28 6 A16 16 0 1 0 28 34" stroke="#ee5a2e" stroke-width="4.4" stroke-linecap="round"/><path d="M27 12.5 A10 10 0 1 0 27 27.5" stroke="#ee5a2e" stroke-width="4" stroke-linecap="round"/><circle cx="20" cy="20" r="3.4" fill="#ee5a2e"/></svg>
+          </span>
+          <span class="word"><b>SONNAR</b><span>Centro de Medicina Especializada</span></span>
+        </div>
+        <p class="desc">Diagnóstico por imagem e medicina especializada com tecnologia e cuidado humano em Vitória da Conquista — BA.</p>
+      </div>
+      <div><h5>Navegação</h5><ul>
+        <li><a href="#clinica">A Clínica</a></li><li><a href="#exames">Exames</a></li>
+        <li><a href="#equipe">Equipe Médica</a></li><li><a href="#noticias">Notícias</a></li>
+      </ul></div>
+      <div><h5>Atendimento</h5><ul>
+        <li><a href="#convenios">Convênios</a></li><li><a href="#contato">Agendamento</a></li>
+        <li><a href="#contato">Unidades</a></li><li><a href="#">Portal de resultados</a></li>
+      </ul></div>
+      <div><h5>Contato</h5><ul>
+        <li><a href="tel:+557733000000">(77) 3300‑0000</a></li>
+        <li><a href="https://wa.me/5577999990000">WhatsApp</a></li>
+        <li><a href="mailto:contato@sonnar.com.br">contato@sonnar.com.br</a></li>
+        <li>Seg–Sex 6h–19h · Sáb 7h–12h</li>
+      </ul></div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Sonnar Centro de Medicina Especializada. Todos os direitos reservados.</span>
+      <span>Prévia institucional · Site por Vornit</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // header shadow on scroll
+  const header=document.getElementById('top');
+  addEventListener('scroll',()=>header.classList.toggle('scrolled',scrollY>10));
+
+  // mobile menu
+  const burger=document.getElementById('burger'),menu=document.getElementById('menu');
+  burger.addEventListener('click',()=>menu.classList.toggle('open'));
+  menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>menu.classList.remove('open')));
+
+  // reveal on scroll
+  const io=new IntersectionObserver((es)=>{
+    es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
+  },{threshold:.12});
+  document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(i%4*60)+'ms';io.observe(el);});
+
+  // form
+  document.getElementById('agendaForm').addEventListener('submit',e=>{
+    e.preventDefault();
+    if(!document.getElementById('nome').value||!document.getElementById('tel').value){
+      alert('Por favor, informe seu nome e telefone.');return;
+    }
+    document.getElementById('formOk').style.display='block';
+    e.target.reset();
+  });
+</script>
+</body>
+</html>

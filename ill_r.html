@@ -1,0 +1,89 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:transparent;display:flex;align-items:center;justify-content:center;font-family:'Geist',sans-serif;height:100vh;overflow:hidden}
+  /* ── scene: sem box, fundo funde ── */
+  .scene{position:relative;width:460px;height:360px;flex-shrink:0;transform-origin:center center}
+  .scene-bg{display:none}
+  .grid{position:absolute;inset:0;z-index:1;background-image:linear-gradient(#C2D8F0 1px,transparent 1px),linear-gradient(90deg,#C2D8F0 1px,transparent 1px);background-size:30px 30px;opacity:.28;-webkit-mask-image:radial-gradient(circle at 50% 50%,#000 14%,transparent 58%);mask-image:radial-gradient(circle at 50% 50%,#000 14%,transparent 58%)}
+  /* ── linhas SVG ── */
+  .beam{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:visible}
+  /* ── órbita dashed ── */
+  .orbit{position:absolute;left:230px;top:180px;width:240px;height:240px;border-radius:50%;border:1px dashed rgba(95,180,230,.35);transform:translate(-50%,-50%);z-index:1}
+  /* ── tiles ── */
+  .tile{position:absolute;width:42px;height:42px;border-radius:11px;background:#fff;display:flex;align-items:center;justify-content:center;z-index:5;box-shadow:0 12px 22px rgba(0,40,93,.15),0 3px 7px rgba(0,40,93,.1),inset 0 0 0 1px rgba(255,255,255,.9)}
+  .tile svg{width:22px;height:22px;stroke:#3A4655;fill:none;stroke-width:1.6}
+  .tt {left:209px;top:39px; animation:float 5.4s ease-in-out infinite}
+  .tur{left:313px;top:99px; box-shadow:0 16px 28px rgba(46,143,176,.34),0 0 0 2px #73C7E1,inset 0 0 0 1px #fff;animation:float 5s ease-in-out infinite}
+  .tur svg{stroke:#1E6F8C}
+  .tlr{left:313px;top:219px;animation:float 6s ease-in-out infinite 1s}
+  .tll{left:105px;top:219px;animation:float 5.7s ease-in-out infinite .5s}
+  .tul{left:105px;top:99px; animation:float 6.2s ease-in-out infinite 1.6s}
+  .check{position:absolute;right:-7px;top:-7px;width:18px;height:18px;border-radius:50%;background:#1E9E75;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 5px rgba(0,0,0,.2)}
+  .check svg{width:11px;height:11px;stroke:#fff;stroke-width:2.4;fill:none}
+  /* ── pills ── */
+  .pill{position:absolute;z-index:6;font-size:10px;padding:4px 9px;border-radius:9px;background:#fff;box-shadow:0 6px 14px rgba(0,40,93,.12);white-space:nowrap}
+  .pill.ideal{right:18px;top:74px;color:#1A6E8A;border:1px solid #BFE2F2}
+  .pill.qual {left:14px;top:200px;color:#5B6675;border:1px solid #E3E9F2}
+  /* ── hub ── */
+  .hub-wrap{position:absolute;left:230px;top:180px;transform:translate(-50%,-50%);z-index:6;display:flex;align-items:center;justify-content:center}
+  .bloom{position:absolute;width:160px;height:160px;border-radius:50%;z-index:0;background:radial-gradient(circle,rgba(115,199,225,.85) 0%,rgba(115,199,225,0) 66%);filter:blur(6px);animation:breathe 4s ease-in-out infinite}
+  .outer{position:relative;z-index:2;width:104px;height:104px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 26px 56px rgba(0,40,93,.26),0 10px 20px rgba(0,40,93,.16),inset 0 0 0 1px rgba(255,255,255,.9)}
+  .sphere{position:relative;width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 38% 26%,#3E7EC4 0%,#0B4486 46%,#00224F 100%);box-shadow:inset 0 -8px 16px rgba(0,6,24,.6),inset 0 8px 14px rgba(150,205,240,.45),0 5px 14px rgba(0,40,93,.3)}
+  .sphere::before{content:"";position:absolute;top:7px;left:50%;transform:translateX(-50%);width:50px;height:26px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.6),rgba(255,255,255,0) 70%)}
+  .core{position:relative;z-index:2;width:42px;height:42px;border-radius:12px;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 5px 12px rgba(0,16,48,.5)}
+  .core img{width:26px;height:auto;display:block}
+  /* ── orbs: hub → tiles (distribuição) ── */
+  .pulse{position:absolute;left:0;top:0;width:7px;height:7px;border-radius:50%;background:#9BE0F5;box-shadow:0 0 10px 3px rgba(120,205,240,.9),0 0 4px 1px rgba(115,199,225,.6);z-index:4}
+  .p-tt {offset-path:path("M 230,180 L 230,60"); -webkit-offset-path:path("M 230,180 L 230,60"); animation:flowOut 2.4s ease-out infinite}
+  .p-tur{offset-path:path("M 230,180 L 334,120");-webkit-offset-path:path("M 230,180 L 334,120");animation:flowOut 2.4s ease-out infinite .5s}
+  .p-tlr{offset-path:path("M 230,180 L 334,240");-webkit-offset-path:path("M 230,180 L 334,240");animation:flowOut 2.4s ease-out infinite 1s}
+  .p-tll{offset-path:path("M 230,180 L 126,240");-webkit-offset-path:path("M 230,180 L 126,240");animation:flowOut 2.4s ease-out infinite 1.5s}
+  .p-tul{offset-path:path("M 230,180 L 126,120");-webkit-offset-path:path("M 230,180 L 126,120");animation:flowOut 2.4s ease-out infinite 2s}
+  @keyframes flowOut{0%{offset-distance:0%;opacity:0}12%{opacity:1}80%{opacity:1}100%{offset-distance:100%;opacity:0}}
+  @keyframes breathe{0%,100%{opacity:.45;transform:scale(.92)}50%{opacity:.82;transform:scale(1.05)}}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+</style></head><body>
+<div class="scene">
+  <div class="scene-bg"></div>
+  <div class="grid"></div>
+
+  <!-- linhas SVG: hub (230,180) → tiles — gradiente cresce do hub para a ponta -->
+  <svg class="beam" viewBox="0 0 460 360" xmlns="http://www.w3.org/2000/svg" overflow="visible">
+    <defs>
+      <linearGradient id="lr1" gradientUnits="userSpaceOnUse" x1="230" y1="180" x2="230" y2="60"><stop offset="0" stop-color="#73C7E1" stop-opacity="0"/><stop offset="1" stop-color="#73C7E1" stop-opacity=".65"/></linearGradient>
+      <linearGradient id="lr2" gradientUnits="userSpaceOnUse" x1="230" y1="180" x2="334" y2="120"><stop offset="0" stop-color="#73C7E1" stop-opacity="0"/><stop offset="1" stop-color="#73C7E1" stop-opacity=".65"/></linearGradient>
+      <linearGradient id="lr3" gradientUnits="userSpaceOnUse" x1="230" y1="180" x2="334" y2="240"><stop offset="0" stop-color="#73C7E1" stop-opacity="0"/><stop offset="1" stop-color="#73C7E1" stop-opacity=".65"/></linearGradient>
+      <linearGradient id="lr4" gradientUnits="userSpaceOnUse" x1="230" y1="180" x2="126" y2="240"><stop offset="0" stop-color="#73C7E1" stop-opacity="0"/><stop offset="1" stop-color="#73C7E1" stop-opacity=".65"/></linearGradient>
+      <linearGradient id="lr5" gradientUnits="userSpaceOnUse" x1="230" y1="180" x2="126" y2="120"><stop offset="0" stop-color="#73C7E1" stop-opacity="0"/><stop offset="1" stop-color="#73C7E1" stop-opacity=".65"/></linearGradient>
+    </defs>
+    <line x1="230" y1="180" x2="230" y2="60"  stroke="url(#lr1)" stroke-width="1.1" stroke-dasharray="5 4"/>
+    <line x1="230" y1="180" x2="334" y2="120" stroke="url(#lr2)" stroke-width="1.1" stroke-dasharray="5 4"/>
+    <line x1="230" y1="180" x2="334" y2="240" stroke="url(#lr3)" stroke-width="1.1" stroke-dasharray="5 4"/>
+    <line x1="230" y1="180" x2="126" y2="240" stroke="url(#lr4)" stroke-width="1.1" stroke-dasharray="5 4"/>
+    <line x1="230" y1="180" x2="126" y2="120" stroke="url(#lr5)" stroke-width="1.1" stroke-dasharray="5 4"/>
+  </svg>
+
+  <div class="orbit"></div>
+
+  <div class="tile tt"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="3.4"/><path d="M6 19a6 5 0 0 1 12 0"/></svg></div>
+  <div class="tile tul"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="3.4"/><path d="M6 19a6 5 0 0 1 12 0"/></svg></div>
+  <div class="tile tll"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="3.4"/><path d="M6 19a6 5 0 0 1 12 0"/></svg></div>
+  <div class="tile tlr"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="3.4"/><path d="M6 19a6 5 0 0 1 12 0"/></svg></div>
+  <div class="tile tur"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="3.4"/><path d="M6 19a6 5 0 0 1 12 0"/></svg><span class="check"><svg viewBox="0 0 24 24"><path d="M5 12l4 4 10-11"/></svg></span></div>
+
+  <span class="pill ideal">Perfil ideal</span>
+  <span class="pill qual">Qualificando</span>
+
+  <!-- orbs saindo do hub para cada tile -->
+  <div class="pulse p-tt"></div>
+  <div class="pulse p-tur"></div>
+  <div class="pulse p-tlr"></div>
+  <div class="pulse p-tll"></div>
+  <div class="pulse p-tul"></div>
+
+  <div class="hub-wrap"><div class="bloom"></div><div class="outer"><div class="sphere"><div class="core"><img src="logo_official.png" alt=""></div></div></div></div>
+</div>
+<script>(function(){var s=document.querySelector('.scene');function fit(){s.style.transform='scale('+Math.min(1,window.innerWidth/460)+')';}fit();addEventListener('resize',fit);})();</script>
+</body></html>

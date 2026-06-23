@@ -1,0 +1,4 @@
+.vercel
+_orig_backup/
+*.DS_Store
+node_modules/

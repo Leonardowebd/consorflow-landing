@@ -1,0 +1,11 @@
+<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 45 39.5137" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="logomark">
+<g id="monovar">
+<path id="Vector" d="M38.8504 32.0526C42.6624 28.6486 45 24.0548 45 19C45 8.5066 34.9264 0 22.5 0C10.0736 0 0 8.5066 0 19C0 29.4934 10.0736 38 22.5 38C26.0253 38 29.3613 37.3154 32.3316 36.0949C35.8208 38.2486 40.0957 39.7967 44.8169 39.4702C42.3227 38.8362 40.1773 36.2679 38.8504 32.0526Z" fill="var(--fill-0, #B6EFA2)" fill-opacity="0.6"/>
+</g>
+<g id="monovar_2">
+<path id="Vector_2" d="M39 19C39 26.732 31.6127 33 22.5 33C13.3873 33 6 26.732 6 19C6 11.268 13.3873 5 22.5 5C31.6127 5 39 11.268 39 19Z" fill="var(--fill-0, #88E169)" fill-opacity="0.6"/>
+</g>
+<path id="Vector_3" d="M33 19C33 23.9706 28.299 28 22.5 28C16.701 28 12 23.9706 12 19C12 14.0294 16.701 10 22.5 10C28.299 10 33 14.0294 33 19Z" fill="var(--fill-0, #55AE36)" fill-opacity="0.6"/>
+</g>
+</svg>

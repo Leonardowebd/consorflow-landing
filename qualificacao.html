@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Consorflow — Qualificação</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@500;600;700&family=Geist:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Geist',sans-serif;background:#FFFFFF;color:#00295D;-webkit-font-smoothing:antialiased}
+  .section{max-width:1080px;margin:0 auto;padding:64px 48px;display:grid;grid-template-columns:1fr 1.1fr;gap:40px;align-items:center;min-height:520px}
+  .eyebrow{font-size:13px;font-weight:500;letter-spacing:.11em;text-transform:uppercase;color:#2E8FB0;margin-bottom:14px}
+  h2{font-family:'Funnel Display',sans-serif;font-size:42px;font-weight:700;letter-spacing:-.02em;line-height:1.06;color:#00295D;margin-bottom:18px}
+  .lead{font-size:17px;line-height:1.6;color:#34404F;max-width:430px;margin-bottom:26px}
+  .chips-row{display:flex;gap:10px;flex-wrap:wrap}
+  .tag{font-size:13px;color:#0E4C7A;background:#EAF4FB;border:1px solid #D4E7F5;padding:7px 13px;border-radius:9px}
+
+  .scene{position:relative;width:480px;height:380px;margin:0 auto;border-radius:24px;overflow:hidden;
+    background:radial-gradient(circle at 32% 50%, #F4F9FF 0%, #E7F1FC 42%, #D7E5F6 100%)}
+  .grid{position:absolute;inset:0;z-index:0;
+    background-image:linear-gradient(#C2D8F0 1px,transparent 1px),linear-gradient(90deg,#C2D8F0 1px,transparent 1px);
+    background-size:30px 30px;opacity:.32;-webkit-mask-image:radial-gradient(circle at 32% 50%,#000 30%,transparent 80%);mask-image:radial-gradient(circle at 32% 50%,#000 30%,transparent 80%)}
+  .noise{position:absolute;inset:0;z-index:1;pointer-events:none;mix-blend-mode:soft-light;opacity:.5}
+  .vig{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(circle at 32% 50%,transparent 52%,rgba(0,40,93,.10) 100%)}
+  .dot{position:absolute;border-radius:50%;background:rgba(95,180,230,.4);z-index:1}
+  .d1{width:5px;height:5px;left:300px;top:54px;animation:float 6s ease-in-out infinite}
+  .d2{width:4px;height:4px;right:40px;top:300px;animation:float 7s ease-in-out infinite 1s}
+  .d3{width:4px;height:4px;left:250px;bottom:40px;animation:float 6.5s ease-in-out infinite 2s}
+
+  .radar-rings{position:absolute;left:140px;top:190px;transform:translate(-50%,-50%);z-index:1}
+  .radar-rings i{position:absolute;border-radius:50%;border:1px solid rgba(95,180,230,.3);transform:translate(-50%,-50%);display:block}
+  .r1{width:120px;height:120px}.r2{width:190px;height:190px}.r3{width:260px;height:260px;border-style:dashed}
+  .sweep{position:absolute;left:140px;top:190px;width:300px;height:300px;transform:translate(-50%,-50%);border-radius:50%;z-index:1;
+    background:conic-gradient(from 0deg,rgba(95,180,230,.55),rgba(95,180,230,.12) 22%,rgba(95,180,230,0) 40%);
+    -webkit-mask:radial-gradient(circle,#000 64%,transparent 70%);mask:radial-gradient(circle,#000 64%,transparent 70%);
+    animation:spin 4.5s linear infinite}
+
+  .tile{position:absolute;width:42px;height:42px;border-radius:11px;background:#fff;display:flex;align-items:center;justify-content:center;z-index:3;
+    box-shadow:0 12px 22px rgba(0,40,93,.14),0 3px 7px rgba(0,40,93,.1),inset 0 0 0 1px rgba(255,255,255,.9)}
+  .tile svg{width:22px;height:22px;stroke:#3A4655;fill:none;stroke-width:1.6}
+  .t1{left:236px;top:78px;animation:float 5.5s ease-in-out infinite}
+  .t2{left:120px;top:74px;animation:float 6s ease-in-out infinite 1.2s}
+  .t3{left:96px;top:286px;animation:float 5.8s ease-in-out infinite .6s}
+  .t4{left:214px;top:298px;animation:float 6.2s ease-in-out infinite 1.8s}
+  .tq{left:208px;top:188px;box-shadow:0 14px 26px rgba(46,143,176,.3),0 0 0 2px #73C7E1,inset 0 0 0 1px #fff}
+  .tq svg{stroke:#1E6F8C}
+  .check{position:absolute;right:-7px;top:-7px;width:18px;height:18px;border-radius:50%;background:#1E9E75;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 5px rgba(0,0,0,.2)}
+  .check svg{width:11px;height:11px;stroke:#fff;stroke-width:2.4;fill:none}
+
+  .hub-wrap{position:absolute;left:140px;top:190px;transform:translate(-50%,-50%);z-index:4;display:flex;align-items:center;justify-content:center}
+  .bloom{position:absolute;width:170px;height:170px;border-radius:50%;z-index:0;background:radial-gradient(circle,rgba(115,199,225,.85) 0%,rgba(115,199,225,0) 66%);filter:blur(6px);animation:breathe 4s ease-in-out infinite}
+  .outer{position:relative;z-index:2;width:108px;height:108px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 26px 56px rgba(0,40,93,.26),0 10px 20px rgba(0,40,93,.16),inset 0 0 0 1px rgba(255,255,255,.9)}
+  .sphere{position:relative;width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    background:radial-gradient(circle at 38% 26%,#3E7EC4 0%,#0B4486 46%,#00224F 100%);
+    box-shadow:inset 0 -8px 16px rgba(0,6,24,.6),inset 0 8px 14px rgba(150,205,240,.45),0 5px 14px rgba(0,40,93,.3)}
+  .sphere::before{content:"";position:absolute;top:7px;left:50%;transform:translateX(-50%);width:52px;height:28px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.6),rgba(255,255,255,0) 70%)}
+  .core{position:relative;z-index:2;width:40px;height:40px;border-radius:12px;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 5px 12px rgba(0,16,48,.5)}
+  .core svg{width:26px;height:26px;filter:drop-shadow(0 1px 4px rgba(46,155,230,.45))}
+  .core img{width:24px;height:auto;display:block}
+
+  .glass{position:absolute;right:16px;top:108px;width:188px;border-radius:16px;z-index:5;padding:14px 15px;
+    background:rgba(255,255,255,.74);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    border:1px solid rgba(255,255,255,.95);box-shadow:0 24px 46px rgba(0,40,93,.18),inset 0 1px 0 rgba(255,255,255,.6)}
+  .glass-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px}
+  .glass-h b{font-size:12px;font-weight:500;color:#00295D}
+  .live{display:flex;align-items:center;gap:5px;font-size:9px;color:#1A6E8A;background:#DDF0F7;padding:3px 8px;border-radius:20px}
+  .live i{width:5px;height:5px;border-radius:50%;background:#2E8FB0;animation:blink 1.4s infinite}
+  .row{display:flex;justify-content:space-between;font-size:11px;margin-bottom:7px}
+  .row span:first-child{color:#8A94A6}.row span:last-child{color:#00295D;font-weight:500}
+  .gauge{display:flex;align-items:center;gap:10px;margin-top:11px;padding-top:11px;border-top:1px solid rgba(0,40,93,.08)}
+  .gtags{display:flex;gap:5px}
+  .gt{font-size:9px;padding:2px 7px;border-radius:5px;background:#E4F7EF;color:#137A57}
+  .gt.b{background:#DDF0F7;color:#1A6E8A}
+  .beam{position:absolute;inset:0;z-index:2;pointer-events:none}
+
+  @keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+  @keyframes breathe{0%,100%{opacity:.45;transform:scale(.92)}50%{opacity:.82;transform:scale(1.05)}}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+  @keyframes blink{0%,100%{opacity:.4}50%{opacity:1}}
+  @keyframes gfill{0%{stroke-dashoffset:126}55%,100%{stroke-dashoffset:18}}
+  @keyframes bpulse{0%{offset-distance:0%;opacity:0}20%{opacity:1}80%{opacity:1}100%{offset-distance:100%;opacity:0}}
+</style>
+</head>
+<body>
+  <section class="section">
+    <div class="copy">
+      <p class="eyebrow">IA · Qualificação</p>
+      <h2>Veja sinais, não só cadastros.</h2>
+      <p class="lead">A IA lê cada conversa, entende o real interesse do lead, organiza os dados e entrega um score — o corretor aborda com contexto, no momento certo.</p>
+      <div class="chips-row">
+        <span class="tag">Score de intenção</span>
+        <span class="tag">Dados estruturados</span>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="grid"></div>
+      <svg class="noise"><filter id="nz"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#nz)"/></svg>
+      <div class="vig"></div>
+      <span class="dot d1"></span><span class="dot d2"></span><span class="dot d3"></span>
+
+      <div class="radar-rings"><i class="r1"></i><i class="r2"></i><i class="r3"></i></div>
+      <div class="sweep"></div>
+
+      <svg class="beam" viewBox="0 0 480 380" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="bm" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#5FB4E6" stop-opacity="0"/><stop offset="1" stop-color="#5FB4E6" stop-opacity=".9"/></linearGradient>
+          <filter id="bg" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="2"/></filter>
+        </defs>
+        <line x1="140" y1="190" x2="300" y2="150" stroke="url(#bm)" stroke-width="1.6" filter="url(#bg)"/>
+        <line x1="229" y1="209" x2="300" y2="150" stroke="#73C7E1" stroke-width="1.4" stroke-opacity=".8"/>
+      </svg>
+
+      <div class="tile t1"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="3.4"/><path d="M6 19a6 5 0 0 1 12 0"/></svg></div>
+      <div class="tile t2"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="3.4"/><path d="M6 19a6 5 0 0 1 12 0"/></svg></div>
+      <div class="tile t3"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="3.4"/><path d="M6 19a6 5 0 0 1 12 0"/></svg></div>
+      <div class="tile t4"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="3.4"/><path d="M6 19a6 5 0 0 1 12 0"/></svg></div>
+      <div class="tile tq"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="3.4"/><path d="M6 19a6 5 0 0 1 12 0"/></svg><span class="check"><svg viewBox="0 0 24 24"><path d="M5 12l4 4 10-11"/></svg></span></div>
+
+      <div class="hub-wrap">
+        <div class="bloom"></div>
+        <div class="outer">
+          <div class="sphere">
+            <div class="core"><img src="logo_official.png" alt="Consorflow"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass">
+        <div class="glass-h"><b>Lead estruturado</b><span class="live"><i></i>IA</span></div>
+        <div class="row"><span>Nome</span><span>João Martins</span></div>
+        <div class="row"><span>Interesse</span><span>Imóvel · R$250k</span></div>
+        <div class="row"><span>Origem</span><span>WhatsApp</span></div>
+        <div class="gauge">
+          <svg width="50" height="50" viewBox="0 0 50 50"><circle cx="25" cy="25" r="20" fill="none" stroke="#D5E3EE" stroke-width="5"/><circle cx="25" cy="25" r="20" fill="none" stroke="#2E8FB0" stroke-width="5" stroke-linecap="round" stroke-dasharray="126" stroke-dashoffset="126" transform="rotate(-90 25 25)" style="animation:gfill 3s ease-in-out infinite;filter:drop-shadow(0 0 3px rgba(46,143,176,.5))"/><text x="25" y="29" text-anchor="middle" font-family="Geist" font-size="14" font-weight="500" fill="#00295D">86</text></svg>
+          <div><div class="gtags"><span class="gt">quente</span><span class="gt b">imóvel</span></div><p style="font-size:10px;color:#8A94A6;margin-top:6px">pronto p/ corretor</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

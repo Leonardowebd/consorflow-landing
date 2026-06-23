@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Consorflow — Ligação</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@500;600;700&family=Geist:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Geist',sans-serif;background:#FFFFFF;color:#00295D;-webkit-font-smoothing:antialiased}
+  .section{max-width:1080px;margin:0 auto;padding:64px 48px;display:grid;grid-template-columns:1fr 1.1fr;gap:40px;align-items:center;min-height:520px}
+  .eyebrow{font-size:13px;font-weight:500;letter-spacing:.11em;text-transform:uppercase;color:#2E8FB0;margin-bottom:14px}
+  h2{font-family:'Funnel Display',sans-serif;font-size:42px;font-weight:700;letter-spacing:-.02em;line-height:1.06;color:#00295D;margin-bottom:18px}
+  .lead{font-size:17px;line-height:1.6;color:#34404F;max-width:430px;margin-bottom:26px}
+  .chips-row{display:flex;gap:10px;flex-wrap:wrap}
+  .tag{font-size:13px;color:#0E4C7A;background:#EAF4FB;border:1px solid #D4E7F5;padding:7px 13px;border-radius:9px}
+
+  .scene{position:relative;width:480px;height:380px;margin:0 auto;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 30% 50%,#F4F9FF 0%,#E7F1FC 42%,#D7E5F6 100%)}
+  .grid{position:absolute;inset:0;z-index:0;background-image:linear-gradient(#C2D8F0 1px,transparent 1px),linear-gradient(90deg,#C2D8F0 1px,transparent 1px);background-size:30px 30px;opacity:.32;-webkit-mask-image:radial-gradient(circle at 30% 50%,#000 30%,transparent 80%);mask-image:radial-gradient(circle at 30% 50%,#000 30%,transparent 80%)}
+  .noise{position:absolute;inset:0;z-index:1;pointer-events:none;mix-blend-mode:soft-light;opacity:.5}
+  .vig{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(circle at 30% 50%,transparent 52%,rgba(0,40,93,.10) 100%)}
+  .dot{position:absolute;border-radius:50%;background:rgba(95,180,230,.4);z-index:1}
+  .d1{width:5px;height:5px;left:300px;top:60px;animation:float 6s ease-in-out infinite}
+  .d2{width:4px;height:4px;left:80px;bottom:60px;animation:float 7s ease-in-out infinite 1s}
+
+  .ripple{position:absolute;left:130px;top:190px;width:104px;height:104px;border-radius:50%;border:1.5px solid rgba(95,180,230,.5);transform:translate(-50%,-50%);z-index:1;animation:rip 3s ease-out infinite}
+  .ripple.b{animation-delay:1s}.ripple.c{animation-delay:2s}
+
+  .hub-wrap{position:absolute;left:130px;top:190px;transform:translate(-50%,-50%);z-index:4;display:flex;align-items:center;justify-content:center}
+  .bloom{position:absolute;width:160px;height:160px;border-radius:50%;z-index:0;background:radial-gradient(circle,rgba(115,199,225,.85) 0%,rgba(115,199,225,0) 66%);filter:blur(6px);animation:breathe 4s ease-in-out infinite}
+  .outer{position:relative;z-index:2;width:104px;height:104px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 26px 56px rgba(0,40,93,.26),0 10px 20px rgba(0,40,93,.16),inset 0 0 0 1px rgba(255,255,255,.9)}
+  .sphere{position:relative;width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 38% 26%,#3E7EC4 0%,#0B4486 46%,#00224F 100%);box-shadow:inset 0 -8px 16px rgba(0,6,24,.6),inset 0 8px 14px rgba(150,205,240,.45),0 5px 14px rgba(0,40,93,.3)}
+  .sphere::before{content:"";position:absolute;top:7px;left:50%;transform:translateX(-50%);width:50px;height:26px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.6),rgba(255,255,255,0) 70%)}
+  .core{position:relative;z-index:2;width:42px;height:42px;border-radius:12px;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 5px 12px rgba(0,16,48,.5)}
+  .core img{width:26px;height:auto;display:block}
+
+  .beam{position:absolute;inset:0;z-index:2;pointer-events:none}
+
+  .glass{position:absolute;right:16px;top:96px;width:206px;border-radius:16px;z-index:5;padding:14px 15px;background:rgba(255,255,255,.74);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.95);box-shadow:0 24px 46px rgba(0,40,93,.18),inset 0 1px 0 rgba(255,255,255,.6)}
+  .ch{display:flex;align-items:center;gap:9px;margin-bottom:11px}
+  .av{width:32px;height:32px;border-radius:50%;background:radial-gradient(circle at 38% 28%,#2E6FB5,#00295D);display:flex;align-items:center;justify-content:center;flex:none}
+  .av svg{width:16px;height:16px;stroke:#73C7E1;fill:none;stroke-width:2}
+  .ch b{font-size:11.5px;font-weight:500;color:#00295D;display:block}
+  .ch small{font-size:9.5px;color:#8A94A6}
+  .live{margin-left:auto;display:flex;align-items:center;gap:5px;font-size:9px;color:#1A6E8A;background:#DDF0F7;padding:3px 8px;border-radius:20px}
+  .live i{width:5px;height:5px;border-radius:50%;background:#2E8FB0;animation:blink 1.4s infinite}
+  .wave{display:flex;align-items:flex-end;gap:2.5px;height:26px;margin-bottom:12px}
+  .wave span{flex:1;border-radius:2px;transform-origin:bottom}
+  .tr{margin-bottom:8px}
+  .tr .sp{font-size:9px;font-weight:500}
+  .tr p{font-size:10px;color:#34404F;line-height:1.35;margin-top:1px}
+  .out{display:flex;gap:6px;margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,40,93,.08)}
+  .oc{font-size:9px;padding:3px 7px;border-radius:5px;background:#E4F7EF;color:#137A57}
+  .oc.b{background:#DDF0F7;color:#1A6E8A}
+
+  @keyframes rip{0%{transform:translate(-50%,-50%) scale(.55);opacity:.7}80%{opacity:0}100%{transform:translate(-50%,-50%) scale(2.2);opacity:0}}
+  @keyframes breathe{0%,100%{opacity:.45;transform:scale(.92)}50%{opacity:.82;transform:scale(1.05)}}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+  @keyframes blink{0%,100%{opacity:.4}50%{opacity:1}}
+  @keyframes wv{0%,100%{transform:scaleY(.2)}50%{transform:scaleY(1)}}
+  @keyframes ln{0%,18%{opacity:0;transform:translateY(5px)}38%,100%{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+  <section class="section">
+    <div class="copy">
+      <p class="eyebrow">IA · Ligação</p>
+      <h2>A IA liga, conversa e registra.</h2>
+      <p class="lead">Faz o primeiro contato por voz, entende a resposta, agenda o corretor e registra tudo no funil — ninguém perde tempo no telefone.</p>
+      <div class="chips-row">
+        <span class="tag">Voz natural</span>
+        <span class="tag">Agenda sozinha</span>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="grid"></div>
+      <svg class="noise"><filter id="nz"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#nz)"/></svg>
+      <div class="vig"></div>
+      <span class="dot d1"></span><span class="dot d2"></span>
+
+      <div class="ripple"></div><div class="ripple b"></div><div class="ripple c"></div>
+
+      <svg class="beam" viewBox="0 0 480 380" preserveAspectRatio="none">
+        <defs><linearGradient id="bm" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#5FB4E6" stop-opacity="0"/><stop offset="1" stop-color="#5FB4E6" stop-opacity=".85"/></linearGradient><filter id="bg" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="2"/></filter></defs>
+        <line x1="130" y1="190" x2="270" y2="150" stroke="url(#bm)" stroke-width="1.6" filter="url(#bg)"/>
+      </svg>
+
+      <div class="hub-wrap">
+        <div class="bloom"></div>
+        <div class="outer"><div class="sphere"><div class="core"><img src="logo_official.png" alt="Consorflow"></div></div></div>
+      </div>
+
+      <div class="glass">
+        <div class="ch"><span class="av"><svg viewBox="0 0 24 24"><path d="M5 4h3l1.5 4-2 1.5a11 11 0 0 0 5 5l1.5-2 4 1.5v3a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg></span><div><b>Assistente Consorflow</b><small>João M. · 00:12</small></div><span class="live"><i></i>voz</span></div>
+        <div class="wave">
+          <span style="background:#73C7E1;height:50%;animation:wv .9s ease-in-out infinite 0s"></span><span style="background:#3E8FB0;height:100%;animation:wv .9s ease-in-out infinite .08s"></span><span style="background:#73C7E1;height:70%;animation:wv .9s ease-in-out infinite .16s"></span><span style="background:#3E8FB0;height:100%;animation:wv .9s ease-in-out infinite .24s"></span><span style="background:#73C7E1;height:45%;animation:wv .9s ease-in-out infinite .32s"></span><span style="background:#3E8FB0;height:90%;animation:wv .9s ease-in-out infinite .4s"></span><span style="background:#73C7E1;height:65%;animation:wv .9s ease-in-out infinite .48s"></span><span style="background:#3E8FB0;height:100%;animation:wv .9s ease-in-out infinite .56s"></span><span style="background:#73C7E1;height:50%;animation:wv .9s ease-in-out infinite .64s"></span><span style="background:#3E8FB0;height:85%;animation:wv .9s ease-in-out infinite .72s"></span><span style="background:#73C7E1;height:60%;animation:wv .9s ease-in-out infinite .8s"></span><span style="background:#3E8FB0;height:95%;animation:wv .9s ease-in-out infinite .88s"></span><span style="background:#73C7E1;height:40%;animation:wv .9s ease-in-out infinite .96s"></span><span style="background:#3E8FB0;height:80%;animation:wv .9s ease-in-out infinite 1.04s"></span></div>
+        <div class="tr" style="animation:ln 4s ease infinite"><span class="sp" style="color:#2E8FB0">IA</span><p>Vi seu interesse em imóvel. Posso confirmar uns dados rápidos?</p></div>
+        <div class="tr" style="animation:ln 4s ease infinite 1.1s"><span class="sp" style="color:#5B6675">João</span><p>Pode! Prefiro parcela menor, prazo maior.</p></div>
+        <div class="out"><span class="oc">interesse confirmado</span><span class="oc b">demo agendada · 16h</span></div>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

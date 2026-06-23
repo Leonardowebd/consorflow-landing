@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Consorflow — proto ilustração</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@500;600;700&family=Geist:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Geist',sans-serif;background:#FFFFFF;color:#00295D;-webkit-font-smoothing:antialiased}
+  .section{max-width:1080px;margin:0 auto;padding:64px 48px;display:grid;grid-template-columns:1fr 1.1fr;gap:40px;align-items:center;min-height:520px}
+  .eyebrow{font-size:13px;font-weight:500;letter-spacing:.11em;text-transform:uppercase;color:#2E8FB0;margin-bottom:14px}
+  h2{font-family:'Funnel Display',sans-serif;font-size:42px;font-weight:700;letter-spacing:-.02em;line-height:1.06;color:#00295D;margin-bottom:18px}
+  .lead{font-size:17px;line-height:1.6;color:#34404F;max-width:420px;margin-bottom:26px}
+  .chips-row{display:flex;gap:10px;flex-wrap:wrap}
+  .tag{font-size:13px;color:#0E4C7A;background:#EAF4FB;border:1px solid #D4E7F5;padding:7px 13px;border-radius:9px;display:flex;align-items:center;gap:7px}
+  .tag svg{width:16px;height:16px}
+
+  .scene{position:relative;width:480px;height:380px;margin:0 auto;border-radius:24px;overflow:hidden;
+    background:radial-gradient(circle at 50% 44%, #F4F9FF 0%, #E7F1FC 40%, #D7E5F6 100%)}
+  .grid{position:absolute;inset:0;z-index:0;
+    background-image:linear-gradient(#C2D8F0 1px,transparent 1px),linear-gradient(90deg,#C2D8F0 1px,transparent 1px);
+    background-size:30px 30px;opacity:.32;-webkit-mask-image:radial-gradient(circle at 50% 44%,#000 26%,transparent 76%);
+            mask-image:radial-gradient(circle at 50% 44%,#000 26%,transparent 76%)}
+  .noise{position:absolute;inset:0;z-index:1;pointer-events:none;mix-blend-mode:soft-light;opacity:.55}
+  .vig{position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:radial-gradient(circle at 50% 44%,transparent 50%,rgba(0,40,93,.10) 100%)}
+  .dot{position:absolute;border-radius:50%;background:rgba(95,180,230,.45);z-index:1}
+  .d1{width:5px;height:5px;left:70px;top:60px;animation:float 6s ease-in-out infinite}
+  .d2{width:4px;height:4px;right:74px;top:96px;animation:float 7s ease-in-out infinite 1s}
+  .d3{width:6px;height:6px;left:96px;bottom:70px;animation:float 6.5s ease-in-out infinite 2s}
+  .d4{width:4px;height:4px;right:90px;bottom:84px;animation:float 7.5s ease-in-out infinite .6s}
+  .d5{width:3px;height:3px;left:50%;top:30px;animation:float 6s ease-in-out infinite 1.4s}
+
+  .links{position:absolute;inset:0;z-index:1}
+  .floor{position:absolute;left:50%;top:60%;transform:translateX(-50%);width:158px;height:30px;border-radius:50%;z-index:2;
+    background:radial-gradient(ellipse,rgba(0,40,93,.26),rgba(0,40,93,0) 70%);filter:blur(3px)}
+
+  .hub-wrap{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);z-index:4;width:230px;height:230px;display:flex;align-items:center;justify-content:center}
+  .bloom{position:absolute;width:210px;height:210px;border-radius:50%;z-index:0;
+    background:radial-gradient(circle,rgba(115,199,225,.85) 0%,rgba(115,199,225,0) 66%);
+    filter:blur(6px);animation:breathe 4s ease-in-out infinite}
+  .ring-a{position:absolute;width:178px;height:178px;border-radius:50%;border:1px dashed rgba(95,180,230,.4);z-index:0}
+  .ring-b{position:absolute;width:150px;height:150px;border-radius:50%;border:1px solid rgba(95,180,230,.28);z-index:0}
+  .ping{position:absolute;width:130px;height:130px;border-radius:50%;border:1.5px solid rgba(95,180,230,.55);z-index:1;
+    animation:ping 3.6s ease-out infinite}
+  .ping.b{animation-delay:1.8s}
+  .outer{position:relative;z-index:2;width:130px;height:130px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 30px 64px rgba(0,40,93,.26),0 12px 24px rgba(0,40,93,.16),inset 0 0 0 1px rgba(255,255,255,.9)}
+  .sphere{position:relative;width:98px;height:98px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    background:radial-gradient(circle at 38% 26%,#3E7EC4 0%,#0B4486 46%,#00224F 100%);
+    box-shadow:inset 0 -10px 20px rgba(0,6,24,.6),inset 0 10px 18px rgba(150,205,240,.45),0 6px 16px rgba(0,40,93,.30)}
+  .sphere::before{content:"";position:absolute;top:8px;left:50%;transform:translateX(-50%);width:64px;height:34px;border-radius:50%;
+    background:radial-gradient(circle,rgba(255,255,255,.6),rgba(255,255,255,0) 70%)}
+  .sphere::after{content:"";position:absolute;inset:13px;border-radius:50%;border:1px solid rgba(120,190,235,.35)}
+  .core{position:relative;z-index:2;width:48px;height:48px;border-radius:14px;background:#fff;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 6px 14px rgba(0,16,48,.5),inset 0 0 0 1px rgba(255,255,255,.6)}
+  .core svg{width:32px;height:32px;filter:drop-shadow(0 1px 4px rgba(46,155,230,.45))}
+  .core img{width:30px;height:auto;display:block}
+
+  .chip{position:absolute;width:60px;height:60px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;z-index:3;
+    box-shadow:0 16px 30px rgba(0,40,93,.18),0 5px 10px rgba(0,40,93,.13),inset 0 0 0 1px rgba(255,255,255,.9)}
+  .chip svg{width:30px;height:30px}
+  .c-tl{left:58px;top:72px;animation:float 5s ease-in-out infinite}
+  .c-tr{right:58px;top:72px;animation:float 5s ease-in-out infinite .8s}
+  .c-bl{left:58px;bottom:72px;animation:float 5s ease-in-out infinite 1.6s}
+  .c-br{right:58px;bottom:72px;animation:float 5s ease-in-out infinite 2.4s}
+
+  .pulse{position:absolute;width:7px;height:7px;border-radius:50%;background:#9BE0F5;z-index:3;
+    box-shadow:0 0 9px 2px rgba(120,205,240,.95)}
+  .p-tl{left:90px;top:102px;animation:flowTL 2.6s ease-in infinite}
+  .p-tr{right:90px;top:102px;animation:flowTR 2.6s ease-in infinite .9s}
+  .p-bl{left:90px;bottom:102px;animation:flowBL 2.6s ease-in infinite 1.3s}
+  .p-br{right:90px;bottom:102px;animation:flowBR 2.6s ease-in infinite 1.9s}
+
+  @keyframes breathe{0%,100%{opacity:.45;transform:scale(.92)}50%{opacity:.82;transform:scale(1.05)}}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+  @keyframes ping{0%{transform:scale(.5);opacity:.75}80%{opacity:0}100%{transform:scale(1.85);opacity:0}}
+  @keyframes flowTL{0%{transform:translate(0,0);opacity:0}25%{opacity:1}85%{opacity:1}100%{transform:translate(150px,84px);opacity:0}}
+  @keyframes flowTR{0%{transform:translate(0,0);opacity:0}25%{opacity:1}85%{opacity:1}100%{transform:translate(-150px,84px);opacity:0}}
+  @keyframes flowBL{0%{transform:translate(0,0);opacity:0}25%{opacity:1}85%{opacity:1}100%{transform:translate(150px,-84px);opacity:0}}
+  @keyframes flowBR{0%{transform:translate(0,0);opacity:0}25%{opacity:1}85%{opacity:1}100%{transform:translate(-150px,-84px);opacity:0}}
+</style>
+</head>
+<body>
+  <section class="section">
+    <div class="copy">
+      <p class="eyebrow">Integrações</p>
+      <h2>Tudo chega onde seu time trabalha.</h2>
+      <p class="lead">Conecte WhatsApp, Meta Ads, Google Ads, API e Webhooks. Aquisição, atendimento e gestão numa operação só — sem planilha, sem retrabalho.</p>
+      <div class="chips-row">
+        <span class="tag"><svg viewBox="0 0 24 24" fill="#25D366"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Z"/><path fill="#fff" d="M9 7.4c-.2-.4-.3-.4-.5-.4h-.5c-.2 0-.5.1-.7.3-.3.3-.9.9-.9 2.1s.9 2.4 1.1 2.6c.1.2 1.8 2.8 4.4 3.8 2.2.8 2.6.7 3.1.6.5-.1 1.4-.6 1.6-1.1.2-.6.2-1 .1-1.1-.1-.1-.3-.2-.5-.3l-1.5-.7c-.2-.1-.4-.1-.5.1l-.6.8c-.1.2-.3.2-.5.1-.3-.1-1.1-.4-2.1-1.3-.8-.7-1.3-1.5-1.4-1.7-.1-.2 0-.4.1-.5l.4-.4c.1-.2.2-.3.2-.5.1-.2 0-.3 0-.4L9 7.4Z"/></svg>WhatsApp</span>
+        <span class="tag"><svg viewBox="0 0 24 24" fill="none" stroke="#0A7CFF" stroke-width="2.3" stroke-linecap="round"><path d="M3 12c1.6-4.2 4.2-5.2 5.7-2.6C10.2 12 11 14 12 14s1.8-2 3.3-4.6C16.8 6.8 19.4 7.8 21 12c-1.6 4.2-4.2 5.2-5.7 2.6C13.8 12 13 10 12 10s-1.8 2-3.3 4.6C7.2 17.2 4.6 16.2 3 12Z"/></svg>Meta Ads</span>
+        <span class="tag"><svg viewBox="0 0 24 24" fill="none" stroke="#C2410C" stroke-width="2" stroke-linecap="round"><circle cx="6" cy="17" r="2.3"/><circle cx="18" cy="17" r="2.3"/><circle cx="12" cy="6" r="2.3"/><path d="M12 8.3 8.4 15M12 8.3 15.6 15M8.5 17h7"/></svg>Webhooks</span>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="grid"></div>
+      <svg class="noise"><filter id="nz"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#nz)"/></svg>
+      <div class="vig"></div>
+      <span class="dot d1"></span><span class="dot d2"></span><span class="dot d3"></span><span class="dot d4"></span><span class="dot d5"></span>
+
+      <svg class="links" viewBox="0 0 480 380" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="ln" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#9FD0EC" stop-opacity="0"/>
+            <stop offset="0.5" stop-color="#5FB4E6" stop-opacity=".95"/>
+            <stop offset="1" stop-color="#9FD0EC" stop-opacity="0"/>
+          </linearGradient>
+          <filter id="gl" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="2.2"/></filter>
+        </defs>
+        <g filter="url(#gl)" stroke="url(#ln)" stroke-width="1.6">
+          <line x1="90" y1="102" x2="240" y2="167"/>
+          <line x1="390" y1="102" x2="240" y2="167"/>
+          <line x1="90" y1="278" x2="240" y2="167"/>
+          <line x1="390" y1="278" x2="240" y2="167"/>
+          <line x1="0" y1="167" x2="480" y2="167" stroke-opacity=".5"/>
+        </g>
+      </svg>
+
+      <div class="floor"></div>
+
+      <div class="chip c-tl"><svg viewBox="0 0 24 24" fill="#25D366"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Z"/><path fill="#fff" d="M9 7.4c-.2-.4-.3-.4-.5-.4h-.5c-.2 0-.5.1-.7.3-.3.3-.9.9-.9 2.1s.9 2.4 1.1 2.6c.1.2 1.8 2.8 4.4 3.8 2.2.8 2.6.7 3.1.6.5-.1 1.4-.6 1.6-1.1.2-.6.2-1 .1-1.1-.1-.1-.3-.2-.5-.3l-1.5-.7c-.2-.1-.4-.1-.5.1l-.6.8c-.1.2-.3.2-.5.1-.3-.1-1.1-.4-2.1-1.3-.8-.7-1.3-1.5-1.4-1.7-.1-.2 0-.4.1-.5l.4-.4c.1-.2.2-.3.2-.5.1-.2 0-.3 0-.4L9 7.4Z"/></svg></div>
+      <div class="chip c-tr"><svg viewBox="0 0 24 24"><path fill="#4285F4" d="M21 12.2c0-.7-.1-1.3-.2-1.9H12v3.7h5c-.2 1.2-.9 2.2-1.9 2.9v2.4h3.1c1.8-1.7 2.8-4.1 2.8-7.1Z"/><path fill="#34A853" d="M12 21c2.4 0 4.5-.8 6-2.2l-3.1-2.4c-.8.6-1.9.9-2.9.9-2.3 0-4.2-1.5-4.9-3.6H3.9v2.5C5.4 19 8.5 21 12 21Z"/><path fill="#FBBC05" d="M7.1 13.7c-.2-.6-.3-1.1-.3-1.7s.1-1.2.3-1.7V7.8H3.9C3.3 9 3 10.4 3 12s.3 3 .9 4.2l3.2-2.5Z"/><path fill="#EA4335" d="M12 6.7c1.3 0 2.5.5 3.4 1.3l2.7-2.7C16.5 3.9 14.4 3 12 3 8.5 3 5.4 5 3.9 7.8l3.2 2.5C7.8 8.2 9.7 6.7 12 6.7Z"/></svg></div>
+      <div class="chip c-bl"><svg viewBox="0 0 24 24" fill="none" stroke="#0A7CFF" stroke-width="2.3" stroke-linecap="round"><path d="M3 12c1.6-4.2 4.2-5.2 5.7-2.6C10.2 12 11 14 12 14s1.8-2 3.3-4.6C16.8 6.8 19.4 7.8 21 12c-1.6 4.2-4.2 5.2-5.7 2.6C13.8 12 13 10 12 10s-1.8 2-3.3 4.6C7.2 17.2 4.6 16.2 3 12Z"/></svg></div>
+      <div class="chip c-br"><svg viewBox="0 0 24 24" fill="none" stroke="#C2410C" stroke-width="2" stroke-linecap="round"><circle cx="6" cy="17" r="2.3"/><circle cx="18" cy="17" r="2.3"/><circle cx="12" cy="6" r="2.3"/><path d="M12 8.3 8.4 15M12 8.3 15.6 15M8.5 17h7"/></svg></div>
+
+      <div class="pulse p-tl"></div><div class="pulse p-tr"></div><div class="pulse p-bl"></div><div class="pulse p-br"></div>
+
+      <div class="hub-wrap">
+        <div class="bloom"></div>
+        <div class="ring-a"></div>
+        <div class="ring-b"></div>
+        <div class="ping"></div>
+        <div class="ping b"></div>
+        <div class="outer">
+          <div class="sphere">
+            <div class="core">
+              <img src="logo_official.png" alt="Consorflow">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#c8deff"/>
+    </radialGradient>
+  </defs>
+  <circle cx="32" cy="32" r="32" fill="url(#bg)"/>
+  <!-- Consorflow mark, original viewBox 0 0 38 34, scaled to fit 64x64 with padding -->
+  <g transform="translate(7,7) scale(1.31)">
+    <path d="M37.7162 0L33.6695 8.46643C33.2898 9.26092 32.515 9.76255 31.6676 9.76255H14.1461L7.25277 29.0755L14.1461 23.7368H33.05L25.6602 33.1447C25.2348 33.6863 24.6008 34 23.9318 34H10.8963C10.0313 34 9.24367 33.4776 8.87298 32.6579L7.25277 29.0755L1.00498 24.7456C0.149146 24.1524 -0.21299 23.0253 0.126059 22.0099L3.69056 11.3349C4.00503 10.3931 4.8526 9.76255 5.80405 9.76255H14.1461L19.2704 1.10946C19.679 0.419568 20.3984 0 21.1727 0H37.7162Z" fill="#00295D"/>
+  </g>
+</svg>
