@@ -962,7 +962,143 @@
     .footer-bottom{justify-content:flex-start}
   }
 
-  /* ===== LARGE SCREEN ≥1441px SUPPORT ===== */
+
+  /* ===== IA AO VIVO — scroll phone section ===== */
+  .ia-live{background:#060d1a;width:100%;overflow:hidden}
+  .ia-live-inner{
+    display:grid;grid-template-columns:1fr 400px;
+    max-width:1200px;margin:0 auto;padding:0 40px;
+    position:relative;
+  }
+  .ia-panels{position:relative}
+  .ia-panel{
+    min-height:100vh;
+    display:flex;flex-direction:column;justify-content:center;
+    padding:80px 56px 80px 0;
+    opacity:0;transform:translateY(24px);
+    transition:opacity .5s ease,transform .5s ease;
+  }
+  .ia-panel.ia-in{opacity:1;transform:none}
+  .ia-panel-num{font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;font-weight:500}
+  .ia-panel-num.c-green{color:#25d366}
+  .ia-panel-num.c-blue{color:#33a6e3}
+  .ia-panel-num.c-purple{color:#a855f7}
+  .ia-panel h2{font-family:'Funnel Display',sans-serif;font-size:clamp(28px,3.2vw,44px);font-weight:600;line-height:1.1;letter-spacing:-.02em;color:#fff;margin-bottom:14px}
+  .ia-panel h2 em{font-style:normal}
+  .ia-panel h2 em.green{color:#25d366}
+  .ia-panel h2 em.blue{color:#33a6e3}
+  .ia-panel h2 em.purple{color:#a855f7}
+  .ia-panel > p{font-size:16px;color:rgba(255,255,255,.52);line-height:1.7;max-width:400px}
+  .ia-feat-list{list-style:none;margin-top:28px;display:flex;flex-direction:column;gap:10px}
+  .ia-feat-list li{display:flex;align-items:center;gap:10px;font-size:14px;color:rgba(255,255,255,.68)}
+  .ia-feat-dot{width:5px;height:5px;border-radius:50%;flex:none}
+  .ia-fd-green{background:#25d366}
+  .ia-fd-blue{background:#33a6e3}
+  .ia-fd-purple{background:#a855f7}
+  .ia-phone-col{
+    position:sticky;top:0;height:100vh;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .ia-phone-wrap{position:relative;width:252px;height:510px}
+  .ia-phone-glow{position:absolute;inset:-40px;border-radius:50%;filter:blur(40px);opacity:.16;z-index:1;transition:background .6s ease}
+  .ia-phone-frame{
+    position:absolute;inset:0;border-radius:38px;background:#0f0f13;
+    border:2px solid rgba(255,255,255,.1);
+    box-shadow:0 0 0 1px rgba(0,0,0,.5),0 40px 80px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.06);
+    overflow:hidden;z-index:2;
+  }
+  .ia-island{position:absolute;top:11px;left:50%;transform:translateX(-50%);width:78px;height:24px;background:#000;border-radius:16px;z-index:10}
+  .ia-screen{position:absolute;inset:0;opacity:0;transition:opacity .5s cubic-bezier(.16,1,.3,1);pointer-events:none}
+  .ia-screen.ia-screen-active{opacity:1;pointer-events:all}
+  .ia-dots{position:absolute;bottom:-26px;left:50%;transform:translateX(-50%);display:flex;gap:5px}
+  .ia-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.2);transition:all .3s ease}
+  .ia-dot.ia-dot-on{background:#33a6e3;width:18px}
+  /* WhatsApp */
+  .ia-wa{background:#0b141a;display:flex;flex-direction:column;height:100%}
+  .ia-wa-hd{background:#1f2c34;padding:40px 11px 9px;display:flex;align-items:center;gap:9px;flex:none}
+  .ia-wa-av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#33a6e3,#00295d);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex:none}
+  .ia-wa-info b{display:block;font-size:11px;font-weight:600;color:#e9edef}
+  .ia-wa-info span{font-size:10px;color:#8696a0}
+  .ia-wa-body{flex:1;overflow:hidden;padding:8px 7px;display:flex;flex-direction:column;gap:3px}
+  .ia-msg{max-width:84%;padding:5px 8px;border-radius:7px;font-size:10.5px;line-height:1.45;color:#e9edef;opacity:0;transform:translateY(6px);transition:opacity .3s ease,transform .3s ease;display:inline-block}
+  .ia-msg.show{opacity:1;transform:none}
+  .ia-msg.in{background:#1f2c34;align-self:flex-start;border-top-left-radius:2px}
+  .ia-msg.out{background:#005c4b;align-self:flex-end;border-top-right-radius:2px;margin-left:auto}
+  .ia-msg .its{font-size:9px;color:#8696a0;float:right;margin-left:5px;margin-top:2px}
+  .ia-typing{display:flex;align-items:center;gap:3px;background:#1f2c34;padding:7px 11px;border-radius:7px;border-top-left-radius:2px;align-self:flex-start;opacity:0;transition:opacity .3s ease;margin-top:2px}
+  .ia-typing.show{opacity:1}
+  .ia-typing span{width:5px;height:5px;border-radius:50%;background:#8696a0;animation:iaB 1.2s ease infinite}
+  .ia-typing span:nth-child(2){animation-delay:.2s}
+  .ia-typing span:nth-child(3){animation-delay:.4s}
+  @keyframes iaB{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-4px)}}
+  .ia-wa-inp{background:#1f2c34;padding:5px 9px;display:flex;align-items:center;gap:7px;flex:none}
+  .ia-wa-inp-box{flex:1;background:#2a3942;border-radius:18px;padding:5px 11px;font-size:10px;color:#8696a0}
+  /* Call */
+  .ia-call{background:linear-gradient(160deg,#0f1f35,#051020);display:flex;flex-direction:column;align-items:center;height:100%}
+  .ia-call-bar{width:100%;padding:12px 14px 0;display:flex;justify-content:space-between;font-size:10px;color:rgba(255,255,255,.5)}
+  .ia-call-banner{width:100%;background:#1a7f3c;text-align:center;padding:3px;font-size:9px;font-weight:500;color:#fff;margin-top:3px}
+  .ia-call-ctr{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 16px}
+  .ia-call-av-wrap{position:relative;margin-bottom:12px}
+  .ia-call-ring{position:absolute;border-radius:50%;border:1.5px solid rgba(51,166,227,.22);animation:iaRing 2s ease infinite}
+  .ia-call-ring.r1{inset:-10px}
+  .ia-call-ring.r2{inset:-20px;border-width:1px;border-color:rgba(51,166,227,.1);animation-delay:.4s}
+  @keyframes iaRing{0%{transform:scale(.9);opacity:0}50%{opacity:1}100%{transform:scale(1.1);opacity:0}}
+  .ia-call-av{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#1e5fa8,#33a6e3);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;position:relative;z-index:2;box-shadow:0 0 28px rgba(51,166,227,.3)}
+  .ia-call-name{font-size:17px;font-weight:600;color:#fff;margin-bottom:3px}
+  .ia-call-lbl{font-size:10px;color:rgba(255,255,255,.4);margin-bottom:3px}
+  .ia-call-tmr{font-size:13px;color:#33a6e3;font-weight:500;margin-bottom:16px}
+  .ia-wave{width:152px;height:30px;display:flex;align-items:center;justify-content:center;gap:2px;margin-bottom:16px}
+  .ia-wave-bar{width:2.5px;border-radius:3px;background:#33a6e3;animation:iaWv 1.1s ease infinite;opacity:.7}
+  @keyframes iaWv{0%,100%{height:3px;opacity:.25}50%{height:24px;opacity:.9}}
+  .ia-call-tx{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);border-radius:9px;padding:7px 10px;font-size:9.5px;color:rgba(255,255,255,.55);text-align:center;width:100%;line-height:1.5}
+  .ia-call-tx b{color:#33a6e3;display:block;font-size:9px;letter-spacing:1px;text-transform:uppercase;margin-bottom:3px}
+  .ia-call-acts{display:flex;gap:14px;padding:14px}
+  .ia-call-btn{width:42px;height:42px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.1)}
+  .ia-call-btn svg{width:16px;height:16px;fill:none;stroke:#fff;stroke-width:2}
+  .ia-call-end{background:#f44;width:50px;height:50px}
+  .ia-call-end svg{width:20px;height:20px}
+  /* Lead screen */
+  .ia-lead{background:#0d1117;display:flex;flex-direction:column;height:100%}
+  .ia-lead-hd{background:#161b22;padding:40px 11px 9px;display:flex;align-items:center;gap:7px;border-bottom:1px solid rgba(255,255,255,.05);flex:none}
+  .ia-lead-hd svg{width:13px;height:13px;stroke:#33a6e3;fill:none;stroke-width:2}
+  .ia-lead-hd span{font-size:11px;font-weight:600;color:#c9d1d9}
+  .ia-lead-badge{margin-left:auto;background:rgba(51,166,227,.15);color:#33a6e3;border-radius:999px;padding:2px 7px;font-size:9px;font-weight:600}
+  .ia-lead-body{flex:1;padding:9px;display:flex;flex-direction:column;gap:7px;overflow:hidden}
+  .ia-lcard{background:#161b22;border:1px solid rgba(255,255,255,.05);border-radius:8px;padding:8px 10px;opacity:0;transform:translateY(8px);transition:opacity .4s ease,transform .4s ease}
+  .ia-lcard.show{opacity:1;transform:none}
+  .ia-lcard-top{display:flex;align-items:center;gap:7px;margin-bottom:6px}
+  .ia-lcard-av{width:24px;height:24px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff}
+  .ia-lcard-name{font-weight:600;color:#c9d1d9;font-size:11px}
+  .ia-lcard-sub{font-size:9px;color:#8b949e}
+  .ia-score{margin-left:auto;height:17px;padding:0 6px;border-radius:999px;font-size:9px;font-weight:700;display:flex;align-items:center}
+  .ia-score.hi{background:rgba(37,211,102,.15);color:#25d366}
+  .ia-score.md{background:rgba(251,188,4,.15);color:#fbc004}
+  .ia-tags{display:flex;gap:3px;flex-wrap:wrap;margin-bottom:6px}
+  .ia-tag{font-size:9px;padding:2px 6px;border-radius:999px;background:rgba(255,255,255,.05);color:#8b949e}
+  .ia-tag.blue{background:rgba(51,166,227,.1);color:#33a6e3}
+  .ia-bar-lbl{display:flex;justify-content:space-between;font-size:9px;color:#8b949e;margin-bottom:3px}
+  .ia-bar{height:3px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden}
+  .ia-bar-fill{height:100%;border-radius:3px;width:0;transition:width 1.2s cubic-bezier(.16,1,.3,1) .3s}
+  .bar-g{background:linear-gradient(90deg,#25d366,#0fb855)}
+  .bar-b{background:linear-gradient(90deg,#33a6e3,#1a7fcf)}
+  .ia-action{background:linear-gradient(90deg,#33a6e3,#1a7fcf);border-radius:7px;padding:8px 10px;display:flex;align-items:center;gap:7px;opacity:0;transform:translateY(6px);transition:opacity .4s ease .55s,transform .4s ease .55s}
+  .ia-action.show{opacity:1;transform:none}
+  .ia-action svg{width:12px;height:12px;stroke:#fff;fill:none;stroke-width:2.5;flex:none}
+  .ia-action-txt b{display:block;font-size:10px;font-weight:600;color:#fff}
+  .ia-action-txt span{font-size:9px;color:rgba(255,255,255,.7)}
+  .ia-pipe{display:flex;align-items:center}
+  .ia-pipe-step{flex:1;text-align:center;font-size:8px;padding:4px 3px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);color:#8b949e}
+  .ia-pipe-step:first-child{border-radius:5px 0 0 5px}
+  .ia-pipe-step:last-child{border-radius:0 5px 5px 0}
+  .ia-pipe-step.done{background:rgba(51,166,227,.08);color:#33a6e3;border-color:rgba(51,166,227,.18)}
+  .ia-pipe-step.cur{background:rgba(51,166,227,.18);color:#fff;border-color:rgba(51,166,227,.35);font-weight:600}
+  @media(max-width:900px){
+    .ia-live-inner{grid-template-columns:1fr;padding:0 20px}
+    .ia-phone-col{position:relative;height:auto;padding:32px 0}
+    .ia-panel{min-height:auto;padding:48px 0 16px;opacity:1;transform:none}
+  }
+
+  /* ===== LARGE SCREEN ≥1441px SUPPORT ====== */
   @media(min-width:1441px){
     .page{width:100%;max-width:none}
     .hero{width:100%}
@@ -1207,147 +1343,137 @@
         </div>
       </div>
     </section></div>
-    <section class="ligacoes">
-      <div class="lig-wrap">
-        <p class="lig-eyebrow">Atendimento humanizado</p>
-        <h2 class="lig-title">Ligações Automáticas com IA</h2>
-        <p class="lig-desc">Qualifique, tire dúvidas, dê o suporte 24h por dia. Tenha um IA pronta para atendimento, testada e treinada para seu time comercial e seus clientes, com voz humana e registro de ligações</p>
-        <div class="ldash-grid">
-
-          <!-- Card 1: Leads por Fonte -->
-          <div class="ldc">
-            <div class="ldc-hd">
-              <span class="ldc-htitle">Leads por Fonte</span>
-              <div class="ldc-arr"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
-            </div>
-            <div class="ldc-fonte-list">
-              <div class="ldc-fonte-row">
-                <div class="ldc-ficon" style="--ic:#25d366"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.968-1.383A9.953 9.953 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z" fill="none" stroke="#fff" stroke-width="1.5"/></svg></div>
-                <div class="ldc-fonte-info"><b>WhatsApp</b><em>Entrada direta</em></div>
-                <span class="ldc-fonte-pct">42%</span>
-              </div>
-              <div class="ldc-fonte-row">
-                <div class="ldc-ficon" style="--ic:#2560cc"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg></div>
-                <div class="ldc-fonte-info"><b>Site</b><em>Formulário</em></div>
-                <span class="ldc-fonte-pct">31%</span>
-              </div>
-              <div class="ldc-fonte-row">
-                <div class="ldc-ficon" style="--ic:#e1306c"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#fff"/></svg></div>
-                <div class="ldc-fonte-info"><b>Instagram</b><em>Link na bio</em></div>
-                <span class="ldc-fonte-pct">18%</span>
-              </div>
-              <div class="ldc-fonte-row">
-                <div class="ldc-ficon" style="--ic:#f59e0b"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-                <div class="ldc-fonte-info"><b>Indicação</b><em>Clientes</em></div>
-                <span class="ldc-fonte-pct">9%</span>
-              </div>
-            </div>
+    <div class="ia-live">
+      <div class="ia-live-inner">
+        <div class="ia-panels">
+          <div class="ia-panel" data-ia-panel="0">
+            <div class="ia-panel-num c-green">01 — WhatsApp</div>
+            <h2>Atendimento <em class="green">instantâneo</em><br>via WhatsApp</h2>
+            <p>A IA entra na conversa em segundos, responde dúvidas, coleta dados e qualifica o lead — sem intervenção humana.</p>
+            <ul class="ia-feat-list">
+              <li><span class="ia-feat-dot ia-fd-green"></span>Responde em menos de 3 segundos</li>
+              <li><span class="ia-feat-dot ia-fd-green"></span>Identifica intenção de compra automaticamente</li>
+              <li><span class="ia-feat-dot ia-fd-green"></span>Integração nativa com WhatsApp Business</li>
+              <li><span class="ia-feat-dot ia-fd-green"></span>Disponível 24h, 7 dias por semana</li>
+            </ul>
           </div>
-
-          <!-- Card 2: Ligações da Semana -->
-          <div class="ldc">
-            <div class="ldc-hd">
-              <span class="ldc-htitle">Ligações</span>
-              <div class="ldc-arr"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
-            </div>
-            <div class="ldc-bignum">1.847</div>
-            <div class="ldc-chart">
-              <div class="ldc-barcol">
-                <span class="ldc-barpct">64%</span>
-                <div class="ldc-bararea"><div class="ldc-barfill"></div></div>
-                <span class="ldc-barday">Seg</span>
-              </div>
-              <div class="ldc-barcol">
-                <span class="ldc-barpct">52%</span>
-                <div class="ldc-bararea"><div class="ldc-barfill"></div></div>
-                <span class="ldc-barday">Ter</span>
-              </div>
-              <div class="ldc-barcol">
-                <span class="ldc-barpct">46%</span>
-                <div class="ldc-bararea"><div class="ldc-barfill"></div></div>
-                <span class="ldc-barday">Qua</span>
-              </div>
-            </div>
+          <div class="ia-panel" data-ia-panel="1">
+            <div class="ia-panel-num c-blue">02 — Ligações</div>
+            <h2>IA que <em class="blue">liga</em><br>no momento certo</h2>
+            <p>Quando o lead demonstra interesse, a IA faz a ligação automaticamente — com voz humana e roteiro personalizado.</p>
+            <ul class="ia-feat-list">
+              <li><span class="ia-feat-dot ia-fd-blue"></span>Voz natural com ElevenLabs</li>
+              <li><span class="ia-feat-dot ia-fd-blue"></span>Roteiro adaptado ao perfil do lead</li>
+              <li><span class="ia-feat-dot ia-fd-blue"></span>Transcrição automática da chamada</li>
+              <li><span class="ia-feat-dot ia-fd-blue"></span>Agenda reunião diretamente na chamada</li>
+            </ul>
           </div>
-
-          <!-- Card 3: Taxa de Qualificação (orange, spans 2 rows) -->
-          <div class="ldc ldc-orange" style="grid-row:1/3">
-            <div class="ldc-hd">
-              <span class="ldc-htitle">Qualificação</span>
-              <div class="ldc-arr"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
-            </div>
-            <div class="ldc-bignum" style="font-size:52px;letter-spacing:-2px;margin-bottom:4px">68%</div>
-            <div style="font-size:11px;color:rgba(255,255,255,.55);margin-bottom:16px">leads qualificados/semana</div>
-            <div class="ldc-linewrap">
-              <svg class="ldc-svgline" viewBox="0 0 200 80" preserveAspectRatio="none">
-                <defs>
-                  <linearGradient id="lgArea" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="rgba(255,255,255,.22)"/>
-                    <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
-                  </linearGradient>
-                </defs>
-                <path d="M0,68 C20,62 30,55 50,58 S80,40 100,36 S140,44 160,26 S185,18 200,14 L200,80 L0,80 Z" fill="url(#lgArea)"/>
-                <path d="M0,68 C20,62 30,55 50,58 S80,40 100,36 S140,44 160,26 S185,18 200,14" fill="none" stroke="rgba(255,255,255,.85)" stroke-width="2.2" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
-              </svg>
-              <!-- marcador + tooltip em HTML para não distorcer -->
-              <span class="ldc-dot"></span>
-              <span class="ldc-tip">Alta</span>
-            </div>
-            <div class="ldc-days">
-              <span>Seg</span><span>Ter</span><span>Qua</span><span>Qui</span><span>Sex</span><span>Sáb</span><span>Dom</span>
-            </div>
-            <div style="margin-top:auto;padding-top:20px;border-top:1px solid rgba(255,255,255,.12)">
-              <div style="font-size:11px;color:rgba(255,255,255,.5);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Score médio</div>
-              <div style="font-family:'Funnel Display',sans-serif;font-size:38px;font-weight:700;color:#fff;letter-spacing:-1px;line-height:1">86 <span style="font-size:14px;font-weight:400;color:rgba(255,255,255,.55)">pts</span></div>
-              <div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:4px">● Pronto para corretor</div>
-            </div>
+          <div class="ia-panel" data-ia-panel="2">
+            <div class="ia-panel-num c-purple">03 — Qualificação</div>
+            <h2>Score automático<br><em class="purple">por IA</em></h2>
+            <p>Cada interação gera dados. A IA pontua o lead, identifica o momento ideal e move ele no funil sozinha.</p>
+            <ul class="ia-feat-list">
+              <li><span class="ia-feat-dot ia-fd-purple"></span>Score 0–100 baseado em comportamento</li>
+              <li><span class="ia-feat-dot ia-fd-purple"></span>Avança etapas do funil automaticamente</li>
+              <li><span class="ia-feat-dot ia-fd-purple"></span>Alerta o corretor quando o lead está quente</li>
+              <li><span class="ia-feat-dot ia-fd-purple"></span>Relatório de conversão por agente</li>
+            </ul>
           </div>
-
-          <!-- Card 4: IA Ativa (blue) -->
-          <div class="ldc ldc-blue">
-            <div class="ldc-brand-badge">IA</div>
-            <div class="ldc-blue-sub">Em Chamada</div>
-            <div class="ldc-bignum" style="color:#fff;font-size:26px">48 ligações</div>
-            <div class="ldc-wv">
-              <span></span><span></span><span></span><span></span>
-              <span></span><span></span><span></span><span></span>
-            </div>
-            <div class="ldc-blue-foot">
-              <span>⬤ ⬤ ⬤ ⬤ &nbsp; ⬤ ⬤ ⬤ ⬤</span>
-              <span>24h · 7 dias</span>
-            </div>
-          </div>
-
-          <!-- Card 5: Pipeline Ativo -->
-          <div class="ldc">
-            <div class="ldc-hd">
-              <span class="ldc-htitle">Pipeline Ativo</span>
-              <div class="ldc-arr"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
-            </div>
-            <div class="ldc-bignum">R$ 1,24M</div>
-            <div class="ldc-sub">+8 contratos fechados</div>
-            <div class="ldc-row2">
-              <div>
-                <div class="ldc-avs">
-                  <div class="ldc-av" style="--c:#dbeafe;color:#1e40af">JR</div>
-                  <div class="ldc-av" style="--c:#fce7f3;color:#9d174d">AC</div>
-                  <div class="ldc-av" style="--c:#dcfce7;color:#166534">MS</div>
-                  <div class="ldc-av ldc-av-plus">+8</div>
-                </div>
-                <div style="font-size:11px;color:#8896a8;margin-top:6px">Corretores ativos</div>
-              </div>
-              <div class="ldc-pill-green">+18%</div>
-            </div>
-          </div>
-
         </div>
-
-        <div class="lig-ctas">
-          <a href="https://wa.me/5577981454387?text=Ol%C3%A1%21+Gostaria+de+agendar+uma+demo+do+Consorflow." target="_blank" rel="noopener" class="btn-primary"><svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:#fff;stroke-width:2.4;fill:none"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Solicitar uma demo</a>
-          <a href="#planos" class="btn-ghost-light">Ver planos</a>
+        <div class="ia-phone-col">
+          <div class="ia-phone-wrap">
+            <div class="ia-phone-glow" id="iaGlow"></div>
+            <div class="ia-phone-frame">
+              <div class="ia-island"></div>
+              <div class="ia-screen ia-screen-active" id="ia-s0">
+                <div class="ia-wa">
+                  <div class="ia-wa-hd">
+                    <div class="ia-wa-av">CF</div>
+                    <div class="ia-wa-info"><b>Consorflow IA</b><span>digitando...</span></div>
+                  </div>
+                  <div class="ia-wa-body">
+                    <div class="ia-msg in" id="im1">Olá! 👋 Sou a <b>Ana</b>, assistente Consorflow. Vi que você tem interesse em consórcio. <span class="its">09:31</span></div>
+                    <div class="ia-msg in" id="im2">Você busca 🏠 <b>imóvel</b> ou 🚗 <b>veículo</b>? <span class="its">09:31</span></div>
+                    <div class="ia-msg out" id="im3">Imóvel! Quero meu primeiro apartamento <span class="its">09:32</span></div>
+                    <div class="ia-typing" id="iaTyping"><span></span><span></span><span></span></div>
+                    <div class="ia-msg in" id="im4">🏡 Ótimo! Cartas de R$&nbsp;80k a R$&nbsp;500k, parcelas a partir de <b>R$&nbsp;890/mês</b>. Qual faixa cabe no seu orçamento? <span class="its">09:32</span></div>
+                  </div>
+                  <div class="ia-wa-inp"><div class="ia-wa-inp-box">Mensagem</div></div>
+                </div>
+              </div>
+              <div class="ia-screen" id="ia-s1">
+                <div class="ia-call">
+                  <div class="ia-call-bar"><span id="iaClock">09:41</span><span>●●●</span></div>
+                  <div class="ia-call-banner">Ligação Consorflow IA · Em andamento</div>
+                  <div class="ia-call-ctr">
+                    <div class="ia-call-av-wrap">
+                      <div class="ia-call-ring r1"></div>
+                      <div class="ia-call-ring r2"></div>
+                      <div class="ia-call-av">CF</div>
+                    </div>
+                    <div class="ia-call-name">Marcos Pereira</div>
+                    <div class="ia-call-lbl">Lead · Score 78</div>
+                    <div class="ia-call-tmr" id="iaTmr">01:24</div>
+                    <div class="ia-wave" id="iaWave"></div>
+                    <div class="ia-call-tx"><b>Transcrição ao vivo</b><span>"...a carta de R$&nbsp;280 mil seria ideal. Posso agendar com nosso consultor?"</span></div>
+                  </div>
+                  <div class="ia-call-acts">
+                    <button class="ia-call-btn"><svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 013 3v8a3 3 0 01-6 0V4a3 3 0 013-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2M12 19v4M8 23h8"/></svg></button>
+                    <button class="ia-call-btn ia-call-end"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                    <button class="ia-call-btn"><svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg></button>
+                  </div>
+                </div>
+              </div>
+              <div class="ia-screen" id="ia-s2">
+                <div class="ia-lead">
+                  <div class="ia-lead-hd">
+                    <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+                    <span>Leads qualificados</span>
+                    <div class="ia-lead-badge">3 novos</div>
+                  </div>
+                  <div class="ia-lead-body">
+                    <div class="ia-lcard" id="ilc1">
+                      <div class="ia-lcard-top">
+                        <div class="ia-lcard-av" style="background:linear-gradient(135deg,#33a6e3,#1a5fa8)">MP</div>
+                        <div><div class="ia-lcard-name">Marcos Pereira</div><div class="ia-lcard-sub">Imóvel · R$ 280k · SP</div></div>
+                        <div class="ia-score hi">92</div>
+                      </div>
+                      <div class="ia-tags"><span class="ia-tag blue">Alta intenção</span><span class="ia-tag">1ª compra</span><span class="ia-tag">Pré-aprovado</span></div>
+                      <div class="ia-bar-lbl"><span>Score IA</span><span>92/100</span></div>
+                      <div class="ia-bar"><div class="ia-bar-fill bar-g" id="ibar1"></div></div>
+                    </div>
+                    <div class="ia-lcard" id="ilc2" style="transition-delay:.15s">
+                      <div class="ia-lcard-top">
+                        <div class="ia-lcard-av" style="background:linear-gradient(135deg,#a855f7,#6d28d9)">DR</div>
+                        <div><div class="ia-lcard-name">Débora Ramos</div><div class="ia-lcard-sub">Veículo · R$ 80k · BH</div></div>
+                        <div class="ia-score md">67</div>
+                      </div>
+                      <div class="ia-bar-lbl"><span>Score IA</span><span>67/100</span></div>
+                      <div class="ia-bar"><div class="ia-bar-fill bar-b" id="ibar2"></div></div>
+                    </div>
+                    <div class="ia-action" id="iAction">
+                      <svg viewBox="0 0 24 24"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 6v6l4 2"/></svg>
+                      <div class="ia-action-txt"><b>IA agenda ligação com Marcos</b><span>Amanhã às 10h — alta probabilidade de fechamento</span></div>
+                    </div>
+                    <div class="ia-pipe">
+                      <div class="ia-pipe-step done">Captado</div>
+                      <div class="ia-pipe-step done">Qualif.</div>
+                      <div class="ia-pipe-step cur">Proposta</div>
+                      <div class="ia-pipe-step">Venda</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="ia-dots">
+              <div class="ia-dot ia-dot-on" id="iad0"></div>
+              <div class="ia-dot" id="iad1"></div>
+              <div class="ia-dot" id="iad2"></div>
+            </div>
+          </div>
         </div>
       </div>
-    </section>
+    </div>
     <div class="proc-bg"><section class="proc" id="processo">
       <div class="phead">
         <h2>Seu processo comercial em um só lugar</h2>
