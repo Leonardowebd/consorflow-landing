@@ -1,0 +1,46 @@
+# Consorflow — robots.txt
+# Política: indexação aberta + liberação de crawlers de IA de busca/citação.
+# Bloqueio mantido para scrapers de treino/coleta em massa.
+
+User-agent: *
+Allow: /
+
+# --- Crawlers de IA: busca e citação (LIBERADOS para GEO/AEO) ---
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# --- Scrapers de coleta/treino em massa (BLOQUEADOS) ---
+User-agent: CCBot
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+Sitemap: https://consorflow.com/sitemap.xml

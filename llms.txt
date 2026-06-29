@@ -1,0 +1,19 @@
+# Consorflow
+> Plataforma de gestão comercial all-in-one para administradoras e corretoras de consórcio. CRM + WhatsApp + IA + funil de vendas em um só sistema.
+
+## O que é
+A Consorflow é um CRM especializado no mercado brasileiro de consórcio. Centraliza leads, atendimento por WhatsApp, funil de vendas, distribuição de oportunidades, campanhas, follow-ups, relatórios e IA para qualificação comercial. Foi construída para a rotina do setor — carta de crédito, proposta, grupo, assembleia, lance e contemplação.
+
+## Para quem
+Administradoras, representantes e corretoras de consórcio que precisam organizar leads, vendedores, propostas e follow-ups em um único fluxo comercial.
+
+## Diferencial
+A IA faz a triagem e priorização inicial dos leads; a negociação e o relacionamento seguem com o vendedor. A Consorflow não administra grupos, não vende cotas e não promete contemplação ou rentabilidade.
+
+## Página
+- [Home](https://consorflow.com/): visão geral do produto, funcionalidades, FAQ e planos.
+
+## Metadados
+- Site oficial: https://consorflow.com/
+- Última atualização: 2026-06-29
+- Observação: este arquivo orienta agentes que leem llms.txt; não é fator de ranking no Google Search.
