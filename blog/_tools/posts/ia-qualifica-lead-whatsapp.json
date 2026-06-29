@@ -1,0 +1,36 @@
+{
+  "slug": "ia-qualifica-lead-whatsapp",
+  "title": "IA que qualifica lead de consórcio no WhatsApp: como funciona",
+  "meta_description": "Entenda como a IA faz a triagem de leads de consórcio no WhatsApp, o que ela pergunta e o que entrega pronto para o corretor fechar.",
+  "dek": "A IA não substitui o vendedor — ela tira do corretor o trabalho repetitivo de triagem e entrega o lead organizado e priorizado.",
+  "pillar": "Tecnologia",
+  "date": "2026-06-29",
+  "read_min": 5,
+  "image": "/asset_funil_kanban.webp",
+  "sections": [
+    {
+      "h2": "Como a IA qualifica um lead de consórcio no WhatsApp?",
+      "answer": "A IA faz o primeiro atendimento automático: pergunta o bem desejado, o valor da carta, o prazo e a urgência. Com isso, organiza as respostas, classifica o interesse e prioriza quem está mais pronto para avançar, entregando o lead já triado ao corretor.",
+      "paras": ["O ganho não é o robô em si, e sim a velocidade. Enquanto o corretor está em outro atendimento, a IA já recebeu, entendeu e organizou o novo lead — sem deixá-lo esperando no vácuo."]
+    },
+    {
+      "h2": "A IA substitui o vendedor de consórcio?",
+      "answer": "Não. A IA cuida da triagem inicial, da organização das informações e da priorização. A negociação, a orientação consultiva e o fechamento continuam com o corretor — especialmente em etapas sensíveis como lance, proposta e contemplação, onde a relação humana decide.",
+      "paras": ["O objetivo é liberar o vendedor das tarefas operacionais para que ele invista tempo no que gera receita: conversar com quem está pronto para decidir."]
+    },
+    {
+      "h2": "O que a IA entrega para o corretor?",
+      "answer": "Ao final da triagem, o corretor recebe um resumo do lead com o interesse declarado, as objeções percebidas, a etapa do funil e a próxima ação recomendada. Em vez de começar do zero, ele entra na conversa já sabendo o contexto e o que oferecer.",
+      "h3": "O que muda na operação",
+      "list": [
+        "<strong>Resposta imediata</strong> a qualquer hora, sem lead esfriando.",
+        "<strong>Padronização</strong> da qualificação entre todos os vendedores.",
+        "<strong>Visibilidade</strong> para o gestor sobre origem, etapa e gargalos do funil."
+      ]
+    }
+  ],
+  "faq": [
+    {"q": "A IA atende em qualquer horário?", "a": "Sim. A IA faz o primeiro atendimento 24 horas por dia, inclusive fora do expediente comercial. Isso evita que um lead que chegou à noite ou no fim de semana fique sem resposta e procure outra corretora antes de você retomar o contato."},
+    {"q": "A IA fala a linguagem do consórcio?", "a": "Sim. A triagem é construída para o setor: a IA pergunta sobre valor do bem, prazo, lance e urgência, usando os termos do mercado. Não é um chatbot genérico adaptado, e sim um fluxo pensado para a venda de consórcio."}
+  ]
+}
