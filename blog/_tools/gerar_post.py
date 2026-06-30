@@ -245,10 +245,23 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("spec", help="arquivo post.json")
     ap.add_argument("--site", default=DEFAULT_SITE)
+    ap.add_argument("--force", action="store_true",
+                    help="publica mesmo reprovando no portão de qualidade")
+    ap.add_argument("--no-gate", action="store_true",
+                    help="pula o portão de curadoria (não recomendado)")
     args = ap.parse_args()
 
     site = Path(args.site)
     p = json.loads(Path(args.spec).read_text(encoding="utf-8"))
+
+    # ── Portão de curadoria/qualidade (SEO + GEO + compliance) ──
+    if not args.no_gate:
+        from validar_post import report
+        score, hard_fail = report(p)
+        if hard_fail and not args.force:
+            print("  ⛔ Post REPROVADO no portão de qualidade — NÃO publicar.")
+            print("     Ajuste a spec e rode de novo (ou use --force para sobrepor).")
+            return 1
 
     post_dir = site / "blog" / p["slug"]
     post_dir.mkdir(parents=True, exist_ok=True)
