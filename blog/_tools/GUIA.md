@@ -14,7 +14,8 @@ Consorflow = CRM/plataforma de gestão comercial para administradoras e corretor
 ## Passos do ciclo
 1. **Pesquisar (WebSearch)**: uma pauta atual relevante ao pilar da vez + boas práticas de SEO/GEO do momento. Não escrever de memória.
 2. **Escrever a spec** `blog/_tools/posts/<slug>.json` (schema abaixo).
-3. **Gerar**: `python3 blog/_tools/gerar_post.py blog/_tools/posts/<slug>.json --site .`
+3. **Gerar**: primeiro garanta a dependência da capa — `pip install Pillow` (gera a capa PNG editorial automaticamente). Depois:
+   `python3 blog/_tools/gerar_post.py blog/_tools/posts/<slug>.json --site .`
    (o `--site .` é obrigatório na nuvem: o site é a raiz do repo clonado.)
 4. **Conferir AVISOS GEO** impressos (blocos fora de 30-60 palavras) e ajustar a spec se preciso.
 5. **Publicar**: `git add -A && git commit -m "blog: <título>" && git push origin main`.
