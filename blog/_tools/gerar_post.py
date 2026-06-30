@@ -188,7 +188,7 @@ def render_post(p):
       <p class="dek">{esc(p["dek"])}</p>
       <div class="meta">Publicado em {p["date"]} · {p.get("read_min", 5)} min de leitura</div>
     </header>
-    <img class="post-cover" src="{img}" alt="{esc(p["title"])}">
+    <img class="post-cover" src="{img}" alt="{esc(p["title"])}" loading="lazy" decoding="async" width="1200" height="630">
 {body_html}
     <div class="cta-box">
       <h3>Sua operação está pronta para vender mais consórcio?</h3>
@@ -208,7 +208,7 @@ def card_html(p):
     img = p.get("image", "/asset_dash.jpg")
     return f'''
       <a class="card" href="/blog/{p['slug']}/">
-        <div class="thumb"><img src="{img}" alt="{esc(p['title'])}"></div>
+        <div class="thumb"><img src="{img}" alt="{esc(p['title'])}" loading="lazy" decoding="async" width="1200" height="630"></div>
         <div class="body">
           <span class="tag">{esc(p['pillar'])}</span>
           <h2>{esc(p['title'])}</h2>
