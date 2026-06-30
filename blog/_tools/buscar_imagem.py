@@ -16,6 +16,8 @@ Uso (import):
 import os, sys, json, urllib.request, urllib.parse
 
 PEXELS = "https://api.pexels.com/v1/search"
+# User-Agent normal: a Pexels (Cloudflare) bloqueia o UA padrão do urllib com 403.
+UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36"
 
 
 def buscar(query, out_path, orientation="landscape"):
@@ -27,7 +29,8 @@ def buscar(query, out_path, orientation="landscape"):
             "query": query, "per_page": 1,
             "orientation": orientation, "size": "large",
         })
-        req = urllib.request.Request(f"{PEXELS}?{qs}", headers={"Authorization": key})
+        req = urllib.request.Request(f"{PEXELS}?{qs}",
+                                     headers={"Authorization": key, "User-Agent": UA})
         with urllib.request.urlopen(req, timeout=30) as r:
             data = json.loads(r.read())
         photos = data.get("photos", [])
@@ -35,7 +38,8 @@ def buscar(query, out_path, orientation="landscape"):
             return None
         ph = photos[0]
         src = ph["src"].get("large2x") or ph["src"].get("large") or ph["src"]["original"]
-        with urllib.request.urlopen(src, timeout=30) as r:
+        img_req = urllib.request.Request(src, headers={"User-Agent": UA})
+        with urllib.request.urlopen(img_req, timeout=30) as r:
             open(out_path, "wb").write(r.read())
         return {
             "path": out_path,
