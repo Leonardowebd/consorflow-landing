@@ -310,6 +310,10 @@ h2.section-title{
 .diff-card.generic li{color:var(--muted)}
 .diff-card.native li{color:rgba(255,255,255,.9)}
 .diff-card .mk{flex:none;margin-top:2px}
+.mark-icon{display:block;color:currentColor}
+.mark-icon--no{color:#c2543f}
+.mark-icon--yes{color:var(--teal)}
+.diff-card.native .mark-icon--yes{color:#7cc6e6}
 .tag-top{
   position:absolute;top:18px;right:18px;font-size:.68rem;letter-spacing:0;
   text-transform:uppercase;font-weight:600;padding:5px 11px;border-radius:999px;
@@ -377,7 +381,37 @@ h2.section-title{
 .cmp td.hl{background:var(--pill);color:var(--navy);font-weight:600}
 .cmp .yes{color:#1f9d63;font-weight:700}
 .cmp .no{color:#c2543f;font-weight:600}
-@media(max-width:680px){.cmp{overflow-x:auto}.cmp table{min-width:560px}}
+/* Comparison: stacked cards on mobile (no horizontal overflow) */
+@media(max-width:680px){
+  .cmp{border:none;background:transparent;box-shadow:none;overflow:visible;margin-top:26px}
+  .cmp table{min-width:0;border-collapse:separate;border-spacing:0}
+  .cmp thead{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
+  .cmp table,.cmp tbody,.cmp tr,.cmp td{display:block;width:100%}
+  .cmp tbody tr{
+    background:#fff;border:1px solid var(--line);border-radius:16px;
+    box-shadow:var(--shadow-sm);margin-bottom:14px;overflow:hidden;
+  }
+  .cmp tbody tr:nth-child(even){background:#fff}
+  .cmp tbody tr:last-child{margin-bottom:0}
+  .cmp tbody td{
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+    padding:13px 16px;font-size:.92rem;text-align:right;
+    border-top:1px solid var(--line);color:var(--muted);
+  }
+  .cmp tbody td:first-child{
+    display:block;text-align:left;border-top:none;
+    background:var(--navy);color:#fff;font-family:'Funnel Display',sans-serif;
+    font-weight:600;font-size:1.04rem;padding:14px 16px;
+  }
+  .cmp tbody td:not(:first-child)::before{
+    content:attr(data-label);
+    flex:1;text-align:left;font-weight:500;color:var(--muted);
+    font-family:'Geist',sans-serif;
+  }
+  .cmp td.hl{background:var(--pill);color:var(--navy);font-weight:600}
+  .cmp tbody td.hl::before{color:var(--navy-2)}
+  .cmp tbody td .yes,.cmp tbody td .no{white-space:nowrap}
+}
 
 /* ============================================================
    BENEFITS
@@ -466,8 +500,8 @@ h2.section-title{
   box-shadow:var(--shadow-cta);transition:transform .2s ease,box-shadow .2s ease;
 }
 .btn-cta:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(37,96,204,.45)}
-.btn-cta svg{transition:transform .2s ease}
-.btn-cta:hover svg{transform:translateX(4px)}
+.btn-cta svg{transition:transform .2s ease,opacity .2s ease}
+.btn-cta:hover svg{transform:scale(1.12);opacity:.9}
 
 /* ============================================================
    FOOTER
@@ -527,12 +561,27 @@ h2.section-title{
   .deck-mark img{height:20px}
   .deck-counter{height:38px;min-width:82px;font-size:.86rem}
   .slide-dots{display:none}
-  .deck-controls{left:16px;right:16px;bottom:14px;justify-content:center}
-  .deck-btn{min-width:118px}
-  .cover-meta,.footer-bottom{gap:16px}
+  /* Mobile nav: thumb-friendly bar fixed to the base, buttons side by side */
+  .deck-controls{
+    left:0;right:0;bottom:0;gap:10px;padding:10px 14px;
+    padding-bottom:calc(10px + env(safe-area-inset-bottom));
+    justify-content:stretch;align-items:stretch;
+    background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,.94) 46%);
+    backdrop-filter:saturate(140%) blur(6px);
+  }
+  .deck-btn{
+    flex:1;min-width:0;height:52px;font-size:.98rem;border-radius:14px;
+    background:#fff;border-color:rgba(212,231,245,1);
+    box-shadow:0 10px 26px rgba(0,41,93,.18);
+    -webkit-tap-highlight-color:transparent;
+    justify-content:center;gap:9px;
+  }
+  .deck-btn svg{width:16px;height:16px}
+  .deck-btn:active{background:var(--pill);color:var(--teal);transform:scale(.98)}
+  .cover-meta{gap:16px}
   .footer .wrap{grid-template-columns:1fr;gap:28px}
   .footer h2{font-size:2.45rem}
-  .footer-bottom{left:24px;right:24px;bottom:70px}
+  .footer-bottom{left:24px;right:24px;bottom:86px;gap:8px}
 }
 
 @media(max-width:560px){
@@ -541,9 +590,19 @@ h2.section-title{
   .cover h1{font-size:2.55rem}
   .cover-logo{height:34px;margin-bottom:34px}
   .cover-meta{flex-direction:column}
-  .deck-btn{min-width:0;flex:1}
+  .deck-btn{min-width:0;flex:1;height:54px;font-size:1rem}
   .btn-cta{width:100%;justify-content:center;padding:16px 20px}
   .footer-contact{padding:22px}
+}
+
+/* Very narrow screens: keep text inside the viewport, scale type */
+@media(max-width:400px){
+  .section{padding:80px 16px 98px}
+  h2.section-title{font-size:1.92rem}
+  .cover h1{font-size:2.28rem}
+  .cover-tag,.lead{font-size:1.02rem}
+  h1,h2,h3,h4,p,li,td,th{overflow-wrap:anywhere;word-break:break-word}
+  .price-tag .val{font-size:2.4rem}
 }
 
 /* ============================================================
@@ -554,13 +613,379 @@ h2.section-title{
 @media(prefers-reduced-motion:reduce){[data-reveal]{opacity:1;transform:none;transition:none}}
 
 /* ============================================================
+   PROGRESS BAR
+   ============================================================ */
+.deck-progress{
+  position:fixed;top:0;left:0;right:0;z-index:95;
+  height:3px;background:rgba(0,41,93,.1);pointer-events:none;
+}
+.deck-progress-bar{
+  height:100%;
+  background:linear-gradient(90deg,var(--teal) 0%,#33a6e3 100%);
+  transition:width .5s cubic-bezier(.4,0,.2,1);
+  width:9.09%;
+}
+
+/* ============================================================
+   KEYBOARD HINT
+   ============================================================ */
+.kbd-hint{
+  position:absolute;bottom:72px;left:0;right:0;
+  text-align:center;font-size:.7rem;
+  color:rgba(255,255,255,.38);pointer-events:none;
+  animation:hint-fade 1.2s ease 5s forwards;
+  letter-spacing:.025em;max-width:none;
+}
+.kbd-hint kbd{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:22px;height:22px;border-radius:5px;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);
+  font-family:'Geist',monospace;font-size:.65rem;color:rgba(255,255,255,.55);
+  font-style:normal;margin:0 2px;
+}
+@keyframes hint-fade{to{opacity:0}}
+@media(max-width:980px){.kbd-hint{display:none}}
+
+/* ============================================================
+   ENHANCED BUTTON STATES
+   ============================================================ */
+.deck-btn{
+  display:inline-flex;align-items:center;gap:7px;
+  justify-content:center;
+}
+.deck-btn:hover{
+  transform:translateY(-2px);
+  background:#fff;
+  color:var(--teal);
+  border-color:rgba(46,143,176,.5);
+  box-shadow:0 14px 38px rgba(0,41,93,.16);
+}
+.deck-btn:active{transform:translateY(0);transition:transform .1s ease}
+.deck-btn svg,.btn-cta svg{flex:none}
+
+/* Dots visible on tablet (768–980px) */
+@media(max-width:980px){
+  .slide-dots{display:flex;right:12px;gap:8px}
+  .slide-dot{width:7px;height:7px}
+  .slide-dot.is-active{height:20px}
+}
+/* Hide dots on very small screens to avoid overlap */
+@media(max-width:480px){.slide-dots{display:none}}
+
+/* ============================================================
+   MOBILE READING MODE
+   ============================================================ */
+@media(max-width:680px){
+  body{font-size:17px;line-height:1.45}
+  p{line-height:1.45;max-width:38rem}
+  .deck-progress{height:4px;background:rgba(255,255,255,.24)}
+  .deck-header{
+    top:max(10px,env(safe-area-inset-top));
+    left:12px;right:12px;
+  }
+  .deck-mark{
+    min-width:104px;height:40px;padding:0 12px;
+    border-color:rgba(212,231,245,.75);
+  }
+  .deck-mark img{height:20px}
+  .deck-counter{
+    min-width:78px;height:40px;padding:0 12px;
+    font-size:.9rem;
+  }
+  .section{
+    height:auto;
+    min-height:100svh;
+    padding:82px 18px calc(124px + env(safe-area-inset-bottom));
+    align-items:flex-start;
+    overflow:visible;
+  }
+  .wrap{max-width:100%}
+  h2.section-title{
+    font-size:2.05rem;
+    line-height:1.08;
+    max-width:20ch;
+    margin-bottom:14px;
+  }
+  .lead{
+    font-size:1.08rem;
+    line-height:1.42;
+    max-width:34rem;
+  }
+  .kicker{
+    font-size:.72rem;
+    padding:6px 11px;
+    margin-bottom:14px;
+  }
+  .eyebrow-num{font-size:.82rem}
+  .cover{padding-top:84px}
+  .cover-logo{height:31px;margin-bottom:26px}
+  .cover h1{
+    font-size:2.45rem;
+    line-height:1.04;
+    max-width:12ch;
+    margin-bottom:18px;
+  }
+  .cover-tag{
+    font-size:1.08rem;
+    line-height:1.42;
+    margin-bottom:30px;
+  }
+  .cover-meta{
+    gap:16px;
+    padding-top:20px;
+  }
+  .cover-meta .field{min-width:0;width:100%}
+  .cover-meta .field-value{font-size:1.05rem}
+  .cover-badge{
+    width:260px;height:260px;right:-100px;top:-80px;
+  }
+  .chaos-grid,.diff-grid,.feat-grid,.ben-grid,.invest-grid,.steps-line{
+    grid-template-columns:1fr;
+    gap:12px;
+    margin-top:22px;
+  }
+  .split{grid-template-columns:1fr;gap:24px}
+  .chaos-card,.feat-card,.ben-card,.price-card,.diff-card{
+    padding:16px;
+    border-radius:16px;
+  }
+  .chaos-card{
+    gap:12px;
+    align-items:flex-start;
+  }
+  .chaos-card .ic,.feat-card .ic,.allin-row .chip,.footer-contact .ic{
+    width:40px;height:40px;border-radius:12px;
+  }
+  .chaos-card h4,.feat-card h4,.step-mini h4,.flow-step h4{
+    font-size:1.05rem;
+    line-height:1.2;
+  }
+  .chaos-card p,.feat-card p,.step-mini p,.flow-step p,.price-list li{
+    font-size:.98rem;
+    line-height:1.42;
+  }
+  .allin-panel{
+    padding:18px;
+    border-radius:18px;
+  }
+  .allin-row{
+    align-items:flex-start;
+    padding:12px 0;
+  }
+  .allin-row .txt b{font-size:1.02rem}
+  .allin-row .txt span{font-size:.94rem;line-height:1.35}
+  .tag-top{
+    position:static;
+    display:inline-flex;
+    margin-bottom:14px;
+  }
+  .diff-card h3{font-size:1.2rem}
+  .diff-card ul{gap:10px}
+  .diff-card li{
+    font-size:.98rem;
+    line-height:1.38;
+  }
+  .flow{
+    grid-template-columns:1fr;
+    gap:12px;
+    margin-top:22px;
+  }
+  .flow-step{
+    display:grid;
+    grid-template-columns:50px 1fr;
+    column-gap:14px;
+    padding:14px;
+    border:1px solid rgba(255,255,255,.16);
+    border-radius:16px;
+    background:rgba(255,255,255,.06);
+  }
+  .flow-step:not(:last-child)::after{display:none}
+  .flow-num{
+    width:50px;height:50px;border-radius:14px;
+    margin:0;
+    grid-row:1 / span 2;
+  }
+  .flow-step p{margin-top:4px}
+  .feat-card .ic{margin-bottom:12px}
+  .ben-card .big{
+    font-size:.9rem;
+    line-height:1.2;
+    margin-bottom:10px;
+  }
+  .ben-card h4{font-size:1.08rem}
+  .compliance-note{
+    margin-top:18px;
+    padding:14px 16px;
+    font-size:.92rem;
+    line-height:1.42;
+  }
+  .price-card{padding:18px}
+  .price-tag .val{font-size:2.75rem}
+  .price-sub{margin-bottom:18px;font-size:.98rem}
+  .price-list{gap:9px}
+  .recurring-pill{
+    top:18px;right:18px;
+    font-size:.64rem;
+  }
+  .invest-summary{
+    margin-top:14px;
+    padding:16px;
+    align-items:flex-start;
+  }
+  .invest-summary .s-txt{font-size:.98rem;line-height:1.42}
+  .summary-note{font-size:.92rem}
+  .cmp{
+    margin-top:22px;
+    border:0;
+    border-radius:0;
+    background:transparent;
+    box-shadow:none;
+    overflow:visible;
+  }
+  .cmp table,.cmp tbody,.cmp tr,.cmp td{display:block;width:100%}
+  .cmp thead{display:none}
+  .cmp tbody{display:grid;gap:12px}
+  .cmp tbody tr{
+    padding:14px;
+    border:1px solid var(--line);
+    border-radius:16px;
+    background:#fff;
+  }
+  .cmp tbody tr:nth-child(even){background:#fff}
+  .cmp tbody td{
+    border:0;
+    padding:8px 0;
+    display:flex;
+    justify-content:space-between;
+    gap:16px;
+    font-size:.95rem;
+    line-height:1.32;
+  }
+  .cmp tbody td:first-child{
+    padding-top:0;
+    display:block;
+    font-family:'Funnel Display',sans-serif;
+    font-size:1.08rem;
+    color:var(--navy);
+  }
+  .cmp tbody td:not(:first-child)::before{
+    color:var(--muted);
+    font-weight:600;
+    flex:0 0 48%;
+  }
+  .cmp tbody td:nth-child(2)::before{content:"Planilha + WhatsApp"}
+  .cmp tbody td:nth-child(3)::before{content:"CRM genérico"}
+  .cmp tbody td:nth-child(4)::before{content:"Consorflow"}
+  .cmp td.hl{
+    background:var(--pill);
+    margin:4px -8px -4px;
+    padding:10px 8px;
+    border-radius:12px;
+  }
+  .steps-line{margin:26px 0 26px}
+  .step-mini{
+    padding:14px;
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:16px;
+    background:rgba(255,255,255,.06);
+  }
+  .btn-cta{
+    width:100%;
+    min-height:56px;
+    justify-content:center;
+    padding:16px 20px;
+    border-radius:16px;
+    font-size:1rem;
+    text-align:center;
+  }
+  .footer .wrap{
+    grid-template-columns:1fr;
+    gap:24px;
+  }
+  .footer img{height:30px;margin-bottom:24px}
+  .footer h2{
+    font-size:2.1rem;
+    line-height:1.08;
+  }
+  .footer p{font-size:1.02rem;line-height:1.42}
+  .footer-contact{
+    padding:16px;
+    border-radius:18px;
+  }
+  .footer-contact a{
+    min-height:52px;
+    font-size:1rem;
+  }
+  .footer-bottom{
+    position:static;
+    margin-top:24px;
+    padding-top:16px;
+    font-size:.8rem;
+  }
+  .deck-controls{
+    left:12px;
+    right:12px;
+    bottom:calc(10px + env(safe-area-inset-bottom));
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    padding:8px;
+    border-radius:20px;
+    background:#011d44;
+    border:1px solid rgba(255,255,255,.16);
+    box-shadow:0 14px 38px rgba(0,20,46,.3);
+  }
+  .deck-btn{
+    min-width:0;
+    width:100%;
+    height:56px;
+    border:0;
+    border-radius:14px;
+    background:#fff;
+    color:var(--navy);
+    font-size:1rem;
+    box-shadow:none;
+    backdrop-filter:none;
+  }
+  .deck-btn[data-next]{
+    background:var(--teal);
+    color:#fff;
+  }
+  .deck-btn svg{
+    width:20px;
+    height:20px;
+    stroke-width:2.4;
+  }
+  .deck-btn:hover{transform:none}
+  .deck-btn:active{transform:scale(.98)}
+  .deck-btn:disabled{
+    opacity:1;
+    background:rgba(255,255,255,.14);
+    color:rgba(255,255,255,.44);
+  }
+  .slide-dots{display:none}
+}
+
+@media(max-width:380px){
+  .section{padding-left:14px;padding-right:14px}
+  h2.section-title{font-size:1.9rem}
+  .cover h1{font-size:2.25rem}
+  .lead,.cover-tag{font-size:1.02rem}
+  .deck-btn{font-size:.94rem}
+}
+
+/* Cover meta: 2-field layout */
+.cover-meta .field{min-width:220px;flex:0 0 auto}
+@media(max-width:680px){.cover-meta .field{min-width:0;width:100%;flex:1 1 100%}}
+
+/* ============================================================
    PRINT — one section per page
    ============================================================ */
 @media print{
   @page{size:A4 landscape;margin:0}
   html{scroll-behavior:auto;scroll-snap-type:none}
   body{overflow:visible;background:#fff}
-  .deck-header,.deck-controls,.slide-dots{display:none !important}
+  .deck-header,.deck-controls,.slide-dots,.deck-progress,.kbd-hint{display:none !important}
   body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
   [data-reveal]{opacity:1 !important;transform:none !important}
   .section{
@@ -592,9 +1017,17 @@ h2.section-title{
 
 <div class="slide-dots" id="slideDots" aria-label="Navegação por slides"></div>
 
+<div class="deck-progress" aria-hidden="true"><div class="deck-progress-bar" id="deckProgressBar"></div></div>
+
 <div class="deck-controls" aria-label="Controles da apresentação">
-  <button class="deck-btn" type="button" data-prev>Anterior</button>
-  <button class="deck-btn" type="button" data-next>Próximo</button>
+  <button class="deck-btn" type="button" data-prev aria-label="Slide anterior">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 5-7 7 7 7"/></svg>
+    Voltar
+  </button>
+  <button class="deck-btn" type="button" data-next aria-label="Próximo slide">
+    Próximo
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+  </button>
 </div>
 
 <!-- ===================== 1. CAPA ===================== -->
@@ -614,11 +1047,8 @@ h2.section-title{
         <div class="field-label">Apresentada por</div>
         <div class="field-value">Consorflow</div>
       </div>
-      <div class="field">
-        <div class="field-label">Data</div>
-        <div class="field-value">30 de junho de 2026</div>
-      </div>
     </div>
+    <p class="kbd-hint" aria-hidden="true">Use <kbd>←</kbd> <kbd>→</kbd> ou as setas do teclado para navegar</p>
   </div>
 </header>
 
@@ -631,25 +1061,25 @@ h2.section-title{
     <div class="chaos-grid">
       <div class="chaos-card">
         <div class="ic">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v18H3z"/><path d="M3 9h18M9 21V9"/></svg>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg>
         </div>
         <div><h4>Dados espalhados em planilhas</h4><p>Leads, follow-ups e histórico de atendimento dependem de arquivos manuais que ninguém atualiza no mesmo ritmo.</p></div>
       </div>
       <div class="chaos-card">
         <div class="ic">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.4 8.5 8.5 0 0 1-3.8-.9L3 21l2-5.4a8.38 8.38 0 0 1-.9-3.8A8.5 8.5 0 0 1 12.6 3 8.38 8.38 0 0 1 21 11.5z"/></svg>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5C21 16.75 16.75 21 11.5 21c-1.67 0-3.24-.43-4.6-1.19L3 21l1.19-3.9A9.36 9.36 0 0 1 2 11.5C2 6.25 6.25 2 11.5 2S21 6.25 21 11.5z"/><path d="M8.5 10.5c.3.6.8 1.2 1.4 1.6.6.4 1.3.7 1.8.7.2 0 .4-.1.5-.2l.5-.5c.1-.1.3-.2.5-.2s.4.1.5.2l1.3 1.3c.1.1.2.3.2.5s-.1.4-.2.5l-.5.5c-.7.7-1.8.9-2.7.6a7 7 0 0 1-3.4-2.3 7 7 0 0 1-1.4-3.8c0-.5.2-1 .5-1.4l.5-.5c.1-.1.3-.2.5-.2s.4.1.5.2l1.3 1.3c.1.1.2.3.2.5s-.1.4-.2.5l-.4.4c-.1.1-.1.2-.1.3z"/></svg>
         </div>
         <div><h4>WhatsApp sem controle</h4><p>O primeiro contato fica no aparelho do corretor. Sem padronização, sem registro, sem visibilidade para a gestão.</p></div>
       </div>
       <div class="chaos-card">
         <div class="ic">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/></svg>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
         </div>
         <div><h4>Follow-up manual e atrasado</h4><p>Quem lembra de retornar para cada contato? O lead esfria enquanto a equipe corre atrás do retrabalho.</p></div>
       </div>
       <div class="chaos-card">
         <div class="ic">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 22h14M5 2h14"/><path d="M17 22v-4.17a2 2 0 0 0-.59-1.42L12 12l-4.41 4.41A2 2 0 0 0 7 17.83V22"/><path d="M7 2v4.17a2 2 0 0 0 .59 1.42L12 12l4.41-4.41A2 2 0 0 0 17 6.17V2"/></svg>
         </div>
         <div><h4>Lentidão custa a cota</h4><p>Demorou para atender? O interessado já fechou em outro grupo. Cada minuto de atraso é uma carta de crédito que escapa.</p></div>
       </div>
@@ -671,15 +1101,15 @@ h2.section-title{
         <div class="txt"><b>CRM nativo de consórcio</b><span>Cada lead centralizado, com histórico completo.</span></div>
       </div>
       <div class="allin-row">
-        <div class="chip"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.4 8.5 8.5 0 0 1-3.8-.9L3 21l2-5.4a8.38 8.38 0 0 1-.9-3.8A8.5 8.5 0 0 1 12.6 3 8.38 8.38 0 0 1 21 11.5z"/></svg></div>
+        <div class="chip"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5C21 16.75 16.75 21 11.5 21c-1.67 0-3.24-.43-4.6-1.19L3 21l1.19-3.9A9.36 9.36 0 0 1 2 11.5C2 6.25 6.25 2 11.5 2S21 6.25 21 11.5z"/></svg></div>
         <div class="txt"><b>WhatsApp integrado</b><span>Atendimento centralizado e rastreável.</span></div>
       </div>
       <div class="allin-row">
-        <div class="chip"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 1 3 3v1a3 3 0 0 1 3 3 3 3 0 0 1-1 5.8V18a3 3 0 0 1-6 0 3 3 0 0 1-6 0v-2.2A3 3 0 0 1 4 10a3 3 0 0 1 3-3V6a3 3 0 0 1 3-3z"/></svg></div>
+        <div class="chip"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2M20 14h2M15 13v2M9 13v2"/></svg></div>
         <div class="txt"><b>IA de qualificação e atendimento</b><span>Trabalha 24/7 para sua equipe.</span></div>
       </div>
       <div class="allin-row">
-        <div class="chip"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="10" width="3" height="8"/><rect x="13" y="6" width="3" height="12"/></svg></div>
+        <div class="chip"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg></div>
         <div class="txt"><b>Funil de vendas em kanban</b><span>Da captação ao fechamento/acompanhamento, tudo visível.</span></div>
       </div>
     </div>
@@ -725,22 +1155,22 @@ h2.section-title{
     <p class="lead">Um fluxo desenhado para que a equipe gaste energia onde ela vale mais — na negociação e no fechamento da cota.</p>
     <div class="flow">
       <div class="flow-step">
-        <div class="flow-num"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 1 3 3v1a3 3 0 0 1 3 3 3 3 0 0 1-1 5.8V18a3 3 0 0 1-6 0 3 3 0 0 1-6 0v-2.2A3 3 0 0 1 4 10a3 3 0 0 1 3-3V6a3 3 0 0 1 3-3z"/></svg></div>
+        <div class="flow-num"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2M20 14h2M15 13v2M9 13v2"/></svg></div>
         <h4>1. IA qualifica</h4>
         <p>Cada lead que chega é analisado e classificado automaticamente por perfil e interesse.</p>
       </div>
       <div class="flow-step">
-        <div class="flow-num"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.4 8.5 8.5 0 0 1-3.8-.9L3 21l2-5.4a8.38 8.38 0 0 1-.9-3.8A8.5 8.5 0 0 1 12.6 3 8.38 8.38 0 0 1 21 11.5z"/></svg></div>
+        <div class="flow-num"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5C21 16.75 16.75 21 11.5 21c-1.67 0-3.24-.43-4.6-1.19L3 21l1.19-3.9A9.36 9.36 0 0 1 2 11.5C2 6.25 6.25 2 11.5 2S21 6.25 21 11.5z"/></svg></div>
         <h4>2. Atende no WhatsApp</h4>
         <p>A IA faz o primeiro atendimento na hora, responde dúvidas e mantém o contato aquecido.</p>
       </div>
       <div class="flow-step">
-        <div class="flow-num"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+        <div class="flow-num"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/><path d="M16 2h6M22 2 16 8"/></svg></div>
         <h4>3. Liga para o contato</h4>
         <p>A discagem automática conecta o lead qualificado à equipe no momento certo.</p>
       </div>
       <div class="flow-step">
-        <div class="flow-num"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+        <div class="flow-num"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m22 4-10 10.01-3-3"/></svg></div>
         <h4>4. Corretor fecha</h4>
         <p>Sua equipe recebe contatos prontos para negociar — e foca no que sabe fazer: vender a cota.</p>
       </div>
@@ -756,32 +1186,32 @@ h2.section-title{
     <p class="lead">Cada módulo conversa com os outros, então a informação flui da captação ao fechamento sem retrabalho.</p>
     <div class="feat-grid">
       <div class="feat-card">
-        <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg></div>
         <h4>Captação e centralização de leads</h4>
         <p>Todos os canais reunidos num só lugar, sem lead perdido entre planilhas e mensagens.</p>
       </div>
       <div class="feat-card">
-        <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 1 3 3v1a3 3 0 0 1 3 3 3 3 0 0 1-1 5.8V18a3 3 0 0 1-6 0 3 3 0 0 1-6 0v-2.2A3 3 0 0 1 4 10a3 3 0 0 1 3-3V6a3 3 0 0 1 3-3z"/></svg></div>
+        <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2M20 14h2M15 13v2M9 13v2"/></svg></div>
         <h4>Atendimento e qualificação por IA</h4>
         <p>Primeiro contato imediato no WhatsApp e triagem automática por perfil de interesse.</p>
       </div>
       <div class="feat-card">
-        <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+        <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/><path d="M16 2h6M22 2 16 8"/></svg></div>
         <h4>Discagem e ligação automática</h4>
         <p>A plataforma liga para os contatos qualificados e encaminha à equipe no timing ideal.</p>
       </div>
       <div class="feat-card">
-        <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="6" height="18" rx="1"/><rect x="10" y="3" width="6" height="12" rx="1"/><rect x="17" y="3" width="4" height="8" rx="1"/></svg></div>
+        <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div>
         <h4>Funil de vendas em kanban</h4>
         <p>Etapas visuais do consórcio, do lead ao fechamento/acompanhamento, com cada cota no lugar certo.</p>
       </div>
       <div class="feat-card">
-        <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg></div>
+        <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5v12L3 13"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg></div>
         <h4>Campanhas</h4>
         <p>Dispare ações segmentadas e reative bases de contatos com mensagens no momento certo.</p>
       </div>
       <div class="feat-card">
-        <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg></div>
+        <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 16v-5M12 16V8M17 16v-3"/></svg></div>
         <h4>Relatórios e dashboards</h4>
         <p>Indicadores comerciais claros para o gestor acompanhar produtividade e conversão.</p>
       </div>
@@ -808,33 +1238,33 @@ h2.section-title{
         <tbody>
           <tr>
             <td>Feito para consórcio</td>
-            <td><span class="no">Não</span></td>
-            <td><span class="no">Adaptado</span></td>
-            <td class="hl"><span class="yes">Nativo</span></td>
+            <td data-label="Planilha + WhatsApp"><span class="no">Não</span></td>
+            <td data-label="CRM genérico"><span class="no">Adaptado</span></td>
+            <td class="hl" data-label="Consorflow"><span class="yes">Nativo</span></td>
           </tr>
           <tr>
             <td>IA de qualificação integrada</td>
-            <td><span class="no">Não</span></td>
-            <td>Módulo à parte</td>
-            <td class="hl"><span class="yes">Incluída</span></td>
+            <td data-label="Planilha + WhatsApp"><span class="no">Não</span></td>
+            <td data-label="CRM genérico">Módulo à parte</td>
+            <td class="hl" data-label="Consorflow"><span class="yes">Incluída</span></td>
           </tr>
           <tr>
             <td>Atendimento no WhatsApp</td>
-            <td>Manual, no celular</td>
-            <td>Integração frágil</td>
-            <td class="hl"><span class="yes">Canal central</span></td>
+            <td data-label="Planilha + WhatsApp">Manual, no celular</td>
+            <td data-label="CRM genérico">Integração frágil</td>
+            <td class="hl" data-label="Consorflow"><span class="yes">Canal central</span></td>
           </tr>
           <tr>
             <td>Ligação automática</td>
-            <td><span class="no">Não</span></td>
-            <td>Raramente</td>
-            <td class="hl"><span class="yes">Sim</span></td>
+            <td data-label="Planilha + WhatsApp"><span class="no">Não</span></td>
+            <td data-label="CRM genérico">Raramente</td>
+            <td class="hl" data-label="Consorflow"><span class="yes">Sim</span></td>
           </tr>
           <tr>
             <td>Visão única da operação</td>
-            <td><span class="no">Fragmentada</span></td>
-            <td>Parcial</td>
-            <td class="hl"><span class="yes">All&#8209;in&#8209;one</span></td>
+            <td data-label="Planilha + WhatsApp"><span class="no">Fragmentada</span></td>
+            <td data-label="CRM genérico">Parcial</td>
+            <td class="hl" data-label="Consorflow"><span class="yes">All&#8209;in&#8209;one</span></td>
           </tr>
         </tbody>
       </table>
@@ -850,17 +1280,17 @@ h2.section-title{
     <p class="lead">O ganho está na produtividade da equipe e na qualidade do atendimento — não em qualquer promessa de resultado financeiro.</p>
     <div class="ben-grid">
       <div class="ben-card">
-        <div class="big"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg>Mais leads atendidos</div>
+        <div class="big"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg>Mais leads atendidos</div>
         <h4>Nenhum contato esquecido</h4>
         <p>A IA dá a primeira resposta na hora, então nenhum interessado fica sem resposta esperando o corretor.</p>
       </div>
       <div class="ben-card">
-        <div class="big"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4"/></svg>Menos perda no funil</div>
+        <div class="big"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg>Menos perda no funil</div>
         <h4>Resposta rápida, cota preservada</h4>
         <p>Atendimento imediato e follow-up automático reduzem o esfriamento de leads ao longo do funil.</p>
       </div>
       <div class="ben-card">
-        <div class="big"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg>Mais produtividade</div>
+        <div class="big"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h8l-1 8 10-12h-8L13 2z"/></svg>Mais produtividade</div>
         <h4>Equipe focada em fechar</h4>
         <p>Com a IA cuidando da prospecção e da triagem, o corretor investe o tempo onde gera mais valor: na negociação.</p>
       </div>
@@ -931,7 +1361,7 @@ h2.section-title{
     </div>
     <a class="btn-cta" href="https://wa.me/5577981454387" target="_blank" rel="noopener">
       Falar com a Consorflow no WhatsApp
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5C21 16.75 16.75 21 11.5 21c-1.67 0-3.24-.43-4.6-1.19L3 21l1.19-3.9A9.36 9.36 0 0 1 2 11.5C2 6.25 6.25 2 11.5 2S21 6.25 21 11.5z"/></svg>
     </a>
   </div>
 </section>
@@ -955,7 +1385,7 @@ h2.section-title{
         consorflow.com
       </a>
       <a href="https://wa.me/5577981454387" target="_blank" rel="noopener">
-        <span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.4 8.5 8.5 0 0 1-3.8-.9L3 21l2-5.4a8.38 8.38 0 0 1-.9-3.8A8.5 8.5 0 0 1 12.6 3 8.38 8.38 0 0 1 21 11.5z"/></svg></span>
+        <span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5C21 16.75 16.75 21 11.5 21c-1.67 0-3.24-.43-4.6-1.19L3 21l1.19-3.9A9.36 9.36 0 0 1 2 11.5C2 6.25 6.25 2 11.5 2S21 6.25 21 11.5z"/></svg></span>
         +55 77 98145&#8209;4387
       </a>
     </div>
@@ -974,6 +1404,7 @@ h2.section-title{
     var prevBtn=document.querySelector('[data-prev]');
     var nextBtn=document.querySelector('[data-next]');
     var dotsWrap=document.getElementById('slideDots');
+    var progressBar=document.getElementById('deckProgressBar');
     var reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var activeIndex=0;
 
@@ -986,6 +1417,9 @@ h2.section-title{
       if(currentEl){currentEl.textContent=formatNumber(activeIndex+1);}
       if(prevBtn){prevBtn.disabled=activeIndex===0;}
       if(nextBtn){nextBtn.disabled=activeIndex===slides.length-1;}
+      if(progressBar&&slides.length){
+        progressBar.style.width=((activeIndex+1)/slides.length*100).toFixed(2)+'%';
+      }
       if(dotsWrap){
         Array.prototype.forEach.call(dotsWrap.children,function(dot,dotIndex){
           dot.classList.toggle('is-active',dotIndex===activeIndex);
@@ -1077,6 +1511,41 @@ h2.section-title{
         setActive(closestIndex);
       });
     }
+
+    /* ---- Touch swipe support ---- */
+    var tStartX=0,tStartY=0,tStartTime=0;
+    document.addEventListener('touchstart',function(e){
+      tStartX=e.changedTouches[0].clientX;
+      tStartY=e.changedTouches[0].clientY;
+      tStartTime=Date.now();
+    },{passive:true});
+    document.addEventListener('touchend',function(e){
+      var dx=e.changedTouches[0].clientX-tStartX;
+      var dy=e.changedTouches[0].clientY-tStartY;
+      var dt=Date.now()-tStartTime;
+      if(dt>450||Math.abs(dy)<50){return;}
+      if(Math.abs(dy)<Math.abs(dx)*0.8){return;} /* more horizontal than vertical — ignore */
+      if(dy<0){goTo(activeIndex+1);}
+      else{goTo(activeIndex-1);}
+    },{passive:true});
+
+    // Swipe horizontal para trocar de slide em telas de toque
+    var touchStartX=0,touchStartY=0,touchTracking=false;
+    window.addEventListener('touchstart',function(e){
+      if(e.touches.length!==1){touchTracking=false;return;}
+      touchStartX=e.touches[0].clientX;
+      touchStartY=e.touches[0].clientY;
+      touchTracking=true;
+    },{passive:true});
+    window.addEventListener('touchend',function(e){
+      if(!touchTracking){return;}
+      touchTracking=false;
+      var dx=e.changedTouches[0].clientX-touchStartX;
+      var dy=e.changedTouches[0].clientY-touchStartY;
+      if(Math.abs(dx)>56 && Math.abs(dx)>Math.abs(dy)*1.5){
+        if(dx<0){goTo(activeIndex+1);}else{goTo(activeIndex-1);}
+      }
+    },{passive:true});
 
     setActive(0);
   })();
