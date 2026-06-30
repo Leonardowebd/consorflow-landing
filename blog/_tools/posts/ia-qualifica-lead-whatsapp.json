@@ -18,6 +18,8 @@
     },
     {
       "h2": "Como a IA qualifica um lead de consórcio no WhatsApp?",
+      "image_query": "person using whatsapp on smartphone",
+      "image_alt": "Atendimento de leads pelo WhatsApp no celular",
       "answer": "A IA conversa com o lead no WhatsApp, faz as perguntas de triagem que um vendedor faria e interpreta as respostas. Ela registra objetivo, faixa de crédito, prazo e nível de interesse, classifica o lead por temperatura e entrega tudo organizado no funil, sem o cliente esperar.",
       "paras": [
         "O ponto de partida é o primeiro contato. Quando o lead manda mensagem, a IA responde em segundos — e velocidade de resposta é um dos fatores que mais influenciam a chance de avançar uma conversa comercial. Em vez de um \"aguarde, já te respondo\", o cliente é acolhido na hora.",
@@ -43,6 +45,8 @@
     },
     {
       "h2": "Quais sinais a IA usa para priorizar um lead?",
+      "image_query": "business data dashboard analytics screen",
+      "image_alt": "Painel de dados para priorização de leads comerciais",
       "answer": "A IA cruza sinais explícitos e de comportamento: urgência declarada, faixa de crédito compatível, clareza do objetivo, velocidade das respostas e engajamento na conversa. Quanto mais sinais positivos, mais quente o lead — e mais cedo ele aparece na fila do vendedor para ser atendido.",
       "paras": [
         "Nem todo sinal pesa igual. Alguém que diz \"quero resolver esse mês\" e responde rápido tende a estar mais perto da decisão do que quem some por dias entre uma mensagem e outra. A IA aprende a dar peso a esses padrões e a reordenar a fila continuamente."

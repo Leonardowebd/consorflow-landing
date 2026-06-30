@@ -117,6 +117,8 @@ def validate(p):
 
     # ── Imagem ──
     chk("Pilar definido (cor da capa)", bool(p.get("pillar")), False, p.get("pillar", ""))
+    n_inline = sum(1 for s in sections if s.get("image_query"))
+    chk("≥ 2 imagens inline (banco de imagens)", n_inline >= 2, False, f"{n_inline} marcadas")
 
     # ── Compliance (regra dura) ──
     hits = sorted({m.group(0) for pat in BANNED for m in re.finditer(pat, low)})

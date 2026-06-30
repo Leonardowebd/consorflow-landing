@@ -34,6 +34,7 @@ Schema do post.json:
 import json, re, sys, argparse, html
 from pathlib import Path
 from gerar_capa import render_capa
+from buscar_imagem import buscar
 
 DEFAULT_SITE = "/Users/niina/Documents/IA/proto"
 BASE = "https://consorflow.com"
@@ -137,6 +138,12 @@ def render_post(p):
             body.append('    <ul>')
             body += [f'      <li>{li}</li>' for li in s["list"]]
             body.append('    </ul>')
+        if s.get("_img"):
+            fig = s["_img"]
+            body.append(f'    <figure class="post-fig"><img src="{fig["src"]}" alt="{esc(fig["alt"])}" loading="lazy" decoding="async" width="1200" height="800">')
+            if fig.get("credit"):
+                body.append(f'      <figcaption>Foto: {esc(fig["credit"])} / {fig["origem"]}</figcaption>')
+            body.append('    </figure>')
     body_html = "\n".join(body)
 
     faq_html = ""
@@ -173,7 +180,7 @@ def render_post(p):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Funnel+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/blog/blog.css?v=3">
+<link rel="stylesheet" href="/blog/blog.css?v=4">
 <script type="application/ld+json">
 {ld}
 </script>
@@ -272,6 +279,21 @@ def main():
         render_capa(p["title"], p.get("pillar", "Consorflow"),
                     str(post_dir / "capa.png"))
         p["image"] = f"/blog/{p['slug']}/capa.png"
+
+    # Imagens inline: seções com "image_query" recebem foto de banco (Pexels).
+    # Falha graciosa: sem chave/sem resultado, a seção fica sem figura.
+    for i, s in enumerate(p.get("sections", []), 1):
+        q = s.get("image_query")
+        if not q:
+            continue
+        fn = f"img-{i}.jpg"
+        info = buscar(q, str(post_dir / fn))
+        if info:
+            s["_img"] = {"src": f"/blog/{p['slug']}/{fn}", "alt": s.get("image_alt") or info["alt"],
+                         "credit": info["credit"], "origem": info["origem"]}
+            print(f"  imagem inline §{i}: {q} -> {info['credit']}/{info['origem']}")
+        else:
+            print(f"  (sem imagem inline §{i}: '{q}' — sem PEXELS_API_KEY ou sem resultado)")
 
     doc, url, warns = render_post(p)
     (post_dir / "index.html").write_text(doc, encoding="utf-8")
