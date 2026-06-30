@@ -58,6 +58,7 @@ article.post{max-width:760px;margin:0 auto;padding:8px 0 40px}
 .post-head h1{font-size:40px;font-weight:800;margin:14px 0 16px;line-height:1.08}
 .post-head .dek{font-size:19px;color:var(--ink)}
 .post-head .meta{font-size:13px;color:var(--muted);margin-top:18px}
+.post-cover{display:block;width:100%;aspect-ratio:1200/630;object-fit:cover;border-radius:14px;margin:0 0 32px}
 article.post h2{font-size:27px;font-weight:700;margin:40px 0 12px}
 article.post h3{font-size:20px;font-weight:600;margin:28px 0 8px}
 article.post p{font-size:17px;margin:14px 0;color:#2c3947}

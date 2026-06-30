@@ -33,6 +33,7 @@ Schema do post.json:
 """
 import json, re, sys, argparse, html
 from pathlib import Path
+from gerar_capa import render_capa
 
 DEFAULT_SITE = "/Users/niina/Documents/IA/proto"
 BASE = "https://consorflow.com"
@@ -164,12 +165,15 @@ def render_post(p):
 <meta property="og:description" content="{esc(p["meta_description"])}">
 <meta property="og:url" content="{url}">
 <meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="{img_abs}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="{img_abs}">
 <meta property="article:published_time" content="{p["date"]}">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Funnel+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/blog/blog.css?v=2">
+<link rel="stylesheet" href="/blog/blog.css?v=3">
 <script type="application/ld+json">
 {ld}
 </script>
@@ -184,6 +188,7 @@ def render_post(p):
       <p class="dek">{esc(p["dek"])}</p>
       <div class="meta">Publicado em {p["date"]} · {p.get("read_min", 5)} min de leitura</div>
     </header>
+    <img class="post-cover" src="{img}" alt="{esc(p["title"])}">
 {body_html}
     <div class="cta-box">
       <h3>Sua operação está pronta para vender mais consórcio?</h3>
@@ -244,10 +249,18 @@ def main():
 
     site = Path(args.site)
     p = json.loads(Path(args.spec).read_text(encoding="utf-8"))
-    doc, url, warns = render_post(p)
 
     post_dir = site / "blog" / p["slug"]
     post_dir.mkdir(parents=True, exist_ok=True)
+
+    # Capa editorial gerada (identidade Consorflow) — vira a imagem do post,
+    # a menos que o spec defina "image" explicitamente.
+    if not p.get("image"):
+        render_capa(p["title"], p.get("pillar", "Consorflow"),
+                    str(post_dir / "capa.png"))
+        p["image"] = f"/blog/{p['slug']}/capa.png"
+
+    doc, url, warns = render_post(p)
     (post_dir / "index.html").write_text(doc, encoding="utf-8")
     update_index(site, p)
     update_sitemap(site, url, p["date"])
