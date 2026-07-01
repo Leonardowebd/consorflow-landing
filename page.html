@@ -1059,6 +1059,16 @@
     .footer-bottom{justify-content:flex-start}
   }
 
+  /* ===== TABLET / NARROW DESKTOP: prevent the 1440px artboard from widening the document ===== */
+  @media (min-width:769px) and (max-width:1439px){
+    html,body{max-width:100%;overflow-x:hidden}
+    .page{width:100%;overflow-x:clip}
+    .nav,.hero,.features,.funil,.proc{width:100%}
+    .degrade{width:100%}
+    .nav{left:0;transform:none}
+    .features,.features-bg,.proc-bg{overflow-x:clip}
+  }
+
   /* ===== LARGE SCREEN ≥1441px SUPPORT ===== */
   @media(min-width:1441px){
     .page{width:100%;max-width:none}
