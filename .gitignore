@@ -2,3 +2,5 @@
 _orig_backup/
 *.DS_Store
 node_modules/
+__pycache__/
+*.pyc
