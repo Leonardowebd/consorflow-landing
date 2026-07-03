@@ -35,7 +35,7 @@ Consorflow = CRM/plataforma de gestão comercial para administradoras e corretor
   "slug": "kebab-case",
   "title": "...", "meta_description": "...", "dek": "...",
   "pillar": "Notícias do mundo | Mundo do consórcio | Tecnologia",
-  "date": "AAAA-MM-DD", "read_min": 6, "image": "/asset_dash.jpg",
+  "date": "AAAA-MM-DD", "read_min": 6, "image": "(NÃO defina — a capa editorial é gerada automaticamente; só use para sobrepor de propósito)",
   "sections": [
     {"h2": "Pergunta?", "answer": "Resposta 30-60 palavras.", "paras": ["..."], "h3": "opcional", "list": ["..."]}
   ],
