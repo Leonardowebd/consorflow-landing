@@ -68,7 +68,6 @@ def gerar(section_query, alt, out_path):
             contents=[prompt_editorial(section_query, alt)],
             config=types.GenerateContentConfig(
                 response_modalities=["TEXT", "IMAGE"],
-                image_size="2K",
             ),
         )
 
