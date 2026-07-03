@@ -17,6 +17,7 @@ import os, sys, json, urllib.request, urllib.parse
 from pathlib import Path
 from validar_post import validate, all_text
 from gerar_capa import render_capa
+from buscar_imagem import buscar
 
 API = "https://api.telegram.org/bot{token}/{method}"
 
@@ -32,8 +33,9 @@ def _post(method, data=None, files=None):
             body += (f"--{boundary}\r\nContent-Disposition: form-data; name=\"{k}\"\r\n\r\n{v}\r\n").encode()
         for k, path in files.items():
             fn = os.path.basename(path)
+            content_type = mimetypes.guess_type(path)[0] or "application/octet-stream"
             body += (f"--{boundary}\r\nContent-Disposition: form-data; name=\"{k}\"; filename=\"{fn}\"\r\n"
-                     f"Content-Type: image/png\r\n\r\n").encode()
+                     f"Content-Type: {content_type}\r\n\r\n").encode()
             body += open(path, "rb").read() + b"\r\n"
         body += f"--{boundary}--\r\n".encode()
         req = urllib.request.Request(url, data=body)
@@ -69,6 +71,28 @@ def send_chunks(chat, text):
         _post("sendMessage", {"chat_id": chat, "text": text[i:i + 3800]})
 
 
+def send_section_images(chat, p):
+    if not os.environ.get("PEXELS_API_KEY"):
+        return
+    slug = p["slug"]
+    for idx, section in enumerate(p.get("sections", []), start=1):
+        query = section.get("image_query")
+        if not query:
+            continue
+        try:
+            out = f"/tmp/pexels_{slug}_{idx}.jpg"
+            info = buscar(query, out)
+            if not info:
+                continue
+            alt = section.get("image_alt") or info.get("alt") or query
+            credit = info.get("credit") or "Pexels"
+            caption = f"Imagem §{idx}: {alt} — Foto: {credit}/Pexels"
+            _post("sendPhoto", {"chat_id": chat, "caption": caption},
+                  files={"photo": info["path"]})
+        except Exception as e:
+            print(f"aviso: preview de imagem falhou (§{idx}, {query}): {e}", file=sys.stderr)
+
+
 def main():
     spec = sys.argv[1]
     p = json.loads(Path(spec).read_text(encoding="utf-8"))
@@ -88,6 +112,9 @@ def main():
     _post("sendPhoto", {"chat_id": chat, "caption": caption, "parse_mode": "Markdown"},
           files={"photo": cover})
 
+    # previews de imagens inline que serão usadas após aprovação
+    send_section_images(chat, p)
+
     # corpo
     send_chunks(chat, article_text(p))
 
@@ -98,7 +125,9 @@ def main():
     ]]}
     _post("sendMessage", {
         "chat_id": chat,
-        "text": f"Publicar “{p['title']}”?\n(ou responda: /aprovar {slug}  |  /recusar {slug})",
+        "text": (f"Publicar “{p['title']}”?\n"
+                 f"(ou responda: /aprovar {slug}  |  /recusar {slug})\n"
+                 "Após aprovar, a publicação sai na próxima janela (hh:07 ou hh:37 UTC)."),
         "reply_markup": json.dumps(kb),
     })
     print(f"OK enviado ao Telegram: {slug} (nota {score}/100, {status})")
