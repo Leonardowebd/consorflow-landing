@@ -1,21 +1,27 @@
 #!/usr/bin/env python3
 """
-Gera imagens editoriais do blog via Gemini, com fallback externo no chamador.
+Gera imagens editoriais do blog via IA, com fallback externo no chamador.
 
 Uso por import:
     from gerar_imagem_ia import gerar
     gerar("crm dashboard sales team", "Equipe olhando CRM", "img-1.jpg")
 
-Requer opcionalmente:
+Requer opcionalmente para a primeira opção:
     GEMINI_API_KEY
 """
 import io
 import os
 import sys
+import time
+import urllib.error
+import urllib.parse
+import urllib.request
 from pathlib import Path
 
 
 MODEL = "gemini-3.1-flash-image-preview"
+POLLINATIONS = "https://image.pollinations.ai/prompt/{prompt}?width=1200&height=800&nologo=true&model=flux"
+UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36"
 
 
 def prompt_editorial(section_query, alt):
@@ -49,7 +55,15 @@ def _save_image(data, out_path):
     return str(out)
 
 
-def gerar(section_query, alt, out_path):
+def _has_image_magic(data):
+    return data.startswith(b"\xff\xd8\xff") or data.startswith(b"\x89PNG\r\n\x1a\n")
+
+
+def _is_image_response(content_type, data):
+    return (content_type or "").lower().startswith("image/") or _has_image_magic(data)
+
+
+def _gerar_gemini(section_query, alt, out_path):
     api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
         return None
@@ -82,6 +96,47 @@ def gerar(section_query, alt, out_path):
     except Exception as e:
         print(f"aviso: Gemini falhou ({section_query}): {e}", file=sys.stderr)
         return None
+
+
+def _gerar_pollinations(section_query, alt, out_path):
+    prompt = urllib.parse.quote(prompt_editorial(section_query, alt), safe="")
+    url = POLLINATIONS.format(prompt=prompt)
+    backoffs = [5, 15, 30]
+
+    for attempt, delay in enumerate(backoffs, start=1):
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "image/avif,image/webp,image/apng,image/*,*/*;q=0.8"})
+            with urllib.request.urlopen(req, timeout=90) as r:
+                data = r.read()
+                content_type = r.headers.get("Content-Type", "")
+            if data and _is_image_response(content_type, data):
+                return _save_image(data, out_path)
+            print(
+                f"aviso: Pollinations retornou resposta não-imagem "
+                f"(tentativa {attempt}, content-type={content_type or 'vazio'})",
+                file=sys.stderr,
+            )
+        except urllib.error.HTTPError as e:
+            body = e.read(400)
+            print(
+                f"aviso: Pollinations HTTP {e.code} "
+                f"(tentativa {attempt}): {body[:160]!r}",
+                file=sys.stderr,
+            )
+        except Exception as e:
+            print(f"aviso: Pollinations falhou (tentativa {attempt}): {e}", file=sys.stderr)
+
+        if attempt < len(backoffs):
+            time.sleep(delay)
+
+    return None
+
+
+def gerar(section_query, alt, out_path):
+    return (
+        _gerar_gemini(section_query, alt, out_path)
+        or _gerar_pollinations(section_query, alt, out_path)
+    )
 
 
 def main():
