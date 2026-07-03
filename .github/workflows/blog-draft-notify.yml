@@ -1,0 +1,45 @@
+name: Blog draft notify
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "blog/_tools/posts/pending/**"
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: python -m pip install --upgrade Pillow
+
+      - name: Send added drafts to Telegram
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          set -euo pipefail
+          added="$(git diff --name-only --diff-filter=A HEAD^ HEAD -- 'blog/_tools/posts/pending/*.json' || true)"
+
+          if [ -z "$added" ]; then
+            echo "No new pending blog drafts to notify."
+            exit 0
+          fi
+
+          while IFS= read -r file; do
+            rel="${file#blog/_tools/}"
+            echo "Sending draft to Telegram: $rel"
+            (cd blog/_tools && python enviar_telegram.py "$rel")
+          done <<< "$added"
