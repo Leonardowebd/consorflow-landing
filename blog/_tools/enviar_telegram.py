@@ -18,6 +18,7 @@ from pathlib import Path
 from validar_post import validate, all_text
 from gerar_capa import render_capa
 from buscar_imagem import buscar
+from gerar_imagem_ia import gerar as gerar_ia
 
 API = "https://api.telegram.org/bot{token}/{method}"
 
@@ -71,31 +72,89 @@ def send_chunks(chat, text):
         _post("sendMessage", {"chat_id": chat, "text": text[i:i + 3800]})
 
 
-def send_section_images(chat, p):
-    if not os.environ.get("PEXELS_API_KEY"):
-        return
+def _write_meta(path, meta):
+    Path(path).write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def _read_meta(path):
+    try:
+        return json.loads(Path(path).read_text(encoding="utf-8"))
+    except Exception:
+        return None
+
+
+def _caption(idx, meta):
+    alt = meta.get("alt", "")
+    credit = meta.get("credit", "")
+    origem = meta.get("origem", "")
+    if origem == "Pexels":
+        return f"Imagem §{idx}: {alt} — Foto: {credit}/Pexels"
+    return f"Imagem §{idx}: {alt} — Imagem gerada por IA/Gemini"
+
+
+def ensure_section_image_asset(section, slug, idx, assets_dir):
+    query = section.get("image_query")
+    if not query:
+        return None
+    assets_dir.mkdir(parents=True, exist_ok=True)
+    out = assets_dir / f"img-{idx}.jpg"
+    meta_path = assets_dir / f"img-{idx}.json"
+    alt = section.get("image_alt") or query
+
+    if out.exists():
+        meta = _read_meta(meta_path) or {
+            "path": str(out),
+            "alt": alt,
+            "credit": "Consorflow IA",
+            "origem": "Gemini",
+        }
+        meta["path"] = str(out)
+        return meta
+
+    if os.environ.get("GEMINI_API_KEY"):
+        generated = gerar_ia(query, alt, str(out))
+        if generated:
+            meta = {
+                "path": generated,
+                "alt": alt,
+                "credit": "Consorflow IA",
+                "origem": "Gemini",
+            }
+            _write_meta(meta_path, meta)
+            return meta
+
+    if os.environ.get("PEXELS_API_KEY"):
+        info = buscar(query, str(out))
+        if info:
+            meta = {
+                "path": info["path"],
+                "alt": alt,
+                "credit": info.get("credit", ""),
+                "origem": "Pexels",
+            }
+            _write_meta(meta_path, meta)
+            return meta
+
+    return None
+
+
+def send_section_images(chat, p, spec_path):
     slug = p["slug"]
+    assets_dir = spec_path.parent / "assets" / slug
     for idx, section in enumerate(p.get("sections", []), start=1):
-        query = section.get("image_query")
-        if not query:
-            continue
         try:
-            out = f"/tmp/pexels_{slug}_{idx}.jpg"
-            info = buscar(query, out)
-            if not info:
+            meta = ensure_section_image_asset(section, slug, idx, assets_dir)
+            if not meta:
                 continue
-            alt = section.get("image_alt") or info.get("alt") or query
-            credit = info.get("credit") or "Pexels"
-            caption = f"Imagem §{idx}: {alt} — Foto: {credit}/Pexels"
-            _post("sendPhoto", {"chat_id": chat, "caption": caption},
-                  files={"photo": info["path"]})
+            _post("sendPhoto", {"chat_id": chat, "caption": _caption(idx, meta)},
+                  files={"photo": meta["path"]})
         except Exception as e:
-            print(f"aviso: preview de imagem falhou (§{idx}, {query}): {e}", file=sys.stderr)
+            print(f"aviso: preview de imagem falhou (§{idx}): {e}", file=sys.stderr)
 
 
 def main():
-    spec = sys.argv[1]
-    p = json.loads(Path(spec).read_text(encoding="utf-8"))
+    spec_path = Path(sys.argv[1])
+    p = json.loads(spec_path.read_text(encoding="utf-8"))
     chat = os.environ["TELEGRAM_CHAT_ID"]
     slug = p["slug"]
 
@@ -113,7 +172,7 @@ def main():
           files={"photo": cover})
 
     # previews de imagens inline que serão usadas após aprovação
-    send_section_images(chat, p)
+    send_section_images(chat, p, spec_path)
 
     # corpo
     send_chunks(chat, article_text(p))
@@ -127,7 +186,7 @@ def main():
         "chat_id": chat,
         "text": (f"Publicar “{p['title']}”?\n"
                  f"(ou responda: /aprovar {slug}  |  /recusar {slug})\n"
-                 "Após aprovar, a publicação sai na próxima janela (hh:07 ou hh:37 UTC)."),
+                 "Após aprovar, a publicação sai na próxima janela de 10 minutos (UTC)."),
         "reply_markup": json.dumps(kb),
     })
     print(f"OK enviado ao Telegram: {slug} (nota {score}/100, {status})")

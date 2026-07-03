@@ -41,28 +41,38 @@ def git(*args):
 
 
 def aprovar(slug):
+    print(f"[aprovar] slug={slug}", flush=True)
     spec = PENDING / f"{slug}.json"
     if not spec.exists():
+        print(f"[aprovar] rascunho não encontrado: {spec}", flush=True)
         reply(f"⚠️ Rascunho não encontrado: {slug}")
         return
     dest = PUBLISHED / f"{slug}.json"
+    print(f"[aprovar] movendo spec {spec} -> {dest}", flush=True)
     spec.replace(dest)  # move pending -> published
+    print(f"[aprovar] gerando post com {dest}", flush=True)
     subprocess.run([sys.executable, str(TOOLS / "gerar_post.py"),
                     str(dest), "--site", str(ROOT)], check=True)
+    print("[aprovar] git add/commit/push", flush=True)
     git("add", "-A")
     git("commit", "-m", f"blog: publica {slug} (aprovado via Telegram)")
-    git("push", "origin", "main")
+    git("fetch", "origin", "main")
+    git("rebase", "origin/main")
+    git("push", "origin", "HEAD:main")
     reply(f"✅ Publicado: https://consorflow.com/blog/{slug}/")
 
 
 def recusar(slug):
+    print(f"[recusar] slug={slug}", flush=True)
     spec = PENDING / f"{slug}.json"
     if spec.exists():
+        print(f"[recusar] removendo {spec}", flush=True)
         spec.unlink()
     reply(f"🗑 Rascunho descartado: {slug}")
 
 
 def handle(cmd, slug):
+    print(f"[decisão] cmd={cmd} slug={slug}", flush=True)
     if cmd == "aprovar":
         aprovar(slug)
     elif cmd == "recusar":
@@ -80,18 +90,37 @@ def main():
     last = 0
     for u in updates:
         last = max(last, u["update_id"])
+        print(f"[update] update_id={u['update_id']}", flush=True)
         # botão inline
         if "callback_query" in u:
             cq = u["callback_query"]
-            if str(cq["message"]["chat"]["id"]) != chat:
+            cb_chat = str(cq["message"]["chat"]["id"])
+            print(f"[callback] chat_id={cb_chat} esperado={chat} data={cq.get('data','')}", flush=True)
+            if cb_chat != chat:
+                print("[callback] ignorado: chat_id diferente", flush=True)
                 continue
-            tg("answerCallbackQuery", {"callback_query_id": cq["id"]})
             if ":" in cq.get("data", ""):
                 cmd, slug = cq["data"].split(":", 1)
+                if cmd == "aprovar":
+                    tg("answerCallbackQuery", {
+                        "callback_query_id": cq["id"],
+                        "text": "⏳ Aprovação recebida — publicando...",
+                        "show_alert": "false",
+                    })
+                    reply(f"⏳ Publicando {slug}...")
+                else:
+                    tg("answerCallbackQuery", {
+                        "callback_query_id": cq["id"],
+                        "text": "Recusa recebida.",
+                        "show_alert": "false",
+                    })
                 handle(cmd, slug)
         # comando de texto
         msg = u.get("message", {})
-        if str(msg.get("chat", {}).get("id")) == chat:
+        msg_chat = str(msg.get("chat", {}).get("id")) if msg else ""
+        if msg:
+            print(f"[message] chat_id={msg_chat} esperado={chat}", flush=True)
+        if msg_chat == chat:
             txt = msg.get("text", "").strip()
             for cmd in ("aprovar", "recusar"):
                 if txt.lower().startswith(f"/{cmd} "):

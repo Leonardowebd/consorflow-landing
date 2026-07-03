@@ -31,14 +31,16 @@ Schema do post.json:
   "faq": [{"q": "Pergunta?", "a": "Resposta de 30-60 palavras."}]
 }
 """
-import json, re, sys, argparse, html
+import json, re, sys, argparse, html, os, shutil
 from pathlib import Path
 from gerar_capa import render_capa
 from buscar_imagem import buscar
+from gerar_imagem_ia import gerar as gerar_ia
 
 DEFAULT_SITE = "/Users/niina/Documents/IA/proto"
 BASE = "https://consorflow.com"
 WA = "https://wa.me/5577981454387?text=Ol%C3%A1%21+Gostaria+de+agendar+uma+demo+do+Consorflow."
+TOOLS = Path(__file__).resolve().parent
 
 NAV = f'''  <nav class="nav">
     <div class="navpill">
@@ -180,7 +182,7 @@ def render_post(p):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Funnel+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/blog/blog.css?v=4">
+<link rel="stylesheet" href="/blog/blog.css?v=5">
 <script type="application/ld+json">
 {ld}
 </script>
@@ -248,6 +250,78 @@ def update_sitemap(site, url, date):
     sm.write_text(t, encoding="utf-8")
 
 
+def read_json(path):
+    try:
+        return json.loads(Path(path).read_text(encoding="utf-8"))
+    except Exception:
+        return None
+
+
+def approved_assets_dir(spec_path, slug):
+    candidates = [
+        Path(spec_path).resolve().parent / "assets" / slug,
+        TOOLS / "posts" / "pending" / "assets" / slug,
+    ]
+    for path in candidates:
+        if path.exists():
+            return path
+    return None
+
+
+def attach_inline_image(section, slug, idx, post_dir, approved_dir=None):
+    query = section.get("image_query")
+    if not query:
+        return None
+
+    fn = f"img-{idx}.jpg"
+    target = post_dir / fn
+    alt = section.get("image_alt") or query
+    meta = None
+
+    if approved_dir:
+        asset = approved_dir / fn
+        if asset.exists():
+            asset.replace(target)
+            meta = read_json(approved_dir / f"img-{idx}.json") or {
+                "alt": alt,
+                "credit": "Consorflow IA",
+                "origem": "Gemini",
+            }
+            print(f"  imagem inline §{idx}: reusada do preview aprovado -> {fn}")
+
+    if not meta and os.environ.get("GEMINI_API_KEY"):
+        generated = gerar_ia(query, alt, str(target))
+        if generated:
+            meta = {
+                "alt": alt,
+                "credit": "Consorflow IA",
+                "origem": "Gemini",
+            }
+            print(f"  imagem inline §{idx}: Gemini -> {fn}")
+
+    if not meta:
+        info = buscar(query, str(target))
+        if info:
+            meta = {
+                "alt": alt,
+                "credit": info.get("credit", ""),
+                "origem": info.get("origem", "Pexels"),
+            }
+            print(f"  imagem inline §{idx}: {query} -> {meta['credit']}/{meta['origem']}")
+
+    if meta:
+        section["_img"] = {
+            "src": f"/blog/{slug}/{fn}",
+            "alt": meta.get("alt") or alt,
+            "credit": meta.get("credit", ""),
+            "origem": meta.get("origem", ""),
+        }
+        return section["_img"]
+
+    print(f"  (sem imagem inline §{idx}: '{query}' — sem Gemini/Pexels ou sem resultado)")
+    return None
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("spec", help="arquivo post.json")
@@ -280,20 +354,13 @@ def main():
                     str(post_dir / "capa.png"))
         p["image"] = f"/blog/{p['slug']}/capa.png"
 
-    # Imagens inline: seções com "image_query" recebem foto de banco (Pexels).
-    # Falha graciosa: sem chave/sem resultado, a seção fica sem figura.
+    # Imagens inline: se houver preview aprovado, reusa exatamente aqueles arquivos.
+    # Sem preview aprovado: tenta Gemini; se falhar, tenta Pexels; se falhar, segue sem figura.
+    approved_dir = approved_assets_dir(args.spec, p["slug"])
     for i, s in enumerate(p.get("sections", []), 1):
-        q = s.get("image_query")
-        if not q:
-            continue
-        fn = f"img-{i}.jpg"
-        info = buscar(q, str(post_dir / fn))
-        if info:
-            s["_img"] = {"src": f"/blog/{p['slug']}/{fn}", "alt": s.get("image_alt") or info["alt"],
-                         "credit": info["credit"], "origem": info["origem"]}
-            print(f"  imagem inline §{i}: {q} -> {info['credit']}/{info['origem']}")
-        else:
-            print(f"  (sem imagem inline §{i}: '{q}' — sem PEXELS_API_KEY ou sem resultado)")
+        attach_inline_image(s, p["slug"], i, post_dir, approved_dir)
+    if approved_dir:
+        shutil.rmtree(approved_dir, ignore_errors=True)
 
     doc, url, warns = render_post(p)
     (post_dir / "index.html").write_text(doc, encoding="utf-8")
