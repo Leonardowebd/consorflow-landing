@@ -31,7 +31,7 @@ Schema do post.json:
   "faq": [{"q": "Pergunta?", "a": "Resposta de 30-60 palavras."}]
 }
 """
-import json, re, sys, argparse, html, os, shutil
+import json, re, sys, argparse, html, os, shutil, unicodedata
 from pathlib import Path
 from gerar_capa import render_capa
 from buscar_imagem import buscar
@@ -97,10 +97,160 @@ def wc(s):
     return len(re.findall(r"\b[\wÀ-ÿ-]+\b", s))
 
 
-def render_post(p):
+def text_only(s):
+    s = html.unescape(str(s or ""))
+    s = re.sub(r"<[^>]+>", "", s)
+    return re.sub(r"\s+", " ", s).strip()
+
+
+def slugify(s):
+    s = unicodedata.normalize("NFKD", text_only(s))
+    s = s.encode("ascii", "ignore").decode("ascii").lower()
+    s = re.sub(r"[^a-z0-9]+", "-", s).strip("-")
+    return s or "secao"
+
+
+def section_ids(sections):
+    seen = {}
+    for s in sections:
+        base = slugify(s.get("h2", "secao"))
+        seen[base] = seen.get(base, 0) + 1
+        s["_id"] = base if seen[base] == 1 else f"{base}-{seen[base]}"
+
+
+def first_answer(p):
+    for s in p.get("sections", []):
+        if s.get("answer"):
+            return s["answer"]
+    return p.get("dek", "")
+
+
+def trim_words(text, max_words=60):
+    words = text.split()
+    if len(words) <= max_words:
+        return text
+    return " ".join(words[:max_words]).rstrip(" ,;:") + "."
+
+
+def fallback_tldr(p):
+    base = text_only(first_answer(p))
+    if wc(base) >= 40:
+        return trim_words(base)
+    parts = [base] if base else []
+    for s in p.get("sections", []):
+        for para in s.get("paras", []):
+            clean = text_only(para)
+            if not clean:
+                continue
+            sentence = re.split(r"(?<=[.!?])\s+", clean)[0]
+            parts.append(sentence)
+            candidate = trim_words(" ".join(parts))
+            if wc(candidate) >= 40:
+                return candidate
+    return trim_words(" ".join(parts) or p.get("dek", ""))
+
+
+def render_tldr(p):
+    answer = text_only(p.get("tldr")) if p.get("tldr") else fallback_tldr(p)
+    if not answer:
+        return "", None
+    n = wc(answer)
+    warn = None
+    if not 40 <= n <= 60:
+        warn = f"TL;DR tem {n} palavras (ideal 40-60)"
+    return f'''
+    <aside class="tldr" aria-label="Resposta rápida">
+      <div class="tldr-label">Resposta rápida</div>
+      <p>{esc(answer)}</p>
+    </aside>''', warn
+
+
+def render_toc(sections):
+    if len(sections) < 3:
+        return ""
+    items = "\n".join(
+        f'        <li><a href="#{esc(s["_id"])}">{esc(s["h2"])}</a></li>'
+        for s in sections
+    )
+    return f'''
+    <nav class="toc" aria-labelledby="toc-title">
+      <div id="toc-title" class="toc-title">Neste artigo</div>
+      <ol>
+{items}
+      </ol>
+    </nav>'''
+
+
+def match_one(pattern, text, default=""):
+    m = re.search(pattern, text, re.S)
+    return text_only(m.group(1)) if m else default
+
+
+def match_attr(pattern, text, default=""):
+    m = re.search(pattern, text, re.S)
+    return html.unescape(m.group(1)).strip() if m else default
+
+
+def discover_posts(site):
+    posts = []
+    for path in sorted((site / "blog").glob("*/index.html")):
+        slug = path.parent.name
+        doc = path.read_text(encoding="utf-8")
+        title = match_one(r"<h1>(.*?)</h1>", doc) or match_attr(r'<meta property="og:title" content="([^"]+)"', doc)
+        if not title:
+            continue
+        pillar = match_one(r'<div class="eyebrow">(.*?)</div>', doc) or "Consorflow"
+        pillar = pillar.split("·")[0].strip()
+        posts.append({
+            "slug": slug,
+            "title": title,
+            "pillar": pillar,
+            "dek": match_one(r'<p class="dek">(.*?)</p>', doc),
+            "date": match_attr(r'<meta property="article:published_time" content="([^"]+)"', doc),
+            "img": match_attr(r'<img class="post-cover" src="([^"]+)"', doc) or f"/blog/{slug}/capa.png",
+        })
+    return posts
+
+
+def render_related(site, p):
+    posts = [r for r in discover_posts(site) if r["slug"] != p["slug"]]
+    same = sorted([r for r in posts if r["pillar"] == p.get("pillar")], key=lambda r: r["date"], reverse=True)
+    other = sorted([r for r in posts if r["pillar"] != p.get("pillar")], key=lambda r: r["date"], reverse=True)
+    related = (same + other)[:3]
+    if not related:
+        return ""
+    cards = "\n".join(f'''
+        <a class="related-card" href="/blog/{r["slug"]}/">
+          <span class="tag">{esc(r["pillar"])}</span>
+          <h3>{esc(r["title"])}</h3>
+          <p>{esc(r["dek"])}</p>
+        </a>''' for r in related)
+    return f'''
+    <section class="related" aria-labelledby="related-title">
+      <h2 id="related-title">Leia também</h2>
+      <div class="related-grid">
+{cards}
+      </div>
+    </section>'''
+
+
+def render_author_box():
+    return '''
+    <aside class="author-box">
+      <img src="/asset_navlogo.svg" alt="Consorflow" width="42" height="42" loading="lazy" decoding="async">
+      <div>
+        <div class="author-name">Equipe Consorflow</div>
+        <p>Especialistas em gestão comercial de consórcio — plataforma usada por administradoras e corretoras.</p>
+      </div>
+    </aside>'''
+
+
+def render_post(p, site):
+    section_ids(p.get("sections", []))
     url = f"{BASE}/blog/{p['slug']}/"
     img = p.get("image", "/asset_dash.jpg")
     img_abs = img if img.startswith("http") else BASE + img
+    updated = p.get("updated") or p["date"]
 
     faq_schema = [{
         "@type": "Question", "name": f["q"],
@@ -111,22 +261,37 @@ def render_post(p):
         "@type": "BlogPosting",
         "@id": url + "#post",
         "headline": p["title"], "description": p["meta_description"],
-        "inLanguage": "pt-BR", "datePublished": p["date"], "dateModified": p["date"],
+        "inLanguage": "pt-BR", "datePublished": p["date"], "dateModified": updated,
         "url": url, "image": img_abs,
         "author": {"@type": "Organization", "name": "Consorflow"},
         "publisher": {"@type": "Organization", "name": "Consorflow",
                       "logo": {"@type": "ImageObject", "url": f"{BASE}/asset_navlogo.svg"}},
+        "speakable": {"@type": "SpeakableSpecification", "cssSelector": [".answer"]},
         "mainEntityOfPage": url, "isPartOf": {"@id": f"{BASE}/blog/#blog"}
+    }, {
+        "@type": "BreadcrumbList",
+        "@id": url + "#breadcrumb",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Início", "item": BASE + "/"},
+            {"@type": "ListItem", "position": 2, "name": "Blog", "item": BASE + "/blog/"},
+            {"@type": "ListItem", "position": 3, "name": p["title"], "item": url}
+        ]
     }]
     if faq_schema:
         graph.append({"@type": "FAQPage", "@id": url + "#faq", "mainEntity": faq_schema})
     ld = json.dumps({"@context": "https://schema.org", "@graph": graph},
                     ensure_ascii=False, indent=2)
 
+    tldr_html, tldr_warn = render_tldr(p)
+    toc_html = render_toc(p.get("sections", []))
+    related_html = render_related(site, p)
+
     body = []
     warns = []
+    if tldr_warn:
+        warns.append(tldr_warn)
     for s in p["sections"]:
-        body.append(f'    <h2>{esc(s["h2"])}</h2>')
+        body.append(f'    <h2 id="{esc(s["_id"])}">{esc(s["h2"])}</h2>')
         if s.get("answer"):
             n = wc(s["answer"])
             if not 30 <= n <= 60:
@@ -143,15 +308,16 @@ def render_post(p):
         if s.get("_img"):
             fig = s["_img"]
             body.append(f'    <figure class="post-fig"><img src="{fig["src"]}" alt="{esc(fig["alt"])}" loading="lazy" decoding="async" width="1200" height="800">')
-            if fig.get("credit"):
-                body.append(f'      <figcaption>Foto: {esc(fig["credit"])} / {fig["origem"]}</figcaption>')
+            caption = figure_caption(fig)
+            if caption:
+                body.append(f'      <figcaption>{esc(caption)}</figcaption>')
             body.append('    </figure>')
     body_html = "\n".join(body)
 
     faq_html = ""
     if p.get("faq"):
         items = "\n".join(
-            f'      <details><summary>{esc(f["q"])}</summary><p>{esc(f["a"])}</p></details>'
+            f'      <details id="faq-{slugify(f["q"])}"><summary>{esc(f["q"])}</summary><p>{esc(f["a"])}</p></details>'
             for f in p["faq"])
         faq_html = f'''
     <section class="faq">
@@ -178,11 +344,12 @@ def render_post(p):
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="{img_abs}">
 <meta property="article:published_time" content="{p["date"]}">
+<meta property="article:modified_time" content="{updated}">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Funnel+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/blog/blog.css?v=6">
+<link rel="stylesheet" href="/blog/blog.css?v=7">
 <script type="application/ld+json">
 {ld}
 </script>
@@ -195,15 +362,20 @@ def render_post(p):
       <div class="eyebrow">{esc(p["pillar"])}</div>
       <h1>{esc(p["title"])}</h1>
       <p class="dek">{esc(p["dek"])}</p>
-      <div class="meta">Publicado em {p["date"]} · {p.get("read_min", 5)} min de leitura</div>
+      <div class="meta">Publicado em {p["date"]} · Atualizado em {updated} · {p.get("read_min", 5)} min de leitura</div>
     </header>
     <img class="post-cover" src="{img}" alt="{esc(p["title"])}" loading="lazy" decoding="async" width="1200" height="630">
+{tldr_html}
+{toc_html}
 {body_html}
+{faq_html}
+{render_author_box()}
     <div class="cta-box">
       <h3>Sua operação está pronta para vender mais consórcio?</h3>
       <p>A Consorflow centraliza leads, WhatsApp, IA e funil para você responder rápido e não perder cota quente.</p>
       <a href="{WA}" target="_blank" rel="noopener">Solicitar uma demo</a>
-    </div>{faq_html}
+    </div>
+{related_html}
   </article>
 {FOOT}
 {MENU_JS}
@@ -268,7 +440,39 @@ def approved_assets_dir(spec_path, slug):
     return None
 
 
-def attach_inline_image(section, slug, idx, post_dir, approved_dir=None):
+def existing_figure_meta(post_dir, fn, fallback_alt):
+    path = post_dir / "index.html"
+    if not path.exists():
+        return None
+    doc = path.read_text(encoding="utf-8")
+    m = re.search(
+        rf'<figure class="post-fig"><img[^>]+src="[^"]*/{re.escape(fn)}"[^>]*>(?:\s*<figcaption>(.*?)</figcaption>)?',
+        doc,
+        re.S,
+    )
+    if not m:
+        return None
+    caption = text_only(m.group(1)) if m.group(1) else ""
+    meta = {"alt": fallback_alt, "credit": "", "origem": "", "caption": caption}
+    if caption.startswith("Foto: ") and " / " in caption:
+        credit, origem = caption[6:].rsplit(" / ", 1)
+        meta.update({"credit": credit.strip(), "origem": origem.strip()})
+    return meta
+
+
+def figure_caption(fig):
+    if fig.get("caption"):
+        return fig["caption"]
+    origem = fig.get("origem", "")
+    credit = fig.get("credit", "")
+    if origem == "Pexels" and credit:
+        return f"Foto: {credit} / Pexels"
+    if origem == "Gemini":
+        return f"Imagem gerada por IA: {fig.get('alt', '')}"
+    return fig.get("alt", "")
+
+
+def attach_inline_image(section, slug, idx, post_dir, approved_dir=None, generate_missing=True):
     query = section.get("image_query")
     if not query:
         return None
@@ -288,6 +492,18 @@ def attach_inline_image(section, slug, idx, post_dir, approved_dir=None):
                 "origem": "Gemini",
             }
             print(f"  imagem inline §{idx}: reusada do preview aprovado -> {fn}")
+
+    if not meta and target.exists():
+        meta = existing_figure_meta(post_dir, fn, alt) or {
+            "alt": alt,
+            "credit": "",
+            "origem": "",
+        }
+        print(f"  imagem inline §{idx}: mantida imagem publicada -> {fn}")
+
+    if not meta and not generate_missing:
+        print(f"  (sem imagem inline §{idx}: '{query}' — preservando post publicado sem gerar nova imagem)")
+        return None
 
     if not meta and os.environ.get("GEMINI_API_KEY"):
         generated = gerar_ia(query, alt, str(target))
@@ -345,6 +561,7 @@ def main():
             return 1
 
     post_dir = site / "blog" / p["slug"]
+    post_dir_existed = post_dir.exists()
     post_dir.mkdir(parents=True, exist_ok=True)
 
     # Capa editorial gerada (identidade Consorflow) — vira a imagem do post,
@@ -357,12 +574,14 @@ def main():
     # Imagens inline: se houver preview aprovado, reusa exatamente aqueles arquivos.
     # Sem preview aprovado: tenta Gemini; se falhar, tenta Pexels; se falhar, segue sem figura.
     approved_dir = approved_assets_dir(args.spec, p["slug"])
+    is_existing_published = post_dir_existed and not approved_dir and Path(args.spec).resolve().parent == TOOLS / "posts"
     for i, s in enumerate(p.get("sections", []), 1):
-        attach_inline_image(s, p["slug"], i, post_dir, approved_dir)
+        attach_inline_image(s, p["slug"], i, post_dir, approved_dir,
+                            generate_missing=not is_existing_published)
     if approved_dir:
         shutil.rmtree(approved_dir, ignore_errors=True)
 
-    doc, url, warns = render_post(p)
+    doc, url, warns = render_post(p, site)
     (post_dir / "index.html").write_text(doc, encoding="utf-8")
     update_index(site, p)
     update_sitemap(site, url, p["date"])
