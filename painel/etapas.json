@@ -1,0 +1,52 @@
+[
+  {
+    "nome": "Blog automatizado",
+    "status": "done",
+    "nota": "Rascunho 8h → Telegram → aprova → publica em segundos."
+  },
+  {
+    "nome": "Template orgânico v7",
+    "status": "done",
+    "nota": "TL;DR, TOC, author box, relacionados, updated e schema."
+  },
+  {
+    "nome": "Imagens IA grátis prompt-rico",
+    "status": "done",
+    "nota": "Gemini → Pollinations gratuito → Pexels como fallback."
+  },
+  {
+    "nome": "GTM instalado",
+    "status": "done",
+    "nota": "GTM-PGTFC8HQ aplicado no site, blog, propostas e template."
+  },
+  {
+    "nome": "Proposta comercial",
+    "status": "done",
+    "nota": "/proposta/sergio-folego publicada."
+  },
+  {
+    "nome": "SEO/GEO core",
+    "status": "done",
+    "nota": "Schema, FAQ, llms, blog e extração por IA estruturados."
+  },
+  {
+    "nome": "Perfis G2/ProductHunt",
+    "status": "waiting",
+    "nota": "Aguardando verificação humana."
+  },
+  {
+    "nome": "Figma plugin carrossel",
+    "status": "waiting",
+    "nota": "Aguardando padrão manual do dono."
+  },
+  {
+    "nome": "OS Interno docs",
+    "status": "doing",
+    "nota": "Documentação interna em organização contínua."
+  },
+  {
+    "nome": "Comercial docs",
+    "status": "done",
+    "nota": "Materiais comerciais base criados."
+  }
+]

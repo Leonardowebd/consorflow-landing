@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow">
+  <meta http-equiv="refresh" content="60">
+  <title>Painel Consorflow OS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@500;600;700;800&family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --navy:#00295d;
+      --navy-2:#001b3f;
+      --teal:#2E8FB0;
+      --teal-soft:#dff3fa;
+      --ink:#203246;
+      --muted:#6b7b8f;
+      --line:#d7e8f5;
+      --paper:#f7fbff;
+      --white:#fff;
+      --amber:#f4b740;
+      --waiting:#94a3b8;
+      --shadow:0 24px 70px rgba(0,41,93,.14);
+    }
+    *{box-sizing:border-box}
+    html{min-height:100%;background:linear-gradient(135deg,#eef7fc 0%,#ffffff 42%,#eaf5fb 100%)}
+    body{margin:0;font-family:'Geist',sans-serif;color:var(--ink);text-rendering:optimizeLegibility;font-feature-settings:"kern" 1,"liga" 1;background:
+      linear-gradient(90deg,rgba(46,143,176,.08) 1px,transparent 1px) 0 0/68px 68px,
+      linear-gradient(0deg,rgba(0,41,93,.06) 1px,transparent 1px) 0 0/68px 68px;
+      min-height:100vh}
+    h1,h2,h3{font-family:'Funnel Display',sans-serif;letter-spacing:0;margin:0;color:var(--navy)}
+    p{margin:0;line-height:1.55}
+    .shell{max-width:1180px;margin:0 auto;padding:34px 22px 28px}
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:26px}
+    .brand{display:flex;align-items:center;gap:16px}
+    .logo-box{width:140px;height:52px;display:grid;place-items:center;background:rgba(255,255,255,.82);border:1px solid var(--line);border-radius:8px;box-shadow:0 10px 26px rgba(0,41,93,.08)}
+    .logo-box img{width:112px;height:auto;display:block}
+    .eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;color:var(--teal);margin-bottom:3px}
+    h1{font-size:clamp(30px,4vw,54px);line-height:1}
+    .timestamp{text-align:right;color:var(--muted);font-size:14px}
+    .timestamp strong{display:block;color:var(--navy);font-size:16px}
+    .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:22px;align-items:start}
+    .cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:18px}
+    .card,.panel{background:rgba(255,255,255,.9);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow)}
+    .card{padding:22px}
+    .card .label{font-size:12px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;color:var(--muted);margin-bottom:10px}
+    .card .value{font-family:'Funnel Display',sans-serif;font-size:clamp(28px,4vw,46px);font-weight:800;line-height:1;color:var(--navy)}
+    .card .detail{margin-top:9px;color:var(--muted);font-size:13px}
+    .panel{padding:22px}
+    .panel-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-end;margin-bottom:18px}
+    .panel h2{font-size:24px}
+    .sub{font-size:13px;color:var(--muted)}
+    .bars{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;align-items:end;height:180px;padding:12px 2px 2px}
+    .bar-wrap{height:100%;display:flex;flex-direction:column;justify-content:flex-end;gap:7px;min-width:0}
+    .bar{min-height:6px;border-radius:7px 7px 3px 3px;background:linear-gradient(180deg,#42b4d1 0%,var(--teal) 100%);box-shadow:0 10px 24px rgba(46,143,176,.28)}
+    .bar-label{text-align:center;font-size:11px;font-weight:700;color:var(--muted)}
+    .budget{margin-top:18px;border-top:1px solid var(--line);padding-top:18px}
+    .budget-row{display:flex;justify-content:space-between;gap:12px;font-size:14px;margin-bottom:10px}
+    .track{height:14px;background:#e8f1f8;border-radius:999px;overflow:hidden;border:1px solid #d8e8f3}
+    .fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),#56c6d8);border-radius:inherit}
+    .budget-meta{display:flex;justify-content:space-between;gap:12px;margin-top:9px;color:var(--muted);font-size:13px}
+    .steps{display:grid;gap:10px}
+    .step{display:grid;grid-template-columns:auto 1fr;gap:12px;padding:14px;border:1px solid var(--line);border-radius:8px;background:#fff}
+    .status{width:34px;height:34px;border-radius:999px;display:grid;place-items:center;font-weight:800}
+    .status.done{background:rgba(46,143,176,.14);color:var(--teal)}
+    .status.doing{background:rgba(244,183,64,.18);color:#b47400}
+    .status.waiting{background:#eef2f7;color:var(--waiting)}
+    .step h3{font-size:17px;line-height:1.15;margin-bottom:4px}
+    .step p{font-size:13px;color:var(--muted)}
+    .system{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px;color:var(--muted);font-size:13px}
+    .system span{padding:7px 10px;background:rgba(255,255,255,.75);border:1px solid var(--line);border-radius:999px}
+    footer{margin-top:22px;color:var(--muted);font-size:13px;text-align:right}
+    .error{padding:18px;border:1px solid #ffd0d0;background:#fff5f5;color:#9b1c1c;border-radius:8px}
+    @media(max-width:900px){
+      .topbar{align-items:flex-start;flex-direction:column}
+      .timestamp{text-align:left}
+      .grid{grid-template-columns:1fr}
+      .cards{grid-template-columns:1fr}
+      .shell{padding:24px 18px}
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo-box"><img src="https://consorflow.com/asset_navlogo.svg" alt="Consorflow"></div>
+        <div>
+          <div class="eyebrow">Projeto operacional</div>
+          <h1>Consorflow OS</h1>
+        </div>
+      </div>
+      <div class="timestamp">
+        <span>atualizado às</span>
+        <strong id="updated">--:--</strong>
+      </div>
+    </header>
+
+    <section class="cards" aria-label="Resumo de tokens">
+      <article class="card">
+        <div class="label">Tokens hoje</div>
+        <div class="value" id="tokensToday">--</div>
+        <div class="detail" id="detailToday">input + output + cache</div>
+      </article>
+      <article class="card">
+        <div class="label">Últimos 7 dias</div>
+        <div class="value" id="tokens7">--</div>
+        <div class="detail">janela móvel local</div>
+      </article>
+      <article class="card">
+        <div class="label">Total registrado</div>
+        <div class="value" id="tokensTotal">--</div>
+        <div class="detail" id="sessions">-- sessões</div>
+      </article>
+    </section>
+
+    <section class="grid">
+      <div>
+        <article class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Ritmo semanal</h2>
+              <p class="sub">Tokens por dia, últimos 7 dias.</p>
+            </div>
+            <p class="sub">estimativa operacional</p>
+          </div>
+          <div class="bars" id="bars"></div>
+          <div class="budget">
+            <div class="budget-row">
+              <strong>Orçamento semanal</strong>
+              <span id="budgetPercent">--%</span>
+            </div>
+            <div class="track"><div class="fill" id="budgetFill"></div></div>
+            <div class="budget-meta">
+              <span id="budgetUsed">usado --</span>
+              <span id="budgetLeft">restante estimado --</span>
+            </div>
+          </div>
+        </article>
+        <div class="system">
+          <span id="usageEvents">-- eventos de uso</span>
+          <span id="sessionFiles">-- arquivos transcript</span>
+          <span id="malformed">-- linhas puladas</span>
+        </div>
+      </div>
+
+      <aside class="panel">
+        <div class="panel-head">
+          <div>
+            <h2>Etapas</h2>
+            <p class="sub">Status atual do projeto.</p>
+          </div>
+        </div>
+        <div class="steps" id="steps"></div>
+      </aside>
+    </section>
+    <footer>atualizado às <span id="footerUpdated">--:--</span></footer>
+  </main>
+
+  <script>
+    const stateUrl = `./state.json?ts=${Date.now()}`;
+    const configUrl = `./config.json?ts=${Date.now()}`;
+
+    function compact(n){
+      n = Number(n || 0);
+      if(n >= 1_000_000_000) return `${(n / 1_000_000_000).toFixed(1)}B`;
+      if(n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
+      if(n >= 1_000) return `${(n / 1_000).toFixed(1)}K`;
+      return String(Math.round(n));
+    }
+
+    function statusIcon(status){
+      if(status === 'done') return '✅';
+      if(status === 'doing') return '🔄';
+      return '⏳';
+    }
+
+    function dayLabel(date){
+      const d = new Date(`${date}T12:00:00`);
+      return d.toLocaleDateString('pt-BR', { weekday:'short' }).replace('.', '');
+    }
+
+    async function load(){
+      try{
+        const [state, config] = await Promise.all([
+          fetch(stateUrl).then(r => r.json()),
+          fetch(configUrl).then(r => r.json()).catch(() => ({}))
+        ]);
+        const tokens = state.tokens || {};
+        const budgetRaw = Number(config.budget_semanal_tokens || state.budget?.budget_semanal_tokens || 0);
+        const weekly = Number(tokens.last_7_days?.total_tokens || 0);
+        const percent = budgetRaw ? Math.min((weekly / budgetRaw) * 100, 100) : 0;
+        const left = Math.max(budgetRaw - weekly, 0);
+
+        document.getElementById('updated').textContent = state.updated_label || '--:--';
+        document.getElementById('footerUpdated').textContent = state.updated_label || '--:--';
+        document.getElementById('tokensToday').textContent = compact(tokens.today?.total_tokens);
+        document.getElementById('tokens7').textContent = compact(weekly);
+        document.getElementById('tokensTotal').textContent = compact(tokens.total?.total_tokens);
+        document.getElementById('sessions').textContent = `${tokens.sessions || 0} sessões`;
+        document.getElementById('usageEvents').textContent = `${compact(tokens.usage_events)} eventos de uso`;
+        document.getElementById('sessionFiles').textContent = `${compact(tokens.session_files)} arquivos transcript`;
+        document.getElementById('malformed').textContent = `${compact(tokens.malformed_lines)} linhas puladas`;
+        document.getElementById('budgetPercent').textContent = `${percent.toFixed(1)}% usado`;
+        document.getElementById('budgetFill').style.width = `${percent}%`;
+        document.getElementById('budgetUsed').textContent = `usado ${compact(weekly)}`;
+        document.getElementById('budgetLeft').textContent = `restante estimado ${compact(left)}`;
+
+        const daily = tokens.daily || [];
+        const max = Math.max(...daily.map(d => d.total_tokens || 0), 1);
+        document.getElementById('bars').innerHTML = daily.map(d => {
+          const h = Math.max(((d.total_tokens || 0) / max) * 100, d.total_tokens ? 4 : 1);
+          return `<div class="bar-wrap" title="${d.date}: ${compact(d.total_tokens)}"><div class="bar" style="height:${h}%"></div><div class="bar-label">${dayLabel(d.date)}</div></div>`;
+        }).join('');
+
+        document.getElementById('steps').innerHTML = (state.etapas || []).map(step => `
+          <article class="step">
+            <div class="status ${step.status}">${statusIcon(step.status)}</div>
+            <div>
+              <h3>${step.nome}</h3>
+              <p>${step.nota}</p>
+            </div>
+          </article>
+        `).join('');
+      }catch(err){
+        document.querySelector('.shell').insertAdjacentHTML('beforeend', `<div class="error">Não foi possível carregar state.json: ${err.message}</div>`);
+      }
+    }
+    load();
+  </script>
+</body>
+</html>
