@@ -10,16 +10,25 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: blog-telegram
+  cancel-in-progress: false
+
 jobs:
   notify:
     if: ${{ !contains(github.event.head_commit.message, '[skip-notify]') }}
     runs-on: ubuntu-latest
+    env:
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          fetch-depth: 0
           persist-credentials: true
 
       - name: Setup Python
@@ -36,11 +45,6 @@ jobs:
           git config user.email "nleo17000@gmail.com"
 
       - name: Send added drafts to Telegram
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           set -euo pipefail
           added="$(git diff --name-only --diff-filter=A HEAD^ HEAD -- 'blog/_tools/posts/pending/*.json' || true)"
@@ -68,3 +72,27 @@ jobs:
           git commit -m "blog: gera assets de preview [skip-notify]"
           git pull --rebase origin main
           git push origin HEAD:main
+
+      - name: Listen for approval and publish quickly
+        run: |
+          set -euo pipefail
+          deadline=$((SECONDS + 2400))
+
+          while [ "$SECONDS" -lt "$deadline" ]; do
+            if ! compgen -G "blog/_tools/posts/pending/*.json" > /dev/null; then
+              echo "No pending drafts left. Exiting listener."
+              exit 0
+            fi
+
+            git pull --rebase origin main
+            python3 blog/_tools/publicar_pendentes.py
+
+            if ! compgen -G "blog/_tools/posts/pending/*.json" > /dev/null; then
+              echo "No pending drafts left after publishing."
+              exit 0
+            fi
+
+            sleep 20
+          done
+
+          echo "Approval listener timed out after 40 minutes."

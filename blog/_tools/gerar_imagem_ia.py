@@ -20,7 +20,7 @@ from pathlib import Path
 
 
 MODEL = "gemini-3.1-flash-image-preview"
-POLLINATIONS = "https://image.pollinations.ai/prompt/{prompt}?width=1200&height=800&nologo=true&model=flux"
+POLLINATIONS = "https://image.pollinations.ai/prompt/{prompt}?width=1600&height=1067&nologo=true&enhance=true&model={model}"
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36"
 
 
@@ -31,11 +31,13 @@ Tema: {section_query}
 Descrição desejada: {alt}
 
 Direção visual:
+- professional editorial photography, 85mm lens, natural lighting, high detail, photorealistic;
 - pessoas, ambientes ou objetos reais relacionados ao tema do artigo;
 - estética limpa, profissional e moderna;
 - tons navy e teal sutis, coerentes com uma marca SaaS B2B;
 - luz natural ou corporativa suave;
 - sem texto, sem legendas, sem números, sem gráficos com palavras;
+- no text, no watermark, no logos;
 - sem logos, marcas, telas legíveis ou identidade de terceiros;
 - imagem útil para ilustrar artigo de blog sobre consórcio, vendas, CRM e gestão comercial.
 """.strip()
@@ -100,11 +102,15 @@ def _gerar_gemini(section_query, alt, out_path):
 
 def _gerar_pollinations(section_query, alt, out_path):
     prompt = urllib.parse.quote(prompt_editorial(section_query, alt), safe="")
-    url = POLLINATIONS.format(prompt=prompt)
-    backoffs = [5, 15, 30]
+    attempts = [
+        ("flux-realism", 5),
+        ("flux", 15),
+        ("flux", 30),
+    ]
 
-    for attempt, delay in enumerate(backoffs, start=1):
+    for attempt, (model, delay) in enumerate(attempts, start=1):
         try:
+            url = POLLINATIONS.format(prompt=prompt, model=model)
             req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "image/avif,image/webp,image/apng,image/*,*/*;q=0.8"})
             with urllib.request.urlopen(req, timeout=90) as r:
                 data = r.read()
@@ -113,20 +119,20 @@ def _gerar_pollinations(section_query, alt, out_path):
                 return _save_image(data, out_path)
             print(
                 f"aviso: Pollinations retornou resposta não-imagem "
-                f"(tentativa {attempt}, content-type={content_type or 'vazio'})",
+                f"(tentativa {attempt}, model={model}, content-type={content_type or 'vazio'})",
                 file=sys.stderr,
             )
         except urllib.error.HTTPError as e:
             body = e.read(400)
             print(
                 f"aviso: Pollinations HTTP {e.code} "
-                f"(tentativa {attempt}): {body[:160]!r}",
+                f"(tentativa {attempt}, model={model}): {body[:160]!r}",
                 file=sys.stderr,
             )
         except Exception as e:
-            print(f"aviso: Pollinations falhou (tentativa {attempt}): {e}", file=sys.stderr)
+            print(f"aviso: Pollinations falhou (tentativa {attempt}, model={model}): {e}", file=sys.stderr)
 
-        if attempt < len(backoffs):
+        if attempt < len(attempts):
             time.sleep(delay)
 
     return None
