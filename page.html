@@ -494,20 +494,22 @@
   .btn-ghost-light:hover{border-color:rgba(255,255,255,.45)}
 
   /* ===== PROVA SOCIAL (espaços para vídeos futuros) ===== */
-  .social{background:#fff;padding:80px 0 88px}
+  .social{background:#fff;padding:80px 0 88px;overflow:hidden}
   .social-head{max-width:760px;margin:0 auto 48px;text-align:center;padding:0 24px}
   .social-head .s-ey{font-size:12px;letter-spacing:2.16px;text-transform:uppercase;color:#155dfc;font-weight:500;margin-bottom:14px}
   .social-head h2{font-weight:600;font-size:40px;line-height:1.1;color:#00295d;letter-spacing:-.01em}
   .social-head p{font-size:18px;color:#4a5565;line-height:1.5;margin-top:12px}
-  .social-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;max-width:1200px;margin:0 auto;padding:0 24px}
-  .vcard{border-radius:18px;overflow:hidden;border:1px solid #e8eef6;background:#fff;box-shadow:0 1px 3px rgba(0,40,93,.06);transition:transform .35s ease,box-shadow .35s ease}
+  .social-grid{display:grid;grid-template-columns:repeat(2,minmax(260px,360px));justify-content:center;gap:24px;max-width:820px;margin:0 auto;padding:0 24px}
+  .vcard{border-radius:14px;overflow:hidden;border:1px solid #e8eef6;background:#fff;box-shadow:0 12px 34px rgba(0,40,93,.1);transition:transform .35s ease,box-shadow .35s ease}
   .vcard:hover{transform:translateY(-4px);box-shadow:0 20px 46px rgba(0,40,93,.14)}
-  .vthumb{position:relative;aspect-ratio:4/5;display:flex;align-items:center;justify-content:center;overflow:hidden;
+  .vthumb{position:relative;aspect-ratio:9/16;display:flex;align-items:center;justify-content:center;overflow:hidden;
     background:radial-gradient(120% 120% at 50% 30%,#0b4486 0%,#00224f 100%)}
   /* textura sutil no placeholder do vídeo */
   .vthumb::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.08) 1px,transparent 1.3px);background-size:16px 16px;
     -webkit-mask-image:radial-gradient(circle at 50% 40%,#000,transparent 75%);mask-image:radial-gradient(circle at 50% 40%,#000,transparent 75%)}
+  .vthumb.has-video::before{display:none}
   .vthumb video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .vthumb iframe{position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:14px;background:#00224f}
   .vplay{position:relative;z-index:2;width:64px;height:64px;border-radius:50%;border:0;cursor:pointer;display:flex;align-items:center;justify-content:center;
     background:rgba(255,255,255,.95);box-shadow:0 10px 26px rgba(0,16,40,.4);transition:transform .25s ease,box-shadow .25s ease}
   .vplay svg{width:24px;height:24px;fill:#0b4486;margin-left:3px}
@@ -1037,8 +1039,10 @@
 
     /* ── PROVA SOCIAL ── */
     .social{padding:56px 0 64px}
-    .social-grid{grid-template-columns:1fr;gap:16px;padding:0 20px;max-width:420px}
-    .vthumb{aspect-ratio:16/10}
+    .social-grid{display:flex;gap:16px;max-width:none;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;padding:0 20px 8px;-webkit-overflow-scrolling:touch}
+    .social-grid::-webkit-scrollbar{display:none}
+    .vcard{flex:0 0 min(82vw,340px);scroll-snap-align:center}
+    .vthumb{aspect-ratio:9/16}
 
     /* ── FAQ ── */
     .faq{padding:56px 20px}
@@ -1644,34 +1648,17 @@
         <p>Depoimentos em vídeo de corretoras que centralizaram leads, WhatsApp e funil em um só lugar.</p>
       </div>
       <div class="social-grid">
-        <!-- cada .vthumb recebe um <video> no lugar do placeholder futuramente -->
         <div class="vcard">
-          <div class="vthumb" data-video="">
-            <button class="vplay" aria-label="Reproduzir depoimento"><svg viewBox="0 0 24 24"><path d="M7 5v14l12-7z"/></svg></button>
-            <span class="vsoon">Vídeo em breve</span>
+          <div class="vthumb has-video">
+            <iframe src="https://www.youtube.com/embed/2Rs1DV70iEM" title="Consorflow Shorts: operação comercial de consórcio com IA" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
           </div>
-          <div class="vmeta"><strong>Depoimento de cliente</strong><span>Diretor comercial · Consórcio</span></div>
+          <div class="vmeta"><strong>Consorflow em vídeo</strong><span>YouTube Shorts · IA e vendas de consórcio</span></div>
         </div>
         <div class="vcard">
-          <div class="vthumb" data-video="">
-            <button class="vplay" aria-label="Reproduzir depoimento"><svg viewBox="0 0 24 24"><path d="M7 5v14l12-7z"/></svg></button>
-            <span class="vsoon">Vídeo em breve</span>
+          <div class="vthumb has-video">
+            <iframe src="https://www.youtube.com/embed/PSLr8MKOZMo" title="Consorflow Shorts: WhatsApp, funil e gestão comercial" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
           </div>
-          <div class="vmeta"><strong>Depoimento de cliente</strong><span>Gerente de vendas · Corretora</span></div>
-        </div>
-        <div class="vcard">
-          <div class="vthumb" data-video="">
-            <button class="vplay" aria-label="Reproduzir depoimento"><svg viewBox="0 0 24 24"><path d="M7 5v14l12-7z"/></svg></button>
-            <span class="vsoon">Vídeo em breve</span>
-          </div>
-          <div class="vmeta"><strong>Depoimento de cliente</strong><span>CEO · Grupo de consórcios</span></div>
-        </div>
-        <div class="vcard">
-          <div class="vthumb" data-video="">
-            <button class="vplay" aria-label="Reproduzir depoimento"><svg viewBox="0 0 24 24"><path d="M7 5v14l12-7z"/></svg></button>
-            <span class="vsoon">Vídeo em breve</span>
-          </div>
-          <div class="vmeta"><strong>Depoimento de cliente</strong><span>Sócio · Corretora de consórcio</span></div>
+          <div class="vmeta"><strong>Consorflow em vídeo</strong><span>YouTube Shorts · WhatsApp e funil comercial</span></div>
         </div>
       </div>
     </section>
