@@ -25,21 +25,16 @@ UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML,
 
 
 def prompt_editorial(section_query, alt):
+    # Prompt rico (>=15 palavras) vem pronto do redator: usa direto, só garante o acabamento.
+    q = (section_query or "").strip()
+    if len(q.split()) >= 15:
+        return f"{q}, editorial corporate photography, photorealistic, natural skin tones, no text, no watermark, no logos"
     return f"""
 Fotografia editorial realista de negócios brasileira, horizontal 3:2.
-Tema: {section_query}
+Tema: {q}
 Descrição desejada: {alt}
 
-Direção visual:
-- professional editorial photography, 85mm lens, natural lighting, high detail, photorealistic;
-- pessoas, ambientes ou objetos reais relacionados ao tema do artigo;
-- estética limpa, profissional e moderna;
-- tons navy e teal sutis, coerentes com uma marca SaaS B2B;
-- luz natural ou corporativa suave;
-- sem texto, sem legendas, sem números, sem gráficos com palavras;
-- no text, no watermark, no logos;
-- sem logos, marcas, telas legíveis ou identidade de terceiros;
-- imagem útil para ilustrar artigo de blog sobre consórcio, vendas, CRM e gestão comercial.
+professional editorial photography, 85mm lens, natural lighting, high detail, photorealistic, no text, no watermark, no logos
 """.strip()
 
 
