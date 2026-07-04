@@ -58,7 +58,7 @@ article.post{max-width:760px;margin:0 auto;padding:8px 0 40px}
 .post-head h1{font-size:40px;font-weight:800;margin:14px 0 16px;line-height:1.08}
 .post-head .dek{font-size:19px;color:var(--ink)}
 .post-head .meta{font-size:13px;color:var(--muted);margin-top:18px}
-.post-cover{display:block;width:100%;aspect-ratio:1200/630;object-fit:cover;border-radius:14px;margin:0 0 32px}
+.post-cover{display:block;width:100%;height:auto;border-radius:14px;margin:0 0 32px}
 .post-fig{margin:32px 0}
 .post-fig img{display:block;width:100%;aspect-ratio:16/9;max-height:360px;object-fit:cover;border-radius:12px}
 .post-fig figcaption{font-size:12px;line-height:1.35;color:var(--muted);margin-top:7px;text-align:center}
