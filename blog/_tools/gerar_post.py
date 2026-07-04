@@ -110,6 +110,26 @@ def slugify(s):
     return s or "secao"
 
 
+def image_version(p):
+    version = str(p.get("updated") or p.get("date") or "1")
+    return re.sub(r"[^0-9A-Za-z_.-]", "-", version)
+
+
+def clean_image_src(src):
+    if not src:
+        return src
+    if src.startswith(("http://", "https://", "data:")):
+        return src
+    return src.split("?", 1)[0]
+
+
+def versioned_image_src(src, p):
+    src = clean_image_src(src)
+    if not src or src.startswith(("http://", "https://", "data:")):
+        return src
+    return f"{src}?v={image_version(p)}"
+
+
 def section_ids(sections):
     seen = {}
     for s in sections:
@@ -248,7 +268,8 @@ def render_author_box():
 def render_post(p, site):
     section_ids(p.get("sections", []))
     url = f"{BASE}/blog/{p['slug']}/"
-    img = p.get("image", "/asset_dash.jpg")
+    img = clean_image_src(p.get("image", "/asset_dash.jpg"))
+    img_versioned = versioned_image_src(img, p)
     img_abs = img if img.startswith("http") else BASE + img
     updated = p.get("updated") or p["date"]
 
@@ -307,7 +328,8 @@ def render_post(p, site):
             body.append('    </ul>')
         if s.get("_img"):
             fig = s["_img"]
-            body.append(f'    <figure class="post-fig"><img src="{fig["src"]}" alt="{esc(fig["alt"])}" loading="lazy" decoding="async" width="1200" height="800">')
+            fig_src = versioned_image_src(fig["src"], p)
+            body.append(f'    <figure class="post-fig"><img src="{fig_src}" alt="{esc(fig["alt"])}" loading="lazy" decoding="async" width="1200" height="800">')
             caption = figure_caption(fig)
             if caption:
                 body.append(f'      <figcaption>{esc(caption)}</figcaption>')
@@ -370,7 +392,7 @@ def render_post(p, site):
       <p class="dek">{esc(p["dek"])}</p>
       <div class="meta">Publicado em {p["date"]} · Atualizado em {updated} · {p.get("read_min", 5)} min de leitura</div>
     </header>
-    <img class="post-cover" src="{img}" alt="{esc(p["title"])}" loading="lazy" decoding="async" width="1200" height="630">
+    <img class="post-cover" src="{img_versioned}" alt="{esc(p["title"])}" loading="lazy" decoding="async" width="1200" height="630">
 {tldr_html}
 {toc_html}
 {body_html}
@@ -392,7 +414,7 @@ def render_post(p, site):
 
 
 def card_html(p):
-    img = p.get("image", "/asset_dash.jpg")
+    img = versioned_image_src(p.get("image", "/asset_dash.jpg"), p)
     return f'''
       <a class="card" href="/blog/{p['slug']}/">
         <div class="thumb"><img src="{img}" alt="{esc(p['title'])}" loading="lazy" decoding="async" width="1200" height="630"></div>
@@ -410,10 +432,15 @@ def update_index(site, p):
     idx = site / "blog" / "index.html"
     t = idx.read_text(encoding="utf-8")
     marker = "<!-- BLOG_GRID_START -->\n    <div class=\"grid\">"
-    if f'/blog/{p["slug"]}/' in t:
-        # já existe: não duplica
-        return
-    t = t.replace(marker, marker + card_html(p), 1)
+    card = card_html(p)
+    pattern = re.compile(
+        rf'\n      <a class="card" href="/blog/{re.escape(p["slug"])}/">.*?\n      </a>\n',
+        re.S,
+    )
+    if pattern.search(t):
+        t = pattern.sub(card, t, count=1)
+    else:
+        t = t.replace(marker, marker + card, 1)
     idx.write_text(t, encoding="utf-8")
 
 
@@ -452,7 +479,7 @@ def existing_figure_meta(post_dir, fn, fallback_alt):
         return None
     doc = path.read_text(encoding="utf-8")
     m = re.search(
-        rf'<figure class="post-fig"><img[^>]+src="[^"]*/{re.escape(fn)}"[^>]*>(?:\s*<figcaption>(.*?)</figcaption>)?',
+        rf'<figure class="post-fig"><img[^>]+src="[^"]*/{re.escape(fn)}(?:\?[^"]*)?"[^>]*>(?:\s*<figcaption>(.*?)</figcaption>)?',
         doc,
         re.S,
     )
@@ -573,8 +600,12 @@ def main():
     # Capa editorial gerada (identidade Consorflow) — vira a imagem do post,
     # a menos que o spec defina "image" explicitamente.
     if not p.get("image"):
-        render_capa(p["title"], p.get("pillar", "Consorflow"),
-                    str(post_dir / "capa.png"))
+        cover = post_dir / "capa.png"
+        if cover.exists():
+            print("  capa: mantida imagem publicada -> capa.png")
+        else:
+            render_capa(p["title"], p.get("pillar", "Consorflow"),
+                        str(cover))
         p["image"] = f"/blog/{p['slug']}/capa.png"
 
     # Imagens inline: se houver preview aprovado, reusa exatamente aqueles arquivos.
