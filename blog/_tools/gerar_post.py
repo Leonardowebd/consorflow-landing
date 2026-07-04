@@ -349,7 +349,7 @@ def render_post(p, site):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Funnel+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/blog/blog.css?v=7">
+<link rel="stylesheet" href="/blog/blog.css?v=8">
 <script type="application/ld+json">
 {ld}
 </script>

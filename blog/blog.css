@@ -138,5 +138,45 @@ article.post .cta-box p{color:#eaf2fd}/* vence article.post p (cinza) na pág. d
   .footer-grid{grid-template-columns:1fr 1fr;gap:32px 20px;margin-bottom:36px}
   .footer-brand{grid-column:1 / -1}
   .footer-bottom{justify-content:flex-start}
+  article.post{padding:8px 22px 48px;overflow-wrap:break-word}
+  .post-head{padding:34px 0 26px;margin-bottom:32px}
+  .tldr,.toc,.author-box{padding:18px 20px}
+  .related{margin-top:48px}
+  .related-grid{grid-template-columns:1fr;gap:16px}
 }
-@media(max-width:640px){.blog-hero h1{font-size:32px}.post-head h1{font-size:30px}article.post p,article.post li{font-size:16px}.tldr,.toc{margin-bottom:24px}.related-grid{grid-template-columns:1fr}.author-box{align-items:flex-start}}
+@media(max-width:640px){
+  .wrap{padding:0 20px}
+  .grid{grid-template-columns:1fr;gap:20px;padding:32px 0 56px}
+  .blog-hero h1{font-size:32px}
+  article.post{padding:8px 20px 48px}
+  .post-head h1{font-size:30px;line-height:1.15}
+  .post-head .dek{font-size:18px;line-height:1.55}
+  .post-head .meta{line-height:1.5}
+  article.post p,article.post li{font-size:17px;line-height:1.72}
+  article.post p{margin:18px 0}
+  article.post li{margin:10px 0}
+  article.post ul,article.post ol{margin:18px 0 20px 22px}
+  article.post h2{margin:40px 0 12px;font-size:26px;line-height:1.18}
+  article.post h3{margin:30px 0 10px;line-height:1.2}
+  .answer{padding:18px 20px;margin:20px 0;font-size:17px;line-height:1.65}
+  .tldr{margin:4px 0 30px;padding:18px 20px}
+  .post .tldr p{font-size:17px;line-height:1.65}
+  .toc{margin:0 0 32px;padding:16px 18px}
+  .post .toc ol{gap:2px}
+  .post .toc li{font-size:15px;line-height:1.45;padding:8px 0}
+  .toc a{display:inline-block}
+  .post-fig{margin:36px 0}
+  .cta-box{margin:54px 0 12px;padding:28px 22px}
+  .cta-box h3{font-size:23px;line-height:1.2}
+  article.post .cta-box p{font-size:16px;line-height:1.65;margin:16px 0 22px}
+  .faq{margin-top:50px}
+  .faq details{padding:18px 0}
+  .faq summary{font-size:18px;line-height:1.35;padding-right:28px}
+  .faq p{font-size:16px;line-height:1.65;margin:14px 0 4px}
+  .author-box{align-items:flex-start;margin-top:48px;padding:18px 20px}
+  .post .author-box p{font-size:15px;line-height:1.55;margin-top:6px}
+  .related{margin-top:50px}
+  .related-card{padding:18px;gap:10px}
+  .post .related-card h3{font-size:18px;line-height:1.22}
+  .post .related-card p{font-size:14px;line-height:1.55}
+}
