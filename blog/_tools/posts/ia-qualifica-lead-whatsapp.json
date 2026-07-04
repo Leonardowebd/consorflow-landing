@@ -6,6 +6,7 @@
   "pillar": "Tecnologia",
   "keyword": "lead de consórcio",
   "date": "2026-06-29",
+  "updated": "2026-07-04",
   "read_min": 7,
   "sections": [
     {
@@ -18,8 +19,8 @@
     },
     {
       "h2": "Como a IA qualifica um lead de consórcio no WhatsApp?",
-      "image_query": "person using whatsapp on smartphone",
-      "image_alt": "Atendimento de leads pelo WhatsApp no celular",
+      "image_query": "candid documentary photograph inside a bright modern Brazilian sales office, young saleswoman in navy blazer holding smartphone showing WhatsApp conversation, CRM pipeline visible on large monitor in background, morning sunlight through floor-to-ceiling windows, shallow depth of field, 50mm f1.8, editorial corporate photography",
+      "image_alt": "Atendente brasileira respondendo lead de consórcio pelo WhatsApp no celular em escritório moderno iluminado",
       "answer": "A IA conversa com o lead no WhatsApp, faz as perguntas de triagem que um vendedor faria e interpreta as respostas. Ela registra objetivo, faixa de crédito, prazo e nível de interesse, classifica o lead por temperatura e entrega tudo organizado no funil, sem o cliente esperar.",
       "paras": [
         "O ponto de partida é o primeiro contato. Quando o lead manda mensagem, a IA responde em segundos — e velocidade de resposta é um dos fatores que mais influenciam a chance de avançar uma conversa comercial. Em vez de um \"aguarde, já te respondo\", o cliente é acolhido na hora.",
@@ -45,8 +46,8 @@
     },
     {
       "h2": "Quais sinais a IA usa para priorizar um lead?",
-      "image_query": "business data dashboard analytics screen",
-      "image_alt": "Painel de dados para priorização de leads comerciais",
+      "image_query": "editorial documentary photograph of a Brazilian sales analyst at standing desk, zooming in on colorful CRM heat-map showing lead prioritization scores on large monitor, sticky notes and notebook on desk, concentrated expression, warm morning window light streaming from left, 85mm f2, corporate editorial photography",
+      "image_alt": "Analista comercial brasileiro avaliando painel de priorização de leads por temperatura no CRM em escritório",
       "answer": "A IA cruza sinais explícitos e de comportamento: urgência declarada, faixa de crédito compatível, clareza do objetivo, velocidade das respostas e engajamento na conversa. Quanto mais sinais positivos, mais quente o lead — e mais cedo ele aparece na fila do vendedor para ser atendido.",
       "paras": [
         "Nem todo sinal pesa igual. Alguém que diz \"quero resolver esse mês\" e responde rápido tende a estar mais perto da decisão do que quem some por dias entre uma mensagem e outra. A IA aprende a dar peso a esses padrões e a reordenar a fila continuamente."
@@ -61,6 +62,8 @@
     },
     {
       "h2": "Como adotar IA na qualificação sem perder o toque humano?",
+      "image_query": "documentary editorial photograph of a Brazilian sales team leader presenting AI-assisted qualification workflow on glass whiteboard in modern open-plan office, two consultants observing and taking notes at standing table, relaxed collaborative atmosphere, natural daylight from large windows, 35mm lens, authentic corporate documentary style",
+      "image_alt": "Líder de equipe comercial apresentando fluxo de qualificação com IA para consultores em escritório brasileiro moderno",
       "answer": "Comece automatizando só a triagem e a primeira resposta, mantendo o vendedor no controle do fechamento. Defina critérios claros de qualificação, revise as conversas da IA nas primeiras semanas e ajuste o tom. A meta é liberar tempo do time, não afastar o cliente do contato humano.",
       "paras": [
         "O erro comum é querer automatizar tudo de uma vez. O caminho seguro é começar pequeno: deixe a IA cuidar do primeiro contato e da triagem, e mantenha o handoff para o humano sempre visível para o cliente, que deve poder falar com uma pessoa quando quiser.",

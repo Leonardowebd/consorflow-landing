@@ -6,10 +6,13 @@
   "dek": "A taxa básica de juros elevada torna o financiamento imobiliário cada vez mais caro. Entenda por que o consórcio de imóvel ganhou força em 2026 e o que isso significa para corretoras e compradores.",
   "pillar": "Notícias do mundo",
   "date": "2026-07-03",
+  "updated": "2026-07-04",
   "read_min": 6,
   "sections": [
     {
       "h2": "Por que a Selic alta encarece o financiamento imobiliário em 2026?",
+      "image_query": "documentary editorial photograph of a Brazilian middle-class couple reviewing mortgage financing documents and bank interest simulation printout at kitchen table, calculator and pen visible, concerned expressions comparing numbers, warm afternoon light through window, 50mm f1.8, shallow depth of field, authentic photojournalism style, realistic Brazilian home interior",
+      "image_alt": "Casal brasileiro comparando simulação de financiamento imobiliário com juros altos na mesa de casa",
       "answer": "Com a Selic em 14,25% ao ano, as taxas de financiamento imobiliário chegam a 11,19% ao ano na Caixa Econômica e até 13,76% nos bancos privados, mais TR. O resultado prático: um imóvel de R$ 500 mil pode custar quase R$ 1 milhão ao longo do financiamento.",
       "paras": [
         "A taxa Selic funciona como o termômetro do custo do dinheiro no Brasil — e seu patamar elevado em 2026 está transformando a procura por consórcio de imóvel. Quando o Banco Central eleva a Selic para conter a inflação, os bancos repassam esse custo para o crédito, encarecendo o financiamento imobiliário e empurrando compradores a buscar alternativas sem juros.",
@@ -19,6 +22,8 @@
     },
     {
       "h2": "Como o consórcio de imóvel funciona sem cobrar juros?",
+      "image_query": "candid editorial photograph inside a modern São Paulo consortium administrative office, financial advisor explaining monthly assembly dynamics and group fund mechanics on wall whiteboard to attentive young couple, contribution cycle diagram drawn in marker, bright open workspace, warm natural window light, 50mm f2, documentary corporate photography",
+      "image_alt": "Consultor de consórcio imobiliário explicando funcionamento do grupo e taxa de administração para clientes em escritório",
       "answer": "No consórcio de imóvel, um grupo de participantes contribui mensalmente para um fundo comum administrado por empresa regulada pelo Banco Central. Não há juros: a administradora cobra apenas taxa de administração. A carta de crédito é entregue por sorteio ou lance em assembleias mensais.",
       "paras": [
         "O modelo do consórcio é direto: um grupo de pessoas com o mesmo objetivo — adquirir um imóvel com carta de crédito de valor determinado — contribui com parcelas mensais ao longo de um prazo pré-definido, normalmente entre 10 e 20 anos. A administradora é responsável por gerir o fundo, realizar as assembleias mensais e entregar as cartas de crédito de forma ordenada e transparente.",
@@ -29,6 +34,8 @@
     },
     {
       "h2": "Consórcio de imóvel é a escolha certa para todo comprador?",
+      "image_query": "editorial documentary photograph of a Brazilian financial advisor and young professional client at contemporary café-style workspace, side-by-side comparison chart of consortium versus bank financing total costs visible on printed spreadsheet on table, thoughtful analytical discussion, natural window light, minimalist modern interior, 85mm f2, shallow depth of field",
+      "image_alt": "Assessor financeiro e cliente comparando custo total entre consórcio e financiamento bancário em planilha detalhada",
       "answer": "Não existe resposta única: o consórcio de imóvel é mais indicado para quem tem disciplina financeira e pode aguardar a contemplação. Quem precisa do imóvel imediatamente ou planeja gerar renda com aluguel no curto prazo tende a preferir o financiamento, apesar do custo maior com juros.",
       "paras": [
         "A escolha entre consórcio e financiamento depende de dois fatores principais: urgência e planejamento. Quem precisa do imóvel imediatamente — seja para morar, seja para gerar renda com aluguel — tem no financiamento a única opção de posse imediata, ainda que mais cara. Já quem pode planejar com antecedência e tem disciplina para manter as parcelas em dia encontra no consórcio uma rota muito mais econômica no longo prazo.",
