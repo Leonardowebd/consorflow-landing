@@ -31,7 +31,7 @@ Schema do post.json:
   "faq": [{"q": "Pergunta?", "a": "Resposta de 30-60 palavras."}]
 }
 """
-import json, re, sys, argparse, html, os, shutil, unicodedata
+import hashlib, json, re, sys, argparse, html, os, shutil, unicodedata
 from pathlib import Path
 from gerar_capa import render_capa
 from buscar_imagem import buscar
@@ -123,11 +123,21 @@ def clean_image_src(src):
     return src.split("?", 1)[0]
 
 
-def versioned_image_src(src, p):
+def image_file_hash(site, src):
+    src = clean_image_src(src)
+    if not site or not src or src.startswith(("http://", "https://", "data:")):
+        return None
+    path = Path(site) / src.lstrip("/")
+    if not path.exists() or not path.is_file():
+        return None
+    return hashlib.md5(path.read_bytes()).hexdigest()[:8]
+
+
+def versioned_image_src(src, p, site=None):
     src = clean_image_src(src)
     if not src or src.startswith(("http://", "https://", "data:")):
         return src
-    return f"{src}?v={image_version(p)}"
+    return f"{src}?v={image_file_hash(site, src) or image_version(p)}"
 
 
 def section_ids(sections):
@@ -269,7 +279,7 @@ def render_post(p, site):
     section_ids(p.get("sections", []))
     url = f"{BASE}/blog/{p['slug']}/"
     img = clean_image_src(p.get("image", "/asset_dash.jpg"))
-    img_versioned = versioned_image_src(img, p)
+    img_versioned = versioned_image_src(img, p, site)
     img_abs = img if img.startswith("http") else BASE + img
     updated = p.get("updated") or p["date"]
 
@@ -328,7 +338,7 @@ def render_post(p, site):
             body.append('    </ul>')
         if s.get("_img"):
             fig = s["_img"]
-            fig_src = versioned_image_src(fig["src"], p)
+            fig_src = versioned_image_src(fig["src"], p, site)
             body.append(f'    <figure class="post-fig"><img src="{fig_src}" alt="{esc(fig["alt"])}" loading="lazy" decoding="async" width="1200" height="800">')
             caption = figure_caption(fig)
             if caption:
@@ -413,8 +423,8 @@ def render_post(p, site):
     return doc, url, warns
 
 
-def card_html(p):
-    img = versioned_image_src(p.get("image", "/asset_dash.jpg"), p)
+def card_html(p, site=None):
+    img = versioned_image_src(p.get("image", "/asset_dash.jpg"), p, site)
     return f'''
       <a class="card" href="/blog/{p['slug']}/">
         <div class="thumb"><img src="{img}" alt="{esc(p['title'])}" loading="lazy" decoding="async" width="1200" height="630"></div>
@@ -432,7 +442,7 @@ def update_index(site, p):
     idx = site / "blog" / "index.html"
     t = idx.read_text(encoding="utf-8")
     marker = "<!-- BLOG_GRID_START -->\n    <div class=\"grid\">"
-    card = card_html(p)
+    card = card_html(p, site)
     pattern = re.compile(
         rf'\n      <a class="card" href="/blog/{re.escape(p["slug"])}/">.*?\n      </a>\n',
         re.S,
@@ -500,7 +510,7 @@ def figure_caption(fig):
     credit = fig.get("credit", "")
     if origem == "Pexels" and credit:
         return f"Foto: {credit} / Pexels"
-    if origem == "Gemini":
+    if origem in ("Gemini", "Pollinations", "IA"):
         return f"Imagem gerada por IA: {fig.get('alt', '')}"
     return fig.get("alt", "")
 
@@ -538,25 +548,26 @@ def attach_inline_image(section, slug, idx, post_dir, approved_dir=None, generat
         print(f"  (sem imagem inline §{idx}: '{query}' — preservando post publicado sem gerar nova imagem)")
         return None
 
-    if not meta and os.environ.get("GEMINI_API_KEY"):
-        generated = gerar_ia(query, alt, str(target))
-        if generated:
-            meta = {
-                "alt": alt,
-                "credit": "Consorflow IA",
-                "origem": "Gemini",
-            }
-            print(f"  imagem inline §{idx}: Gemini -> {fn}")
-
     if not meta:
-        info = buscar(query, str(target))
+        info = buscar(query, str(target), alt=alt)
         if info:
             meta = {
                 "alt": alt,
                 "credit": info.get("credit", ""),
                 "origem": info.get("origem", "Pexels"),
             }
-            print(f"  imagem inline §{idx}: {query} -> {meta['credit']}/{meta['origem']}")
+            q = info.get("query") or query
+            print(f"  imagem inline §{idx}: Pexels '{q}' -> {meta['credit']}/{meta['origem']}")
+
+    if not meta:
+        generated = gerar_ia(query, alt, str(target))
+        if generated:
+            meta = {
+                "alt": alt,
+                "credit": "Consorflow IA",
+                "origem": "Pollinations",
+            }
+            print(f"  imagem inline §{idx}: IA fallback -> {fn}")
 
     if meta:
         section["_img"] = {
@@ -567,7 +578,7 @@ def attach_inline_image(section, slug, idx, post_dir, approved_dir=None, generat
         }
         return section["_img"]
 
-    print(f"  (sem imagem inline §{idx}: '{query}' — sem Gemini/Pexels ou sem resultado)")
+    print(f"  (sem imagem inline §{idx}: '{query}' — sem Pexels/IA ou sem resultado)")
     return None
 
 
@@ -611,10 +622,8 @@ def main():
     # Imagens inline: se houver preview aprovado, reusa exatamente aqueles arquivos.
     # Sem preview aprovado: tenta Gemini; se falhar, tenta Pexels; se falhar, segue sem figura.
     approved_dir = approved_assets_dir(args.spec, p["slug"])
-    is_existing_published = post_dir_existed and not approved_dir and Path(args.spec).resolve().parent == TOOLS / "posts"
     for i, s in enumerate(p.get("sections", []), 1):
-        attach_inline_image(s, p["slug"], i, post_dir, approved_dir,
-                            generate_missing=not is_existing_published)
+        attach_inline_image(s, p["slug"], i, post_dir, approved_dir)
     if approved_dir:
         shutil.rmtree(approved_dir, ignore_errors=True)
 

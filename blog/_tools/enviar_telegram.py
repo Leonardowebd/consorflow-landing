@@ -89,7 +89,7 @@ def _caption(idx, meta):
     origem = meta.get("origem", "")
     if origem == "Pexels":
         return f"Imagem §{idx}: {alt} — Foto: {credit}/Pexels"
-    return f"Imagem §{idx}: {alt} — Imagem gerada por IA/Gemini"
+    return f"Imagem §{idx}: {alt} — Imagem gerada por IA"
 
 
 def ensure_section_image_asset(section, slug, idx, assets_dir):
@@ -106,34 +106,34 @@ def ensure_section_image_asset(section, slug, idx, assets_dir):
             "path": str(out),
             "alt": alt,
             "credit": "Consorflow IA",
-            "origem": "Gemini",
+            "origem": "Pollinations",
         }
         meta["path"] = str(out)
         return meta
 
-    if os.environ.get("GEMINI_API_KEY"):
-        generated = gerar_ia(query, alt, str(out))
-        if generated:
-            meta = {
-                "path": generated,
-                "alt": alt,
-                "credit": "Consorflow IA",
-                "origem": "Gemini",
-            }
-            _write_meta(meta_path, meta)
-            return meta
-
     if os.environ.get("PEXELS_API_KEY"):
-        info = buscar(query, str(out))
+        info = buscar(query, str(out), alt=alt)
         if info:
             meta = {
                 "path": info["path"],
                 "alt": alt,
                 "credit": info.get("credit", ""),
                 "origem": "Pexels",
+                "query": info.get("query") or query,
             }
             _write_meta(meta_path, meta)
             return meta
+
+    generated = gerar_ia(query, alt, str(out))
+    if generated:
+        meta = {
+            "path": generated,
+            "alt": alt,
+            "credit": "Consorflow IA",
+            "origem": "Pollinations",
+        }
+        _write_meta(meta_path, meta)
+        return meta
 
     return None
 

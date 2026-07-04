@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-Gera imagens editoriais do blog via IA, com fallback externo no chamador.
+Gera imagens editoriais do blog via IA gratuita, com fallback externo no chamador.
 
 Uso por import:
     from gerar_imagem_ia import gerar
     gerar("crm dashboard sales team", "Equipe olhando CRM", "img-1.jpg")
 
-Requer opcionalmente para a primeira opção:
-    GEMINI_API_KEY
+Padrão: Pollinations.ai, sem chave.
+Gemini só é usado como fallback se BLOG_IMAGE_ALLOW_GEMINI_FALLBACK=1.
 """
 import io
 import os
@@ -134,10 +134,12 @@ def _gerar_pollinations(section_query, alt, out_path):
 
 
 def gerar(section_query, alt, out_path):
-    return (
-        _gerar_gemini(section_query, alt, out_path)
-        or _gerar_pollinations(section_query, alt, out_path)
-    )
+    generated = _gerar_pollinations(section_query, alt, out_path)
+    if generated:
+        return generated
+    if os.environ.get("BLOG_IMAGE_ALLOW_GEMINI_FALLBACK") == "1":
+        return _gerar_gemini(section_query, alt, out_path)
+    return None
 
 
 def main():
