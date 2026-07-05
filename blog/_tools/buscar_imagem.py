@@ -30,6 +30,17 @@ PHOTO_TERMS = {
     "visible",
 }
 
+PEOPLE_TERMS = {
+    "advisor", "agent", "analyst", "client", "consultant", "couple", "customer",
+    "director", "employee", "leader", "manager", "people", "person",
+    "professional", "salesman", "saleswoman", "team", "worker",
+    "assessor", "atendente", "casal", "cliente", "consultor", "consultora",
+    "corretor", "corretora", "equipe", "gerente", "lider", "líder", "pessoa",
+    "pessoas", "profissional", "vendedor", "vendedora",
+}
+
+CONTEXT_TERMS = ("brazil", "latin")
+
 
 def termos_significativos(text, limit=6):
     words = re.findall(r"[A-Za-zÀ-ÿ0-9.]+", text or "")
@@ -53,6 +64,33 @@ def query_pexels(query, alt=None):
     return termos_significativos(raw, 6) or termos_significativos(alt or "", 6) or raw
 
 
+def envolve_gente(query, alt=None):
+    text = f"{query or ''} {alt or ''}".lower()
+    words = set(re.findall(r"[a-zà-ÿ]+", text))
+    return bool(words & PEOPLE_TERMS)
+
+
+def queries_com_contexto(query, alt=None):
+    base = query_pexels(query, alt)
+    if not base:
+        return []
+    lower = base.lower()
+    out = []
+    for term in CONTEXT_TERMS:
+        if term not in lower:
+            out.append(f"{base} {term}")
+    out.append(base)
+
+    deduped = []
+    seen = set()
+    for item in out:
+        key = item.lower()
+        if key not in seen:
+            seen.add(key)
+            deduped.append(item)
+    return deduped
+
+
 def parece_ia(photo):
     text = " ".join(str(photo.get(key) or "") for key in ("photographer", "photographer_url", "alt")).lower()
     return any(term in text for term in (
@@ -64,27 +102,55 @@ def parece_ia(photo):
     ))
 
 
+def score_photo(photo, wants_people):
+    text = " ".join(str(photo.get(key) or "") for key in ("photographer", "photographer_url", "alt")).lower()
+    score = 0
+    if int(photo.get("width") or 0) >= 1200:
+        score += 4
+    if any(term in text for term in ("brazil", "brazilian", "brasil", "são paulo", "sao paulo", "latin", "latina", "latino")):
+        score += 5
+    if wants_people and any(term in text for term in ("people", "person", "team", "woman", "man", "couple", "client", "pessoas", "mulher", "homem", "casal", "equipe")):
+        score += 3
+    if wants_people and any(term in text for term in ("diverse", "diversity", "group", "multiracial", "multiethnic", "diverso", "diversa")):
+        score += 4
+    return score
+
+
+def search_photos(key, query, orientation):
+    qs = urllib.parse.urlencode({
+        "query": query, "per_page": 3,
+        "orientation": orientation, "size": "large",
+    })
+    req = urllib.request.Request(f"{PEXELS}?{qs}",
+                                 headers={"Authorization": key, "User-Agent": UA})
+    with urllib.request.urlopen(req, timeout=30) as r:
+        data = json.loads(r.read())
+    return data.get("photos", [])
+
+
 def buscar(query, out_path, orientation="landscape", alt=None):
     key = os.environ.get("PEXELS_API_KEY")
     if not key:
         return None
-    pexels_query = query_pexels(query, alt)
+    candidates = queries_com_contexto(query, alt)
+    pexels_query = candidates[-1] if candidates else query_pexels(query, alt)
     try:
-        qs = urllib.parse.urlencode({
-            "query": pexels_query, "per_page": 3,
-            "orientation": orientation, "size": "large",
-        })
-        req = urllib.request.Request(f"{PEXELS}?{qs}",
-                                     headers={"Authorization": key, "User-Agent": UA})
-        with urllib.request.urlopen(req, timeout=30) as r:
-            data = json.loads(r.read())
-        photos = data.get("photos", [])
-        if not photos:
-            return None
-        usable = [photo for photo in photos if not parece_ia(photo)]
+        selected_query = pexels_query
+        usable = []
+        for candidate in candidates:
+            try:
+                photos = search_photos(key, candidate, orientation)
+            except Exception as e:
+                print(f"  aviso: busca de imagem falhou ({candidate}): {e}", file=sys.stderr)
+                continue
+            usable = [photo for photo in photos if not parece_ia(photo)]
+            if usable:
+                selected_query = candidate
+                break
         if not usable:
             return None
-        ph = next((photo for photo in usable if int(photo.get("width") or 0) >= 1200), usable[0])
+        wants_people = envolve_gente(query, alt)
+        ph = max(usable, key=lambda photo: score_photo(photo, wants_people))
         src = ph["src"].get("large2x") or ph["src"].get("large") or ph["src"]["original"]
         img_req = urllib.request.Request(src, headers={"User-Agent": UA})
         with urllib.request.urlopen(img_req, timeout=30) as r:
@@ -93,12 +159,12 @@ def buscar(query, out_path, orientation="landscape", alt=None):
             "path": out_path,
             "credit": ph.get("photographer", ""),
             "credit_url": ph.get("photographer_url", ""),
-            "alt": ph.get("alt") or alt or pexels_query,
+            "alt": ph.get("alt") or alt or selected_query,
             "origem": "Pexels",
-            "query": pexels_query,
+            "query": selected_query,
         }
     except Exception as e:
-        print(f"  aviso: busca de imagem falhou ({pexels_query}): {e}", file=sys.stderr)
+        print(f"  aviso: download de imagem falhou ({pexels_query}): {e}", file=sys.stderr)
         return None
 
 
