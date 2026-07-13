@@ -26,7 +26,8 @@ Consorflow = CRM/plataforma de gestão comercial para administradoras e corretor
 ## Regras SEO/GEO (obrigatórias)
 - `title` 50-60 chars com a intenção de busca; `meta_description` 120-160 chars.
 - Cada seção: **H2 em forma de pergunta** + `answer` de **30-60 palavras** (vira bloco GEO + entra no FAQPage).
-- Link interno para a home e CTA (o script injeta o CTA).
+- Link interno para a home e CTA (o script injeta o bloco de CTA no fim).
+- **Presença da marca (regra dura do portão):** citar a Consorflow **≥2x no corpo** do post, e a **última seção deve fechar conectando o tema à Consorflow** com convite à ação e link (`consorflow.com`, `/` ou `wa.me`). Valor primeiro, produto como consequência — nunca propaganda vazia.
 - `date` = data real do dia (use `date +%F`).
 
 ## Schema da spec JSON

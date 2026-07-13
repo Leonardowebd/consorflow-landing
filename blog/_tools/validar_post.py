@@ -110,6 +110,21 @@ def validate(p):
     body_html = " ".join(" ".join(s.get("paras", [])) for s in sections)
     chk("≥ 1 link interno (href=\"/...\")", len(re.findall(r'href="/', body_html)) >= 1, False)
 
+    # ── Presença da marca (regra dura) ──
+    # Todo post fala da Consorflow no corpo e fecha com ponte + CTA.
+    body_text = strip_tags(" ".join(
+        " ".join(s.get("paras", []) + s.get("list", []) + [s.get("h2", ""), s.get("h3", ""), s.get("answer", "")])
+        for s in sections)).lower()
+    n_brand = len(re.findall(r"consorflow", body_text))
+    chk("Consorflow citada no corpo (≥2x)", n_brand >= 2, True, f"{n_brand}x")
+    last = sections[-1] if sections else {}
+    last_text = strip_tags(" ".join(
+        [last.get("h2", ""), last.get("h3", ""), last.get("answer", "")] +
+        last.get("paras", []) + last.get("list", []))).lower()
+    chk("Última seção conecta o tema à Consorflow", "consorflow" in last_text, True)
+    cta_link = re.search(r'href="(https?://(www\.)?consorflow\.com|/|https?://wa\.me)', body_html)
+    chk("Link/CTA Consorflow no corpo (consorflow.com, / ou wa.me)", bool(cta_link), False)
+
     # ── FAQ / schema ──
     chk("FAQ com ≥ 3 perguntas", len(faq) >= 3, True, f"{len(faq)} perguntas")
     bad_faq = [f["q"][:30] for f in faq if not (30 <= wc(f.get("a", "")) <= 60)]

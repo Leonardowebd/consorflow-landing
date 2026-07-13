@@ -51,7 +51,10 @@ O portão garante o piso técnico. A régua garante que o conteúdo **merece ran
 - **Pilar 1 (Notícias do mundo):** parte de um fato atual amplo e faz a **ponte por copy** até o consórcio. A ponte tem que ser natural, não forçada.
 - **Pilar 2 (Mundo do consórcio):** notícia/dado do setor (ABAC, BACEN, regulação) com leitura útil para quem opera.
 - **Pilar 3 (Tecnologia):** IA, CRM, WhatsApp, automação — onde a Consorflow encaixa, sem virar propaganda.
-- Em todos: **valor primeiro, produto depois**. A Consorflow aparece como consequência natural, no máximo no bloco de CTA.
+- Em todos: **valor primeiro, produto depois** — mas a Consorflow SEMPRE aparece no corpo do post (regra dura do portão):
+  - Citar a Consorflow **pelo menos 2x no corpo**, como consequência natural do problema tratado (mecanismo, não propaganda).
+  - A **última seção fecha conectando o tema à Consorflow** com convite à ação (ex.: "é esse tipo de operação que a Consorflow organiza — veja em consorflow.com"), além do bloco de CTA que o script injeta.
+  - Link para `consorflow.com`, `/` (home) ou `wa.me` dentro do corpo.
 
 ### Legibilidade e experiência
 - Parágrafos curtos (2–4 linhas), frases diretas, voz ativa.
@@ -73,5 +76,6 @@ O portão garante o piso técnico. A régua garante que o conteúdo **merece ran
 - [ ] A ponte do pilar até o consórcio é natural
 - [ ] Dados/datas conferidos
 - [ ] Valor antes do produto; CTA sem promessa
+- [ ] Consorflow citada ≥2x no corpo e a última seção fecha com ponte + CTA para a Consorflow
 - [ ] `validar_post.py` retornou **PASS**
 - [ ] Eu publicaria isso com o meu nome
