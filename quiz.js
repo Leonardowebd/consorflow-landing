@@ -91,7 +91,7 @@
     overlay.innerHTML = [
       '<section class="cq-dialog" role="dialog" aria-modal="true" aria-labelledby="cq-title" aria-describedby="cq-live">',
       '  <header class="cq-header">',
-      '    <div class="cq-brand"><img src="asset_navlogo.svg" alt="Consorflow"><span>Qualificação</span></div>',
+      '    <div class="cq-brand"><img src="asset_navlogo.svg" alt="Consorflow"></div>',
       '    <button class="cq-close" type="button" aria-label="Fechar quiz">&times;</button>',
       '  </header>',
       '  <div class="cq-progress-wrap" hidden>',
@@ -202,7 +202,7 @@
       saveState();
       renderQuestion();
     });
-    announce("Quiz de qualificação aberto.");
+    announce("Quiz aberto.");
     focusHeading();
   }
 
