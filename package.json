@@ -1,0 +1,13 @@
+{
+  "name": "consorflow-landing",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Landing estática e endpoint seguro do quiz de qualificação Consorflow.",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "check": "node --check quiz-contract.js && node --check quiz.js && node --check api/quiz-leads.js && node --check test/quiz.test.js",
+    "test": "node --test test/quiz.test.js"
+  }
+}

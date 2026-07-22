@@ -1,0 +1,81 @@
+name: Blog draft generator
+
+on:
+  schedule:
+    - cron: "0 12 * * 1"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Validar prontidão sem IA, fontes, commit ou push"
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: blog-telegram
+  cancel-in-progress: false
+
+jobs:
+  draft:
+    runs-on: ubuntu-latest
+    env:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      AI_GATEWAY_API_KEY: ${{ secrets.AI_GATEWAY_API_KEY }}
+      BLOG_AI_PROVIDER: ${{ vars.BLOG_AI_PROVIDER || 'gemini' }}
+      BLOG_AI_MODEL: ${{ vars.BLOG_AI_MODEL || 'gemini-2.5-flash' }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install documented providers
+        run: python -m pip install --upgrade Pillow google-genai
+
+      - name: Offline checks
+        run: |
+          python -m unittest blog/_tools/test_gerar_rascunho.py
+          python -m py_compile blog/_tools/gerar_rascunho.py blog/_tools/validar_post.py
+
+      - name: Readiness only
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+        run: python blog/_tools/gerar_rascunho.py --dry-run
+
+      - name: Generate gated pending draft
+        if: ${{ github.event_name == 'schedule' || !inputs.dry_run }}
+        id: generate
+        run: |
+          python blog/_tools/gerar_rascunho.py
+          file="$(git ls-files --others --exclude-standard 'blog/_tools/posts/pending/*.json' | head -n 1)"
+          test -n "$file"
+          python blog/_tools/validar_post.py "$file"
+          echo "file=$file" >> "$GITHUB_OUTPUT"
+
+      - name: Send draft for human review
+        if: ${{ steps.generate.outputs.file != '' }}
+        run: |
+          rel="${{ steps.generate.outputs.file }}"
+          rel="${rel#blog/_tools/}"
+          (cd blog/_tools && python enviar_telegram.py "$rel")
+
+      - name: Commit pending draft and preview only
+        if: ${{ steps.generate.outputs.file != '' }}
+        run: |
+          git config user.name "Consorflow Bot"
+          git config user.email "nleo17000@gmail.com"
+          git add "${{ steps.generate.outputs.file }}" blog/_tools/posts/pending/assets
+          git commit -m "blog: gera rascunho para revisão humana [skip-notify]"
+          git pull --rebase origin main
+          git push origin HEAD:main
+
+      # A publicação continua exclusivamente em blog-publicador.yml após /aprovar no Telegram.

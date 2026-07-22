@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "topics": [
+    {
+      "slug": "crm-consorcio-reduzir-tempo-resposta-leads",
+      "keyword": "CRM para consórcio",
+      "pillar": "Tecnologia",
+      "brief": "Como reduzir o tempo de primeira resposta e organizar follow-up de leads em operações de consórcio sem depender de planilhas.",
+      "source_urls": [
+        "https://www.bcb.gov.br/estabilidadefinanceira/consorcio"
+      ]
+    },
+    {
+      "slug": "lgpd-leads-consorcio-crm-boas-praticas",
+      "keyword": "LGPD leads consórcio",
+      "pillar": "Tecnologia",
+      "brief": "Boas práticas de consentimento, acesso e rastreabilidade no tratamento de leads de consórcio em CRM.",
+      "source_urls": [
+        "https://www.gov.br/anpd/pt-br/assuntos/legislacao/lgpd"
+      ]
+    },
+    {
+      "slug": "regras-consorcio-bacen-atendimento-comercial",
+      "keyword": "regras de consórcio Bacen",
+      "pillar": "Mundo do consórcio",
+      "brief": "O que uma equipe comercial precisa respeitar ao explicar consórcio, contemplação, sorteio e lance ao consumidor.",
+      "source_urls": [
+        "https://www.bcb.gov.br/estabilidadefinanceira/consorcio"
+      ]
+    }
+  ]
+}
