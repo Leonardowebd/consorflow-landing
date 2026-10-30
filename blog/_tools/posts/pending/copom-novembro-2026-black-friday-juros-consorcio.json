@@ -1,0 +1,91 @@
+{
+  "slug": "copom-novembro-2026-black-friday-juros-consorcio",
+  "title": "COPOM de novembro: o que muda para quem vende consórcio?",
+  "meta_description": "COPOM decide juros em novembro, Black Friday vem em seguida. Descubra quanto o corte da Selic afeta o crédito e por que o consórcio opera fora dessa lógica.",
+  "dek": "A reunião do COPOM em novembro decide os juros. Com a Black Friday logo depois, muita gente espera crédito barato. O spread bancário não recua numa semana — e o consórcio nunca dependeu disso.",
+  "pillar": "Notícias do mundo",
+  "date": "2026-10-30",
+  "read_min": 6,
+  "keyword": "consórcio sem juros",
+  "tldr": "O COPOM decide juros na semana de 3 de novembro, mas o impacto real no crédito demora meses. Com a Black Friday em 29 de novembro e 82% das famílias endividadas, o consórcio — que não tem juros — é a única modalidade imune à Selic.",
+  "sections": [
+    {
+      "h2": "O que o COPOM decide e quando isso chega ao seu bolso?",
+      "answer": "O COPOM define a taxa Selic básica, mas essa taxa não é o que você paga no banco. O custo real do crédito inclui spread bancário, impostos e seguros. Um corte de 0,25 ponto leva meses para reduzir parcelas e raramente muda contratos ativos.",
+      "image_query": "central bank interest rate meeting finance",
+      "image_alt": "Membros de comitê de política monetária em reunião sobre taxas de juros",
+      "paras": [
+        "O Comitê de Política Monetária do Banco Central — o COPOM — se reúne em 3 e 4 de novembro de 2026 para decidir o rumo da taxa Selic. Com a taxa atualmente em 13,75% ao ano (após corte em setembro), consumidores que pensam em comprar imóvel ou carro via consórcio ou financiamento acompanham o noticiário com atenção. O mercado está dividido entre novo corte de 0,25 ponto percentual ou manutenção dos juros.",
+        "Para quem planeja uma compra grande — um carro, um imóvel ou um eletrodoméstico de alto valor — a decisão parece urgente. O raciocínio é lógico: se o COPOM cortar os juros antes da Black Friday (29 de novembro), o financiamento fica mais barato e a compra sai mais vantajosa. Mas esse raciocínio ignora a engrenagem real do crédito bancário.",
+        "A Selic é a taxa interbancária — o custo que os bancos pagam para se financiar no curtíssimo prazo. O que o consumidor final paga é a Taxa Efetiva Total (CET), que inclui o custo de captação do banco, margem de lucro, inadimplência esperada, impostos como o IOF e seguros obrigatórios. A Selic é apenas um dos componentes dessa equação.",
+        "Na prática, o efeito de um corte de 0,25 ponto percentual na Selic chega ao crédito ao consumidor com uma defasagem de meses — se é que chega, dependendo do produto. Segundo o Banco Central, o spread médio dos bancos para pessoas físicas gira em torno de 25 a 30 pontos percentuais acima da Selic em linhas como empréstimo pessoal. Com a Selic em 13,75%, a taxa de um crédito pessoal pode facilmente ultrapassar 40% ao ano. Quem pensa em comprar via consórcio está em outro patamar de análise — sem essa variável de risco."
+      ]
+    },
+    {
+      "h2": "Por que o spread bancário torna um corte da Selic insuficiente?",
+      "answer": "O spread bancário é a diferença entre o que o banco capta e o que cobra do cliente. Com risco de inadimplência alto e estrutura de custos elevada, os bancos brasileiros praticam spreads entre os maiores do mundo. Um corte de 0,25 ponto na Selic não comprime esse spread.",
+      "image_query": "bank loan documents interest rate signing",
+      "image_alt": "Pessoa assinando contrato de financiamento bancário com documento de taxas de juros",
+      "paras": [
+        "O Brasil tem um dos maiores spreads bancários do mundo. De acordo com o Banco Central, o spread médio no crédito livre para pessoas físicas supera 30 pontos percentuais. Em segmentos como cartão de crédito rotativo, esse número ultrapassa com frequência os 200% ao ano — dados disponíveis no portal de dados abertos do BC.",
+        "O spread existe porque os bancos precisam cobrir múltiplos custos: o risco de crédito (probabilidade de inadimplência), os custos operacionais (agências, sistemas, pessoal), as exigências de capital regulatório (Basileia III), os tributos sobre a intermediação financeira e a margem de lucro esperada pelos acionistas.",
+        "Um corte de 0,25 ponto percentual na Selic reduz o custo de captação do banco em uma fração mínima. Esse ganho raramente é repassado integralmente ao consumidor, especialmente em contratos de curto prazo ou em linhas de crédito emergencial que têm maior componente de risco.",
+        "Para financiamentos imobiliários — onde a Selic tem mais influência por conta da estrutura atrelada à TR e à poupança — o impacto existe, mas se distribui ao longo de ciclos de meses. Estimativas de mercado indicam que a economia mensal em um financiamento de R$ 300 mil em 30 anos seria de menos de R$ 90 com um corte de apenas 0,25 ponto percentual. Uma parcela menor, mas longe de transformar a equação de custo."
+      ]
+    },
+    {
+      "h2": "Como o consumidor endividado chega à Black Friday de 2026?",
+      "answer": "Com 82% das famílias brasileiras endividadas (CNC/PEIC) e a Black Friday 2026 projetada em R$ 13 bilhões, alta de 20%, os consumidores chegam mais planejados mas vulneráveis ao crédito caro. Compras parceladas com juros altos comprometem todo o orçamento de 2027.",
+      "image_query": "shopping cart online sale black friday consumer",
+      "image_alt": "Consumidor planejando compras de Black Friday com celular e cartão de crédito",
+      "paras": [
+        "A Black Friday de 2026 acontece em 28 de novembro — apenas 24 dias depois da decisão do COPOM. Uma análise publicada em outubro de 2026 pela Mercado & Consumo projeta crescimento de cerca de 20% nas vendas em relação ao ano anterior, com movimentação estimada em R$ 13 bilhões e tíquetes médios menores, porém maior volume total de pedidos.",
+        "O pano de fundo é um consumidor mais planejado, mas ainda pressionado. Dados da CNC pelo indicador PEIC mostram que 82% das famílias brasileiras chegam a novembro com algum tipo de dívida ativa. A NielsenIQ, em relatório pré-Black Friday 2026, aponta que os juros altos e o endividamento das famílias continuam sendo os principais inibidores de consumo, mesmo com o desemprego em níveis relativamente favoráveis.",
+        "27% dos consumidores já pesquisam ofertas com três meses de antecedência, segundo a mesma pesquisa. Isso indica um comprador que não age por impulso — mas que ainda enfrenta o problema do crédito caro quando decide financiar uma compra de maior valor como um veículo ou eletrodoméstico de linha branca.",
+        "Um ponto crítico: quem parcela um produto de R$ 5 mil no cartão de crédito rotativo (acima de 200% ao ano) ou em um crédito pessoal (a 40-50% ao ano) pode acabar pagando o dobro do preço original até quitar. Nenhum desconto de Black Friday compensa esse custo. O consumidor mais inteligente planeja a compra com antecedência — e é exatamente para isso que o consórcio foi criado."
+      ]
+    },
+    {
+      "h2": "O consórcio sobe de preço quando a Selic muda?",
+      "answer": "Não. O consórcio não tem juros — a taxa cobrada é a de administração, que o administrador define e que não oscila com o COPOM. Uma cota contratada hoje tem o mesmo custo financeiro independente de a Selic ir a 12% ou a 15% nos próximos anos.",
+      "image_query": "group savings planning financial document pen",
+      "image_alt": "Grupo de pessoas organizando planejamento financeiro com documentos de consórcio",
+      "paras": [
+        "Essa é a diferença estrutural entre o consórcio e qualquer forma de financiamento bancário: o consórcio é um sistema de autofinanciamento coletivo, regulado pelo Banco Central pela Lei 11.795/2008. Os participantes formam um grupo, contribuem mensalmente e, por sorteio ou lance, cada um recebe sua carta de crédito para adquirir o bem ou serviço planejado.",
+        "A remuneração do administrador não é um juro — é uma taxa de administração expressa em percentual do crédito, paga ao longo do plano. Essa taxa é definida em contrato e não sobe ou desce conforme as decisões do COPOM. É por isso que, <a href=\"/blog/consorcio-juros-altos-sem-juros/\">quando os juros estão altos, o consórcio fica proporcionalmente mais vantajoso</a>, mas o consórcio também não fica mais caro quando os juros caem.",
+        "Do ponto de vista de planejamento financeiro, esse é o grande diferencial: o consórcio oferece previsibilidade total de custo. Não há surpresas de variação de taxa ao longo do plano. Isso torna o consórcio uma escolha racional especialmente para compras com horizonte de 1 a 5 anos — exatamente o perfil de quem quer comprar um imóvel, um carro ou ampliar um negócio sem comprometer o fluxo de caixa mensal.",
+        "O mesmo princípio se aplica à <a href=\"/#funcionalidades\">gestão da operação comercial de administradoras e corretoras</a>: independente do ciclo da Selic, manter o funil de leads organizado e o tempo de resposta curto é o que diferencia quem cresce de quem estagna. A Consorflow foi desenhada para isso — transformar operações fragmentadas em processos comerciais previsíveis e escaláveis."
+      ]
+    },
+    {
+      "h2": "O que fazer na semana do COPOM para vender mais consórcio?",
+      "answer": "A decisão do COPOM é um gatilho de pauta natural. Enquanto o mercado debate cortes de juros, o vendedor de consórcio pode reforçar que seu produto não depende dessa decisão — e usar esse argumento para qualificar leads que buscam crédito para imóvel ou carro.",
+      "image_query": "sales team whatsapp smartphone office deal",
+      "image_alt": "Equipe de vendas de consórcio usando CRM e WhatsApp para qualificar leads",
+      "paras": [
+        "Toda vez que o COPOM se reúne, o noticiário aquece a conversa sobre crédito, juros e poder de compra. Para uma equipe de vendas de consórcio bem organizada, esse é um gatilho natural de prospecção: o tema está no ar, o lead está pensando em crédito — e o momento é ideal para apresentar uma alternativa sem juros que não muda de preço com a Selic.",
+        "A janela entre o COPOM (4 de novembro) e a Black Friday (28 de novembro) é de apenas 24 dias. Um lead que pesquisa crédito hoje pode decidir nessa semana. Se a equipe demora a responder, perde para o concorrente — seja o banco, seja outra administradora. Velocidade de resposta e organização do funil definem quem fecha.",
+        "É exatamente aí que a Consorflow entra. A plataforma permite que administradoras e corretoras de consórcio gerenciem leads do WhatsApp, acompanhem o funil de vendas em tempo real e priorizem os contatos mais quentes com automação e inteligência artificial — tudo centralizado. Em períodos de alta demanda como o COPOM ou a proximidade da Black Friday, a velocidade de resposta define quem converte.",
+        "Com a Consorflow, o time comercial sabe quem contactar, em qual etapa do funil cada lead está e qual é a melhor abordagem para avançar a negociação. Esse nível de organização é o que transforma um bom momento de mercado em resultado concreto de vendas. Conheça como funciona em <a href=\"/#funcionalidades\">consorflow.com</a> — e prepare sua operação antes do próximo COPOM."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "O corte da Selic em novembro vai baratear o financiamento antes da Black Friday?",
+      "a": "Não imediatamente. O efeito de um corte de 0,25 ponto percentual na Selic leva meses para chegar ao crédito ao consumidor final. O spread bancário, que pode superar 30 pontos percentuais acima da Selic, não é reduzido na mesma proporção e no mesmo prazo."
+    },
+    {
+      "q": "Consórcio tem juros?",
+      "a": "Não. O consórcio não cobra juros. O custo é a taxa de administração, definida em contrato pelo administrador e que não varia conforme a Selic. Por isso o consórcio tem custo previsível e é imune às decisões do COPOM."
+    },
+    {
+      "q": "É melhor esperar os juros caírem para entrar em um consórcio?",
+      "a": "Não faz diferença financeira. Como o consórcio não tem juros, a taxa Selic não altera o custo da cota. Esperar a Selic cair é uma estratégia válida para quem financia em banco — não para quem contrata consórcio."
+    },
+    {
+      "q": "Qual oportunidade a semana do COPOM cria para quem vende consórcio?",
+      "a": "O noticiário sobre juros aquece o debate sobre crédito e poder de compra. Para o time de vendas de consórcio, é um gancho natural: apresentar o produto como alternativa sem juros a leads que pesquisam financiamento, aproveitando o interesse espontâneo do mercado."
+    }
+  ]
+}
